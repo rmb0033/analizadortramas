@@ -1,0 +1,207 @@
+<!--BOOL,UInt8,Int8,UInt16,Int16,UInt32,Int32,Float 64bits total 0-63 -->
+<!--<configuracionTrama>-->
+    <!--<trama id="000">-->
+    <!--&lt;!&ndash;start="0" end="7&ndash;&gt;-->
+
+            <!--<var1 id="encendido" type="BOOL" startBit="0" endBit="0"/>-->
+            <!--<var2 id="potencia" type="Int32" startBit="1" endBit="32"/>-->
+            <!--<var3 id="temperatura" type="Int16" startBit="33" endBit="49"/>-->
+
+    <!--</trama>-->
+
+    <!--<trama id="008" start="8" end="8">-->
+        <!--<variables>-->
+            <!--<variable id="apagado" type="BOOL" startBit="4" endBit="4"/>-->
+        <!--</variables>-->
+    <!--</trama>-->
+
+<!--</configuracionTrama>-->
+
+<configuracionTrama>
+
+    <trama id="000">
+        <var id="apagado">
+            <tipo>BOOL</tipo>
+            <startBit>0</startBit>
+            <endBit>0</endBit>
+        </var>
+        <var id="encendido">
+            <tipo>BOOL</tipo>
+            <startBit>1</startBit>
+            <endBit>1</endBit>
+        </var>
+        <var id="potencia">
+            <tipo> INT32</tipo>
+            <startBit>2</startBit>
+            <endBit>33</endBit>
+        </var>
+        <var id="temperatura">
+            <tipo> INT16</tipo>
+            <startBit>34</startBit>
+            <endBit>50</endBit>
+        </var>
+    </trama>
+
+    <trama id="001">
+        <var id="apagado">
+            <tipo>BOOL</tipo>
+            <startBit>0</startBit>
+            <endBit>0</endBit>
+        </var>
+        <var id="encendido">
+            <tipo>BOOL</tipo>
+            <startBit>1</startBit>
+            <endBit>1</endBit>
+        </var>
+        <var id="potencia">
+            <tipo> INT32</tipo>
+            <startBit>2</startBit>
+            <endBit>33</endBit>
+        </var>
+        <var id="temperatura">
+            <tipo> INT16</tipo>
+            <startBit>34</startBit>
+            <endBit>50</endBit>
+        </var>
+    </trama>
+
+    <trama id="002">
+        <var id="apagado">
+            <tipo>BOOL</tipo>
+            <startBit>0</startBit>
+            <endBit>0</endBit>
+        </var>
+        <var id="encendido">
+            <tipo>BOOL</tipo>
+            <startBit>1</startBit>
+            <endBit>1</endBit>
+        </var>
+        <var id="potencia">
+            <tipo> INT32</tipo>
+            <startBit>2</startBit>
+            <endBit>33</endBit>
+        </var>
+        <var id="temperatura">
+            <tipo> INT16</tipo>
+            <startBit>34</startBit>
+            <endBit>50</endBit>
+        </var>
+    </trama>
+
+    <trama id="003">
+        <var id="apagado">
+            <tipo>BOOL</tipo>
+            <startBit>0</startBit>
+            <endBit>0</endBit>
+        </var>
+        <var id="encendido">
+            <tipo>BOOL</tipo>
+            <startBit>1</startBit>
+            <endBit>1</endBit>
+        </var>
+        <var id="potencia">
+            <tipo> INT32</tipo>
+            <startBit>2</startBit>
+            <endBit>33</endBit>
+        </var>
+        <var id="temperatura">
+            <tipo> INT16</tipo>
+            <startBit>34</startBit>
+            <endBit>50</endBit>
+        </var>
+    </trama>
+
+    <trama id="004">
+        <var id="apagado">
+            <tipo>BOOL</tipo>
+            <startBit>0</startBit>
+            <endBit>0</endBit>
+        </var>
+        <var id="encendido">
+            <tipo>BOOL</tipo>
+            <startBit>1</startBit>
+            <endBit>1</endBit>
+        </var>
+        <var id="potencia">
+            <tipo> INT32</tipo>
+            <startBit>2</startBit>
+            <endBit>33</endBit>
+        </var>
+        <var id="temperatura">
+            <tipo> INT16</tipo>
+            <startBit>34</startBit>
+            <endBit>50</endBit>
+        </var>
+    </trama>
+
+    <trama id="005">
+        <var id="apagado">
+            <tipo>BOOL</tipo>
+            <startBit>0</startBit>
+            <endBit>0</endBit>
+        </var>
+        <var id="encendido">
+            <tipo>BOOL</tipo>
+            <startBit>1</startBit>
+            <endBit>1</endBit>
+        </var>
+        <var id="potencia">
+            <tipo> INT32</tipo>
+            <startBit>2</startBit>
+            <endBit>33</endBit>
+        </var>
+        <var id="temperatura">
+            <tipo> INT16</tipo>
+            <startBit>34</startBit>
+            <endBit>50</endBit>
+        </var>
+    </trama>
+
+    <trama id="006">
+        <var id="apagado">
+            <tipo>BOOL</tipo>
+            <startBit>0</startBit>
+            <endBit>0</endBit>
+        </var>
+        <var id="encendido">
+            <tipo>BOOL</tipo>
+            <startBit>1</startBit>
+            <endBit>1</endBit>
+        </var>
+        <var id="potencia">
+            <tipo> INT32</tipo>
+            <startBit>2</startBit>
+            <endBit>33</endBit>
+        </var>
+        <var id="temperatura">
+            <tipo> INT16</tipo>
+            <startBit>34</startBit>
+            <endBit>50</endBit>
+        </var>
+    </trama>
+
+    <trama id="007">
+        <var id="apagado">
+            <tipo>BOOL</tipo>
+            <startBit>0</startBit>
+            <endBit>0</endBit>
+        </var>
+        <var id="encendido">
+            <tipo>BOOL</tipo>
+            <startBit>1</startBit>
+            <endBit>1</endBit>
+        </var>
+        <var id="potencia">
+            <tipo> INT32</tipo>
+            <startBit>2</startBit>
+            <endBit>33</endBit>
+        </var>
+        <var id="temperatura">
+            <tipo> INT16</tipo>
+            <startBit>34</startBit>
+            <endBit>50</endBit>
+        </var>
+    </trama>
+
+
+</configuracionTrama>
