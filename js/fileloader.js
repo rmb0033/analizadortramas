@@ -2,38 +2,34 @@
 var tramas = {};
 var xml;
 
-function cargarTramasYConfigXML(boton) {
+function colocarCheckBox(biblioteca) {
 
-    boton.hide();
+    var variables = biblioteca.getClaves();
+    var grupoCheckbox="";
+    for (nombreVariable in variables) {
+        grupoCheckbox += '' +
+            '<div class="checkbox ' + variables[nombreVariable] + '">' +
+            '<label><input type="checkbox" value="">' + variables[nombreVariable] + '</label>' +
+            '</div>';
+    }
+    $(".ventana-variables").html(grupoCheckbox);
+}
 
-    // TODO LOCALIZAR TODOS LOS FILES DENTRO DE /TRAMAS
-    //Realizamos la acción una vez cargado estos ficheros
-    readTextFile("tramas/0001", "0001", boton);
-    readTextFile("tramas/0002", "0002", boton);
+
+function cargarTramasYConfigXML(cortinaCarga) {
+
+    cortinaCarga.hide();
 
     readConfigXMLFile("config_prueba.xml");
-}
+    // TODO LOCALIZAR TODOS LOS FILES DENTRO DE /TRAMAS
+    //Realizamos la acción una vez cargado estos ficheros
+    readTextFile("tramas/0001", "0001", cortinaCarga);
 
-function imprimirTrama(index) {
-    // imprimirTrama("0001");
-    // imprimirXML();
-    console.log(tramas[index]);
-}
-
-
-
-function imprimirXML() {
-    // TODO ACABAR EL PARSER DEL ARCHIVO CONFIG.XML
-    console.log(xml);
-    // var cosas = xml.getElementsByTagName("configuracionTrama");
-    //
-    // cosas.forEach(function(entry) {
-    //     console.log(entry);
-    // }, this);
+    // readTextFile("tramas/0002", "0002", cortinaCarga);
 }
 
 
-function readTextFile(file, key, boton) {
+function readTextFile(file, key, cortinaCarga) {
     var rawFile = new XMLHttpRequest();
     rawFile.open("GET", file, true);
     rawFile.onreadystatechange = function () {
@@ -48,7 +44,12 @@ function readTextFile(file, key, boton) {
             }
 
             // AQUI VAMOS A HABILITAR EL BOTON
-            boton.show();
+            cortinaCarga.hide();
+
+            var conf = new Configuracion(xml);
+            var biblioteca= new Biblioteca(conf, tramas);
+
+            colocarCheckBox(biblioteca);
 
         }, millisecondsToWait); //Fin test carga
 
