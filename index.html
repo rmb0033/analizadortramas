@@ -2,6 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
     <title>Visualizador de Tramas</title>
     <link href="css/librerias/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="css/librerias/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
@@ -9,10 +11,7 @@
     <link href="css/style.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
-
 <div class="container">
-
-    <div class="cortina-carga"></div>
 
     <header>
         <nav class="navbar navbar-inverse navbar-fixed-top">
@@ -40,12 +39,44 @@
                         <button id="nueva-ventana" type="submit" class="btn btn-primary">Nueva ventana</button>
                     </form>
 
+                    <form class="navbar-form navbar-right">
+                        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Configuración</button>
+                    </form>
+
                 </div>
             </div>
         </nav>
     </header>
 
     <main>
+
+        <!-- Modal -->
+        <div id="myModal" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Archivo de configuración</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Visualizador de tramas carga por defecto un archivo de configuración xml pero tu puedes seleccionar uno</p>
+                    </div>
+                    <div class="modal-body">
+                        <input id="elegir-archivo" type="file" class="filestyle" data-icon="false">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="elegir-archivo-aceptar" disabled>Aceptar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
         <div class="container">
             <div class="col-sm-12">
                 <div class="ventana-grafica">
@@ -117,7 +148,7 @@
 
                 </div>
             </div>
-        </div>
+
     </main>
 
 
@@ -126,6 +157,9 @@
 <script src="js/librerias/jquery.min.js"></script>
 <script src="js/librerias/bootstrap.min.js"></script>
 <script src="js/librerias/bootstrap-select.min.js"></script>
+<script src="js/librerias/bootstrap-filestyle.min.js"></script>
+<!--<script src="js/librerias/Rx.min.js"></script>-->
+<!--<script src="js/librerias/rx.all.js"></script>-->
 
 <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
@@ -137,6 +171,8 @@
 <script src="js/modelos/biblioteca/Valor.js"></script>
 <script src="js/modelos/biblioteca/Variable.js"></script>
 <script src="js/modelos/biblioteca/Biblioteca.js"></script>
+
+<!--<script src="js/rx_pruebas.js"></script> &lt;!&ndash;TODO DEBUG DEBUG DEBUG&ndash;&gt;-->
 <script src="js/script.js"></script>
 <script>
 

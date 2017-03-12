@@ -2,6 +2,7 @@
 var tramas = {};
 var xml;
 
+
 function colocarCheckBox(biblioteca) {
 
     var variables = biblioteca.getClaves();
@@ -15,65 +16,41 @@ function colocarCheckBox(biblioteca) {
     $(".ventana-variables").html(grupoCheckbox);
 }
 
+function cargarArchivoXML(pathArchivoConfiguracion) {
 
-function cargarTramasYConfigXML(cortinaCarga) {
+    readConfigXMLFile(pathArchivoConfiguracion);
 
-    cortinaCarga.hide();
+}
 
-    readConfigXMLFile("config_prueba.xml");
+
+function cargarTramas() {
     // TODO LOCALIZAR TODOS LOS FILES DENTRO DE /TRAMAS
-    //Realizamos la acción una vez cargado estos ficheros
-    readTextFile("tramas/0001", "0001", cortinaCarga);
-
-    // readTextFile("tramas/0002", "0002", cortinaCarga);
+    var peticionesAjax = [];
+    peticionesAjax.push(cargarTramaDeFichero("tramas/0001", "0001"));
+    peticionesAjax.push(cargarTramaDeFichero("tramas/0002", "0002"));
+    return peticionesAjax;
 }
 
-
-function readTextFile(file, key, cortinaCarga) {
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, true);
-    rawFile.onreadystatechange = function () {
-        //test carga 5s
-        var millisecondsToWait = 1000;
-        setTimeout(function() {
-            //final carga
-            if(rawFile.readyState === 4) {
-                if(rawFile.status === 200 || rawFile.status == 0) {
-                    tramas[key] = procesarTrama(rawFile.responseText);
-                }
-            }
-
-            // AQUI VAMOS A HABILITAR EL BOTON
-            cortinaCarga.hide();
-
-            var conf = new Configuracion(xml);
-            var biblioteca= new Biblioteca(conf, tramas);
-
-            colocarCheckBox(biblioteca);
-
-        }, millisecondsToWait); //Fin test carga
-
-    }
-    rawFile.send(null);
+function cargarTramaDeFichero(pathFichero, nombreFichero) {
+    return $.ajax({
+        url:pathFichero,
+        success: function(data){
+            tramas[nombreFichero] = procesarTrama(data);
+        }
+    });
 }
 
-function procesarTrama(entrada) {
+function procesarTrama(ficheroTrama) {
     //Split para dividir el buffer de texto en varios.
-    var tramaSplitted = entrada.split("\n");
+    var tramaSplitted = ficheroTrama.split("\n");
     return tramaSplitted;
 }
 
-function readConfigXMLFile(file, key) {
-    var rawFile = new XMLHttpRequest();
-    rawFile.open("GET", file, true);
-    rawFile.onreadystatechange = function () {
-        if(rawFile.readyState === 4) {
-            if(rawFile.status === 200 || rawFile.status == 0) {
-                parser = new DOMParser();
-                xml = parser.parseFromString(rawFile.responseText,"text/xml");
-            }
+function readConfigXMLFile(pathFichero) {
+    return $.ajax({
+        url:pathFichero,
+        success: function(data) {
+            xml = data;
         }
-    }
-    rawFile.send(null);
+    });
 }
-
