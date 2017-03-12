@@ -6,7 +6,7 @@ $(function() {
     $("#myModal").modal();
 
     $('#myModal').on('hidden.bs.modal', function () {
-        // TODO AQUI SE VA A MOSTRAR LA PANTALLA DE CARGA
+        $(".cortinilla").show();
 
         if (!file) {
             console.log("Se carga archivo de configuración por defecto");
@@ -17,9 +17,20 @@ $(function() {
             var conf = new Configuracion(xml); //Tarda 0.5 segundos
             var biblioteca = new Biblioteca(conf, tramas); //Tardar 5 segundos.
             colocarCheckBox(biblioteca);
-            // TODO AQUI SE VA A ELIMINAR LA PANTALLA DE CARGA
+
+            dormir(3000);
+            $(".cortinilla").hide();
         });
     });
+
+    function dormir(milliseconds) {
+        var start = new Date().getTime();
+        for (var i = 0; i < 1e7; i++) {
+            if ((new Date().getTime() - start) > milliseconds){
+                break;
+            }
+        }
+    }
 
     $("#elegir-archivo").change(function() {
         $("#elegir-archivo-aceptar").prop("disabled", false);
