@@ -5,6 +5,7 @@
  * @constructor
  */
 function Biblioteca (configuracion, archivosTramas) {
+    //Tenemos que hacer un getTramas una vez que recibamos el objeto de las tramas
 
     var variables = cargarBiblioteca(configuracion, archivosTramas); //dicionario de variables. Cada variable contiene un array de valores.
 
@@ -32,8 +33,8 @@ function Biblioteca (configuracion, archivosTramas) {
             //tramaXML tiene una variableXML
             for (var nombreTrama in configuracionTramas) {
                 //accedemos a la trama que queremos trabajar
-                if(parseInt(nombreTrama)<tramas[key].length){
-                    var trama = tramas[key][parseInt(nombreTrama)];
+                if(parseInt(nombreTrama)<archivosTramas[key].length){
+                    var trama = archivosTramas[key][parseInt(nombreTrama)];
                     //nos devuelve un diccionario de configuración de variables de cada trama
                     var configuracionTrama = configuracionTramas[nombreTrama];
                     //Accedemos a la configuración de cada trama y la procesamos
@@ -80,7 +81,7 @@ function Biblioteca (configuracion, archivosTramas) {
      * @param cnfgVariable
      * @returns {Valor}
      */
-   function obtenerValor(key, trama,cnfgVariable){
+    function obtenerValor(key, trama,cnfgVariable){
         var fecha=sacarFecha(trama);
         var valorDato=mascaraHexBin(sacarValores(trama),cnfgVariable.getByteEntrada(), cnfgVariable.getByteSalida());
         var valor = new Valor(fecha, key, valorDato);
