@@ -1,119 +1,98 @@
 /**
  * Created by alumno on 12/03/17.
  */
+var datitos=[
+    [Date.UTC(1970, 9, 21), 0],
+    [Date.UTC(1970, 10, 4), 0.28],
+    [Date.UTC(1970, 10, 9), 0.25],
+    [Date.UTC(1970, 10, 27), 0.2],
+    [Date.UTC(1970, 11, 2), 0.28],
+    [Date.UTC(1970, 11, 26), 0.28],
+    [Date.UTC(1970, 11, 29), 0.47],
+    [Date.UTC(1971, 0, 11), 0.79],
+    [Date.UTC(1971, 0, 26), 0.72],
+    [Date.UTC(1971, 1, 3), 1.02],
+    [Date.UTC(1971, 1, 11), 1.12],
+    [Date.UTC(1971, 1, 25), 1.2],
+    [Date.UTC(1971, 2, 11), 1.18],
+    [Date.UTC(1971, 3, 11), 1.19],
+    [Date.UTC(1971, 4, 1), 1.85],
+    [Date.UTC(1971, 4, 5), 2.22],
+    [Date.UTC(1971, 4, 19), 1.15],
+    [Date.UTC(1971, 5, 3), 0]
+];
 
-function dibujarGrafica(nombre) {
 
-    Highcharts.chart('grafica', {
+
+function dibujarGrafica(opciones) {
+    switch (opciones["tipoGrafica"]) {
+        case "Gráfica temporal":graficaTemporal(opciones);break;
+        case "Gráfica X Y" :graficaXY(opciones) ;break;
+        case "Gráfica X Y Z": graficaXYZ(opciones);break;
+    }
+
+
+
+}
+function graficaTemporal(opciones){
+    // console.log("Funciona bien con:");
+    // console.log(datitos);
+    // console.log("Funciona mal con:");
+    // console.log(opciones["datos"][0]);
+    Highcharts.stockChart('grafica', {
         chart: {
-            type: 'spline',
-            inverted: true,
             zoomType: 'x'
         },
-        title: {
-            text: nombre
+        rangeSelector: {
+            selected: 1
         },
-        subtitle: {
-            text: 'According to the Standard Atmosphere Model'
-        },
-        xAxis: {
-            reversed: false,
-            title: {
-                enabled: true,
-                text: 'Altitude'
-            },
-            labels: {
-                formatter: function () {
-                    return this.value + 'km';
-                }
-            },
-            maxPadding: 0.05,
-            showLastLabel: true
-        },
-        yAxis: {
-            title: {
-                text: 'Temperature'
-            },
-            labels: {
-                formatter: function () {
-                    return this.value + '°';
-                }
-            },
-            lineWidth: 2
-        },
-        legend: {
-            enabled: false
-        },
-        tooltip: {
-            headerFormat: '<b>{series.name}</b><br/>',
-            pointFormat: '{point.x} km: {point.y}°C'
-        },
-//            plotOptions: {
-//                spline: {
-//                    marker: {
-//                        enable: false
-//                    }
-//                }
-//            },
-
-
-
 
         plotOptions: {
             series: {
-                cursor: 'pointer',
-                point: {
-                    events: {
-                        click: function (e) {
-                            console.log("listener al hacer click en un plot");
-//                                hs.htmlExpand(null, {
-//                                    pageOrigin: {
-//                                        x: e.pageX || e.clientX,
-//                                        y: e.pageY || e.clientY
-//                                    },
-//                                    headingText: "prueba",
-//                                    maincontentText: Highcharts.dateFormat('%A, %b %e, %Y', this.x) + ':<br/> ' +
-//                                    this.y + ' visits',
-//                                    width: 200
-//
-//                                });
-                        }
-                    }
-                },
-                marker: {
-                    lineWidth: 1
-                }
+                showInNavigator: true
+            }
+        },
+
+        series : opciones["datos"]
+        // series: [{
+        //     showInNavigator: true,
+        //     name: 'Prueba',
+        //     data: opciones["datos"]
+        //
+        //
+        // }]
+    });
+}
+function graficaXY(opciones){
+    console.log("Opciones:");
+    // console.log();
+    console.log(opciones["datos"][0]["data"][0]);
+    Highcharts.chart('grafica', {
+        chart: {
+            type: 'scatter',
+            zoomType: 'x'
+        },
+        title: {
+            text: opciones["tipoGrafica"]
+        },
+    series: opciones["datos"]
+        ,
+        legend: {
+            enabled: false
+        },
+        plotOptions: {
+            series: {
+                lineWidth: 1
             }
         },
 
 
-
-
-
-
-
-
-
-
-        series: [
-            {
-                name: 'Temperature',
-                marker: {
-                    symbol: 'diamond'
-                },
-                data: [[0, 15], [10, -50], [20, -56.5], [30, -46.5], [40, -22.1],
-                    [50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5]]
-            },
-            {
-                name: 'Encendido',
-                marker: {
-                    symbol: 'url(https://www.highcharts.com/samples/graphics/sun.png)'
-                },
-                data: [[10, 15], [20, -50], [30, -56.5], [35, -46.5], [45, -22.1],
-                    [50, -2.5], [60, -27.7], [70, -55.7], [80, -76.5]]
-            }
-        ]
     });
 }
+function graficaXYZ(opciones){
+
+}
+
+
 
 

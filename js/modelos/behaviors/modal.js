@@ -46,9 +46,8 @@ function iniciarModal(fileLoader) {
             cBoxVariables(fileLoader.getBiblioteca());
             cBoxFicheros(fileLoader);
 
-            //TODO no entiendo porque tiene que estar dentro de la función
-            // cBoxAccion();
-
+            aplicarListerVariables(fileLoader);
+            aplicarListenerTipoGrafica();
             // dormir(3000); // TODO DESCOMENTAR ESTA LINEA PARA PROBAR EL SPINNER DE CARGA
             $(".spinner").hide();
         });
