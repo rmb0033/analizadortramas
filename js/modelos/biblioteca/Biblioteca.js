@@ -27,24 +27,58 @@ function Biblioteca (configuracion, archivosTramas) {
     function cargarBiblioteca(configuracion, archivosTramas) {
         var biblioteca = {};
         //sacamos el nombre de la trama
+        //key será el nombre del archivo de la trama
+        //nombreTrama tendrá el nombre del contenedor
         for (var key in archivosTramas) {
             var configuracionTramas=configuracion.getConfiguracionXML();
             //esto nos va a volver un diccionaro con nombreTrama = TramaXML;
             //tramaXML tiene una variableXML
-            for (var nombreTrama in configuracionTramas) {
+            // for (var nombreTrama in configuracionTramas) {
                 //accedemos a la trama que queremos trabajar
-                if(parseInt(nombreTrama)<archivosTramas[key].length){
-                    var trama = archivosTramas[key][parseInt(nombreTrama)];
-                    //nos devuelve un diccionario de configuración de variables de cada trama
+                //TODO HASTA AQUI ESTÁ BIEN, AHORA
+                // if(parseInt(nombreTrama)<archivosTramas[key].length){
+                //     var trama = archivosTramas[key][parseInt(nombreTrama)];
+                //     //nos devuelve un diccionario de configuración de variables de cada trama
+                //     var configuracionTrama = configuracionTramas[nombreTrama];
+                //     //Accedemos a la configuración de cada trama y la procesamos
+                //     biblioteca=procesamientoTramas(key,trama,configuracionTrama, biblioteca);
+                // }
+            //Recorremos todas las tramas del fichero
+            console.log(archivosTramas[key].length)
+            for (var numTrama in archivosTramas[key]) {
+                //puede dar error el parseInt(numTrama)
+                console.log((parseInt(numTrama)/archivosTramas[key].length)*100 + " % completado del fichero "+ key);
+
+                // console.log((numTrama/)*100 + "% completado");
+                var trama = archivosTramas[key][numTrama];
+                var nombreTrama = obtenerIDcontenedor(trama);
+                //si es asi tenemos que añadir la supuesta configuración de ese tipo aqui
+                if (nombreTrama in configuracionTramas) {
                     var configuracionTrama = configuracionTramas[nombreTrama];
-                    //Accedemos a la configuración de cada trama y la procesamos
-                    biblioteca=procesamientoTramas(key,trama,configuracionTrama, biblioteca);
+                    biblioteca = procesamientoTramas(key, trama, configuracionTrama, biblioteca);
                 }
+
             }
         }
         return biblioteca;
     }
 
+    function obtenerIDcontenedor(trama){
+        //TODO más elegante la solucion
+        var contenedor = [];
+        var sizeTrama = trama.length;
+        for(var i=0;i<sizeTrama;i++){
+            if(trama[i]=="#"){
+                founded=true;
+                contenedor[0]=trama[i-3];
+                contenedor[1]=trama[i-2];
+                contenedor[2]=trama[i-1];
+
+            }
+        }
+        contenedor=contenedor.join('');
+        return contenedor;
+    }
     /**
      *
      * @param key

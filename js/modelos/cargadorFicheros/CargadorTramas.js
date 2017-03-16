@@ -32,8 +32,6 @@ function CargadorTramas(){
         // if(directorioFicheros.length>0) {
             for (var fichero in directorioFicheros) {
                 var rutaFichero = directorioFicheros[fichero];
-                console.log(directorioFicheros.length);
-                console.log("ruta :" + rutaFichero);
                 //Todo buscar solución mas elegante
                 var nombreFichero = rutaFichero.split("/Data");
                 peticionesAjax.push(cargarTramaDeFichero(rutaFichero, nombreFichero[1]));
@@ -73,7 +71,6 @@ function CargadorTramas(){
         oReq.onload = function() {
             //This is where you handle what to do with the response.
             //The actual data is found on this.responseText
-            console.log(this);
             var ficherosSinProcesar = this.responseText.toString();
             if(ficherosSinProcesar ==""){
                 alert("No correct files found into default directory");
