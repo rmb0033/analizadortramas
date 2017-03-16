@@ -80,7 +80,7 @@ function cBoxFicheros(fileLoader) {
 function aplicarListerVariables(fileLoader) {
     var biblioteca=fileLoader.getBiblioteca();
     $(".checkbox").change(function() {
-            console.log("Refrescar grafica");
+            // console.log("Refrescar grafica");
             cargarOpciones(fileLoader);
     })
 }
@@ -140,11 +140,11 @@ function obtenerDatosFecha(fileLoader, opciones) {
 
         switch (opciones["tipoGrafica"]) {
             case "Gráfica temporal":
-                console.log("Temporal opciones");
+                // console.log("Temporal opciones");
                 opciones["datos"]=obtenerDatosGraficaTemporal(opcVariables,opcFicheros,variblesCargadasBiblioteca);
                 break;
             case "Gráfica X Y" :
-                console.log("Temporal grafica");
+                // console.log("Temporal grafica");
                 opciones["datos"]=obtenerDatosGraficaXY(opcVariables,opcFicheros,variblesCargadasBiblioteca);
                 break;
         }
@@ -157,7 +157,7 @@ function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesC
     var solucion=[];
     for (var indexVariable in opcionesVariables){
             var solucionVariable=[];
-            var index=0; //Nos interesa el orden en el que los añadimos
+            // var index=0; //Nos interesa el orden en el que los añadimos
             var valoresVar =variblesCargadasBiblioteca[opcionesVariables[indexVariable]].getValores();
             for(var indexValor in valoresVar){
                 // for(var indF=0;indF<opcionesFichero.length; indF++){
@@ -165,17 +165,30 @@ function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesC
 
                 if($.inArray(valoresVar[indexValor].getFichero(),opcionesFichero)>-1){
                     // console.log("encontrado");
-                    var solVal=[];
+                    var solVal;
                     // console.log("P"+valoresVar[indexValor].getFechams());
-                    solVal[0]=valoresVar[indexValor].getFechams();
-                    solVal[1]=valoresVar[indexValor].getValor();
-                    solucionVariable[index]=solVal;
-                    index++;
+                    solVal=valoresVar[indexValor].getValor();
+                    solucionVariable[valoresVar[indexValor].getFechams()]=solVal;
+                    // index++;
                 }
             }
+        var keys = Object.keys(solucionVariable);
+        keys.sort();
+        var solucionOrdenada=[];
+        for(var i=0; i<keys.length;i++){
+            var clave= keys[i];
+            var valoresOrdenados=[];
+            valoresOrdenados[0]=clave;
+            valoresOrdenados[1]=solucionVariable[clave];
+            solucionOrdenada[i]=valoresOrdenados;
+
+        }
+        // console.log(solucionOrdenada);
+        // console.log("Tamaño :"+solucionOrdenada.length);
+        //
             var dibujoGrafica= {};
             dibujoGrafica["name"]=opcionesVariables[indexVariable];
-            dibujoGrafica["data"]=solucionVariable;
+            dibujoGrafica["data"]=solucionOrdenada;
             solucion.push(dibujoGrafica);
     }
     return solucion;

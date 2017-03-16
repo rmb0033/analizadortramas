@@ -47,7 +47,7 @@ function Biblioteca (configuracion, archivosTramas) {
             console.log(archivosTramas[key].length)
             for (var numTrama in archivosTramas[key]) {
                 //puede dar error el parseInt(numTrama)
-                console.log((parseInt(numTrama)/archivosTramas[key].length)*100 + " % completado del fichero "+ key);
+                // console.log((parseInt(numTrama)/archivosTramas[key].length)*100 + " % completado del fichero "+ key);
 
                 // console.log((numTrama/)*100 + "% completado");
                 var trama = archivosTramas[key][numTrama];

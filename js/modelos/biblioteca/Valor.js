@@ -24,8 +24,9 @@ function Valor(fecha, fichero, valor) {
 
         // return Date.UTC(año, mes, dia, hora, )
         //TODO tiene que cogertelo del fichero
-        var año=2000;
-        var mes=1;
+        // console.log(fichero);
+        var año=fichero[0]+fichero[1]+fichero[2]+fichero[3];
+        var mes=fichero[4]+fichero[5];
         var dia=(fecha[0])+(fecha[1]);
         var hora=fecha[3]+fecha[4];
         var minutos=fecha[6]+fecha[7];
@@ -34,12 +35,17 @@ function Valor(fecha, fichero, valor) {
         for(var y=12; y<fecha.length-3;y++){
             ms+=fecha[y];
         }
-        dia=parseInt(dia);
-        hora=parseInt(hora);
-        minutos=parseInt(minutos);
-        segundos=parseInt(segundos);
-        // console.log("año"+año+"mes"+mes+"dia"+dia+"hora"+hora+"minutos"+minutos+"segundos"+segundos+"ms"+ms);
-        return Date.UTC(año,mes,dia,hora,minutos,segundos,ms);
+
+        // dia=parseInt(dia);
+        // hora=parseInt(hora);
+        // minutos=parseInt(minutos);
+        // segundos=parseInt(segundos);
+        // console.log("año :"+año+"mes :"+mes+"dia :"+dia+"hora :"+hora+"minutos"+minutos+"segundos"+segundos+"ms"+ms);
+        // return Date.UTC(año,mes,dia,hora,minutos,segundos,ms);
+        // return Date.UTC(año, mes,dia);
+        var dia =new Date(año+"-"+mes+"-"+dia+"T"+hora+":"+minutos+":"+segundos+"+01:00");
+        // console.log(dia);
+        return dia;
     }
 
 }

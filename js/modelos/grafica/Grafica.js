@@ -39,6 +39,13 @@ function graficaTemporal(opciones){
     // console.log(datitos);
     // console.log("Funciona mal con:");
     // console.log(opciones["datos"][0]);
+    var render=0;
+    for (x in opciones["datos"]){
+        if(opciones["datos"][x]["data"].length>render){
+            render=opciones["datos"][x]["data"].length;
+        }
+    }
+    console.log("Número de puntos graficados :"+render);
     Highcharts.stockChart('grafica', {
         chart: {
             zoomType: 'x'
@@ -49,6 +56,7 @@ function graficaTemporal(opciones){
 
         plotOptions: {
             series: {
+                turboThreshold: render,
                 showInNavigator: true
             }
         },
