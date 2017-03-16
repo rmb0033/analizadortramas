@@ -35,17 +35,20 @@ function Valor(fecha, fichero, valor) {
         for(var y=12; y<fecha.length-3;y++){
             ms+=fecha[y];
         }
+        // var dia =new Date(año+"-"+mes+"-"+dia+"T"+hora+":"+minutos+":"+segundos+"+01:00");
 
-        // dia=parseInt(dia);
-        // hora=parseInt(hora);
-        // minutos=parseInt(minutos);
-        // segundos=parseInt(segundos);
-        // console.log("año :"+año+"mes :"+mes+"dia :"+dia+"hora :"+hora+"minutos"+minutos+"segundos"+segundos+"ms"+ms);
-        // return Date.UTC(año,mes,dia,hora,minutos,segundos,ms);
+        año= parseInt(año);
+        mes = parseInt(mes) -1;
+        dia=parseInt(dia);
+        hora=parseInt(hora);
+        minutos=parseInt(minutos);
+        segundos=parseInt(segundos);
+        ms= parseInt(ms);
+        // console.log("año :"+año+"mes :"+(mes+1)+"dia :"+dia+"hora :"+hora+"minutos"+minutos+"segundos"+segundos+"ms"+ms);
+        return Date.UTC(año,mes,dia,hora,minutos,segundos,ms);
         // return Date.UTC(año, mes,dia);
-        var dia =new Date(año+"-"+mes+"-"+dia+"T"+hora+":"+minutos+":"+segundos+"+01:00");
         // console.log(dia);
-        return dia;
+        // return dia;
     }
 
 }

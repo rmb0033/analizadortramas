@@ -22,6 +22,15 @@ var datitos=[
     [Date.UTC(1971, 5, 3), 0]
 ];
 
+// second: '%I:%M:%S',
+//     minute: '%I:%M',
+//     hour: '%I:%M',
+//     day: '%e. %b',
+//     week: '%e. %b',
+//     month: '%b \'%y',
+//     year: '%Y'
+//
+
 
 
 function dibujarGrafica(opciones) {
@@ -34,6 +43,10 @@ function dibujarGrafica(opciones) {
 
 
 }
+
+
+
+
 function graficaTemporal(opciones){
     // console.log("Funciona bien con:");
     // console.log(datitos);
@@ -61,7 +74,20 @@ function graficaTemporal(opciones){
             }
         },
 
-        series : opciones["datos"]
+        series : opciones["datos"],
+        tooltip: {
+            // second: '%I:%M:%S',
+//     minute: '%I:%M',
+//     hour: '%I:%M',
+//     day: '%e. %b',
+//     week: '%e. %b',
+//     month: '%b \'%y',
+//     year: '%Y'
+//
+            pointFormat: 'val: {point.y:f}'
+
+        },
+
         // series: [{
         //     showInNavigator: true,
         //     name: 'Prueba',

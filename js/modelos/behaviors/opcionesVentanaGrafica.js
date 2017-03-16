@@ -165,10 +165,16 @@ function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesC
 
                 if($.inArray(valoresVar[indexValor].getFichero(),opcionesFichero)>-1){
                     // console.log("encontrado");
-                    var solVal;
+                    var solVal=[];
                     // console.log("P"+valoresVar[indexValor].getFechams());
-                    solVal=valoresVar[indexValor].getValor();
+                    //Guardamos tambien la fecha porque luego al iterarla con Object.keys, la fecha
+                    //que estamos usando como entrada del diccionario se convierte a un string y queremos que sea
+                    //un objeto de tipo Date.UTC
+                    solVal[0]=valoresVar[indexValor].getFechams();
+                    solVal[1]=valoresVar[indexValor].getValor();
+
                     solucionVariable[valoresVar[indexValor].getFechams()]=solVal;
+
                     // index++;
                 }
             }
@@ -178,10 +184,9 @@ function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesC
         for(var i=0; i<keys.length;i++){
             var clave= keys[i];
             var valoresOrdenados=[];
-            valoresOrdenados[0]=clave;
-            valoresOrdenados[1]=solucionVariable[clave];
+            valoresOrdenados[0]=solucionVariable[clave][0];
+            valoresOrdenados[1]=solucionVariable[clave][1];
             solucionOrdenada[i]=valoresOrdenados;
-
         }
         // console.log(solucionOrdenada);
         // console.log("Tamaño :"+solucionOrdenada.length);
