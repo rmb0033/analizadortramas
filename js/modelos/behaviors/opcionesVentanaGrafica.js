@@ -1,130 +1,73 @@
-/**
- * Created by alumno on 12/03/17.
- */
-
-// grupoCheckboxF += '' +
-//     '<div class="checkbox ' + ficheros[nombreFichero] + '">' +
-//     '<label><input type="checkbox" value="">' + ficheros[nombreFichero] + '</label>' +
-//     '</div>';
-
-function CheckBoxes() {
-
-    // var listaDeCheckBoxesVariables = [];
-    // var listaDeCheckBoxesFicheros = [];
-    //
-    // function dameVariables() {
-    //     for (checkbox in listaDeCheckBoxesVariables) {
-    //         // checkbox.checked
-    //     }
-    // }
-
-
-}
-
-var consultaVariables = [];
-var consultaFicheros = [];
 
 function cBoxVariables(biblioteca) {
 
     var variables = biblioteca.getClaves();
     var grupoCheckboxV="";
     for (var nombreVariable in variables) {
-        grupoCheckboxV += '' +
-            '<div class="checkbox ' + variables[nombreVariable] + '">' +
-            '<label><input id="'+ variables[nombreVariable]+'" type="checkbox" class="checkbox" value="">' + variables[nombreVariable] + '</label>' +
-            '</div>';
+        $('#ventana-variables').append('<option id="'+ variables[nombreVariable]+'"val="'+ variables[nombreVariable]+'" >' + variables[nombreVariable] + '</option>');
     }
-    $(".ventana-variables").html(grupoCheckboxV);
+     $('.ventana-variables').selectpicker('refresh');
 
-
-    // $( "#apagado" ).click(function() {
-    //     console.log("apagado");
-    // });
-    // for (nombreVariable in variables) {
-    //     var variableCheckBox = $("." + variable[nombreVariable]);
-    //     listaDeCheckBoxesVariables.push(variableCheckBox);
-    // }
-    //aplicamos listener en cada variable
-    // for (var nombreVariable in variables) {
-    //     var variableCheckBox = $("." + variables[nombreVariable]);
-    //     listaDeCheckBoxesVariables.push(variableCheckBox);
-    //     console.log("Aplicamos configuración a :"+variables[nombreVariable]);
-    //     // $("."+ variables[nombreVariable]).mousedown(function() {
-    //     //     console.log(variables[nombreVariable]);
-    //     // });
-    // }
-    //
-    // console.log(listaDeCheckBoxesVariables);
 
 }
 
 
 function cBoxFicheros(fileLoader) {
     var ficheros = fileLoader.getCargadorTramas().getNombreFicheros();
-    var grupoCheckboxF="";
     for (var nombreFichero in ficheros) {
-        grupoCheckboxF += '' +
-            '<div class="checkbox ' + ficheros[nombreFichero] + '">' +
-            '<label><input id="'+ ficheros[nombreFichero]+'" type="checkbox" value="">' + ficheros[nombreFichero] + '</label>' +
-            '</div>';
+        $('#ventana-ficheros').append('<option id="'+ ficheros[nombreFichero]+'">' + ficheros[nombreFichero] + '</option>');
     }
-    $(".ventana-ficheros").html(grupoCheckboxF);
-
-    // for (nombreFichero in ficheros) {
-    //     var variableCheckBox = $("." + ficheros[nombreFichero]);
-    //     listaDeCheckBoxesFicheros.push(variableCheckBox);
-    // }
+    $('.ventana-ficheros').selectpicker('refresh');
 }
+
+
 //TODO Hacer singleton fileLoader, eliminar codigo repetido cargando las variables y ficheros -> convirtiendo a clase (var global)
 
 function aplicarListerVariables(fileLoader) {
-    var biblioteca=fileLoader.getBiblioteca();
-    $(".checkbox").change(function() {
-            // console.log("Refrescar grafica");
-            cargarOpciones(fileLoader);
-    })
-}
-function cargarVariablesOpciones(fileLoader){
-    var variables = fileLoader.getBiblioteca().getClaves();
-    var variablesCargadas=[];
-    for(var i in variables){
-        if($("#"+variables[i]).is(':checked')){
-            variablesCargadas.push(variables[i]);
-        }
-    }
-    return variablesCargadas;
+    $("#ventana-variables").change(function() {
+        cargarOpciones(fileLoader);
 
+
+            // cargarOpciones(fileLoader);
+    });
+    $("#ventana-ficheros").change(function() {
+        cargarOpciones(fileLoader);
+
+
+        // cargarOpciones(fileLoader);
+    });
 }
-function cargarFicherosOpciones(fileLoader){
-    var ficheros = fileLoader.getCargadorTramas().getNombreFicheros();
-    var variablesCargadas=[];
-    for(var i in ficheros){
-        if($("#"+ficheros[i]).is(':checked')){
-            variablesCargadas.push(ficheros[i]);
-        }
-    }
-    return variablesCargadas;
+
+function cargarVariablesOpciones(fileLoader) {
+    return $("#ventana-variables").val();
+}
+
+function cargarFicherosOpciones(fileLoader) {
+    return $("#ventana-ficheros").val();
 
 }
 
-function cargarOpciones(fileLoader){
+function cargarOpciones(fileLoader) {
     //TODO hacer clase parametros grafica y otra con checkboxes
     var variables = cargarVariablesOpciones(fileLoader);
+    console.log("variables");
+    console.log(variables);
     var ficheros= cargarFicherosOpciones(fileLoader);
+    console.log("ficheros");
+    console.log(ficheros);
     var tipoGrafica= $("#selector-graficas").val();
     var opciones={};
     opciones["variables"]=variables;
     opciones["ficheros"]=ficheros;
     opciones["tipoGrafica"]=tipoGrafica;
-    if(variables.length >0 & ficheros.length >0){
+    if(variables.length >0 & ficheros.length >0) {
         obtenerDatosFecha(fileLoader, opciones);
     }
 }
 
-function aplicarListenerTipoGrafica()
-{
+function aplicarListenerTipoGrafica() {
     $("#selector-graficas").change(function() {
-        $("#grafica").html("");
+        // $("#grafica").html("");
         //TODO resetear checkboxes tambien
     });
 
@@ -153,7 +96,7 @@ function obtenerDatosFecha(fileLoader, opciones) {
 };
 
 
-function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesCargadasBiblioteca ){
+function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesCargadasBiblioteca ) {
     var solucion=[];
     for (var indexVariable in opcionesVariables){
             var solucionVariable=[];

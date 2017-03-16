@@ -58,8 +58,10 @@ function iniciarModal(fileLoader) {
 }
 
 // });
+//TODO
+function modalBienvenida(){
 
-
+}
 
 /**
 

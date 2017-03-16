@@ -4,7 +4,6 @@
 
 
 $(function() {
-    // console.log(Date.UTC(1970, 10, 25));
 
     // // cargarDirectorioFicheros();
     //

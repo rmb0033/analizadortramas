@@ -57,17 +57,40 @@
                     <!--</div>-->
                     <!--<button id="nueva-ventana" type="submit" class="btn btn-primary">Nueva ventana</button>-->
                     <!--</form>-->
+                    <form class="navbar-form navbar-right">
 
+                    <select id="selector-graficas" class="selectpicker">
+                        <option>Gráfica temporal</option>
+                        <option>Gráfica X Y</option>
+                        <option>Gráfica X Y Z</option>
+                    </select>
+                    </form>
                     <form class="navbar-form navbar-right">
                         <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Configuración</button>
                     </form>
 
+                    <form class="navbar-form navbar-right">
+                        <select id="ventana-ficheros" class="selectpicker ventana-ficheros" multiple>
+                            <!--<option>Data0001</option>-->
+                            <!--<option>Data0002</option>-->
+                        </select>
+                    </form>
+
+                    <form class="navbar-form navbar-right">
+                        <select id="ventana-variables" class="selectpicker ventana-variables" multiple>
+                            <!--<option>Data0001</option>-->
+                            <!--<option>temperatura</option>-->
+                        </select>
+                        <!--<div class="ventana-variables"></div>-->
+                    </form>
                 </div>
             </div>
         </nav>
     </header>
 
     <main>
+        <div id="grafica" style="height: 450px;"></div>
+
 
         <!-- Modal -->
         <div id="myModal" class="modal fade" role="dialog">
@@ -95,52 +118,47 @@
             </div>
         </div>
 
-        <div class="container">
-            <!--<div class="col-sm-12">-->
-            <div class="ventana-grafica">
-                <div class="ventana-header row">
-                    <div class="col-sm-4">
-                        <!--<h1>Ficheros</h1>-->
-                        <!--<select class="selectpicker" multiple>-->
-                        <!--<option>Data0001</option>-->
-                        <!--<option>Data0002</option>-->
-                        <!--</select>-->
-
-                    </div>
-                    <div class="col-sm-4 text-center">
-                        <!--<h1>Nombre ventana</h1>-->
-                    </div>
-                    <div class="col-sm-4 text-right">
-                        <h1>Tipo gráfica</h1>
-                        <select id="selector-graficas" class="selectpicker">
-                            <option>Gráfica temporal</option>
-                            <option>Gráfica X Y</option>
-                            <option>Gráfica X Y Z</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="ventana-main row">
-                    <div class="col-sm-2">
-                        <h1>Variables</h1>
-                        <div class="ventana-variables"></div>
-                    </div>
-                    <!--GRAFICA CENTRAL-->
-                    <div class="col-sm-8">
+        <!--<div class="container">-->
+            <!--&lt;!&ndash;<div class="col-sm-12">&ndash;&gt;-->
+            <!--<div class="ventana-grafica">-->
+                <!--<div class="ventana-header row">-->
+                    <!--<div class="col-sm-4">-->
 
 
-                        <!--<div id="grafica" style="height: 350px;"></div>-->
-                        <div id="grafica" style="height: 450px;"></div>
+                    <!--</div>-->
+                    <!--<div class="col-sm-4 text-center">-->
+                        <!--&lt;!&ndash;<h1>Nombre ventana</h1>&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--<div class="col-sm-4 text-right">-->
+                        <!--&lt;!&ndash;<h1>Tipo gráfica</h1>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<select id="selector-graficas" class="selectpicker">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<option>Gráfica temporal</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<option>Gráfica X Y</option>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<option>Gráfica X Y Z</option>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
+                    <!--</div>-->
+                <!--</div>-->
 
-                    </div>
-                    <div class="col-sm-2 text-right">
-                        <h1>Ficheros</h1>
-                        <div class="ventana-ficheros"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+                <!--<div class="ventana-main row">-->
+                    <!--<div class="col-sm-2">-->
+                        <!--&lt;!&ndash;<h1>Variables</h1>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<div class="ventana-variables"></div>&ndash;&gt;-->
+                    <!--</div>-->
+                    <!--&lt;!&ndash;GRAFICA CENTRAL&ndash;&gt;-->
+                    <!--<div class="col-sm-8">-->
+
+
+                        <!--&lt;!&ndash;<div id="grafica" style="height: 350px;"></div>&ndash;&gt;-->
+
+                    <!--</div>-->
+                    <!--<div class="col-sm-2 text-right">-->
+                        <!--&lt;!&ndash;<h1>Ficheros</h1>&ndash;&gt;-->
+                        <!--<div class="ventana-ficheros"></div>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         <!--</div>-->
+        <!--&lt;!&ndash;</div>&ndash;&gt;-->
 
     </main>
 </div>
