@@ -1,0 +1,53 @@
+00:00:43 INICIO PROGRAMA
+00:00:43 ---------------
+00:00:43 Configuracion
+00:00:43 -------------
+00:00:43 dataFilePath: /var/www/Datalogger/
+00:00:43 reposFilePath: /var/www/Datalogger/REPOS/
+00:00:43 btDisabled: 0
+00:00:43 canDisabled: 0
+00:00:43 netDisabled: 0
+00:00:43 netPort: 2015
+00:00:43 btReadTime: 20000
+00:00:43 maxDataFile: 5240
+00:00:43 --------------------
+00:00:44 Error en CCANManager.cpp linea 186. codigo: 2. No such file or directory
+00:00:45 INICIO PROGRAMA
+00:00:45 ---------------
+00:00:45 Configuracion
+00:00:45 -------------
+00:00:45 dataFilePath: /var/www/Datalogger/
+00:00:45 reposFilePath: /var/www/Datalogger/REPOS/
+00:00:45 btDisabled: 0
+00:00:45 canDisabled: 0
+00:00:45 netDisabled: 0
+00:00:45 netPort: 2015
+00:00:45 btReadTime: 20000
+00:00:45 maxDataFile: 5240
+00:00:45 --------------------
+00:00:43 INICIO PROGRAMA
+00:00:43 ---------------
+00:00:43 Configuracion
+00:00:43 -------------
+00:00:43 dataFilePath: /var/www/Datalogger/
+00:00:43 reposFilePath: /var/www/Datalogger/REPOS/
+00:00:43 btDisabled: 0
+00:00:43 canDisabled: 0
+00:00:43 netDisabled: 0
+00:00:43 netPort: 2015
+00:00:43 btReadTime: 20000
+00:00:43 maxDataFile: 5240
+00:00:43 --------------------
+23:31:03 INICIO PROGRAMA
+23:31:03 ---------------
+23:31:03 Configuracion
+23:31:03 -------------
+23:31:03 dataFilePath: /var/www/Datalogger/
+23:31:03 reposFilePath: /var/www/Datalogger/REPOS/
+23:31:03 btDisabled: 0
+23:31:03 canDisabled: 0
+23:31:03 netDisabled: 0
+23:31:03 netPort: 2015
+23:31:03 btReadTime: 20000
+23:31:03 maxDataFile: 5240
+23:31:03 --------------------

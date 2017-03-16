@@ -1,0 +1,26 @@
+04:39:16 INICIO PROGRAMA
+04:39:16 ---------------
+04:39:16 Configuracion
+04:39:16 -------------
+04:39:16 dataFilePath: /var/www/Datalogger/
+04:39:16 reposFilePath: /var/www/Datalogger/REPOS/
+04:39:16 btDisabled: 0
+04:39:16 canDisabled: 0
+04:39:16 netDisabled: 0
+04:39:16 netPort: 2015
+04:39:16 btReadTime: 20000
+04:39:16 maxDataFile: 5240
+04:39:16 --------------------
+17:10:24 INICIO PROGRAMA
+17:10:24 ---------------
+17:10:24 Configuracion
+17:10:24 -------------
+17:10:24 dataFilePath: /var/www/Datalogger/
+17:10:24 reposFilePath: /var/www/Datalogger/REPOS/
+17:10:24 btDisabled: 0
+17:10:24 canDisabled: 0
+17:10:24 netDisabled: 0
+17:10:24 netPort: 2015
+17:10:24 btReadTime: 20000
+17:10:24 maxDataFile: 5240
+17:10:24 --------------------
