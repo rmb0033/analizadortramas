@@ -8,7 +8,6 @@ function Valor(fecha, fichero, valor) {
     var fichero = fichero;
     var valor = valor;
 
-
     this.getFecha = function() {
         return fecha;
     }
@@ -23,8 +22,7 @@ function Valor(fecha, fichero, valor) {
     this.getFechams = function (){
 
         // return Date.UTC(año, mes, dia, hora, )
-        //TODO tiene que cogertelo del fichero
-        // console.log(fichero);
+        //TODO comprobar la compatibilidad en el fichero
         var año=fichero[0]+fichero[1]+fichero[2]+fichero[3];
         var mes=fichero[4]+fichero[5];
         var dia=(fecha[0])+(fecha[1]);
@@ -49,6 +47,7 @@ function Valor(fecha, fichero, valor) {
         // return Date.UTC(año, mes,dia);
         // console.log(dia);
         // return dia;
-    }
+    };
+
 
 }

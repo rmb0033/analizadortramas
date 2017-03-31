@@ -2,15 +2,14 @@
  * Created by alumno on 12/03/17.
  */
 
-function CargadorFicheros() {
-
-    var tramaLoader= new CargadorTramas();
+function CargadorFicheros(ficheros) {
+    var tramaLoader= new CargadorTramas(ficheros);
     var xmlLoader = new CargadorXML();
     var biblioteca;
 
 
     this.getBiblioteca=function(){
-      return biblioteca;
+        return biblioteca;
     };
 
     this.getCargadorTramas=function(){
@@ -22,10 +21,10 @@ function CargadorFicheros() {
 
     this.actualizarBiblioteca=function(){
         var conf=new Configuracion(xmlLoader.getXML());
+        // console.log("LLamado constructor");
         biblioteca= new Biblioteca(conf, tramaLoader.getTramas())
     };
 }
-
 
 
 

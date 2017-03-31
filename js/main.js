@@ -4,12 +4,9 @@
 
 
 $(function() {
+    $(".cargadorDatos").hide();
+    modalBienvenida();
 
-    // // cargarDirectorioFicheros();
-    //
-    var fileLoader = new CargadorFicheros();
 
-    iniciarModal(fileLoader);
 
 });
-

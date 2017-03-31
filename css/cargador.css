@@ -1,0 +1,78 @@
+.cargadorDatos{
+    z-index: 1032;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: red;
+}
+
+.textoCargador {
+    z-index: 1033;
+    margin: auto;
+    width: 550px;
+    height: 340px;
+    text-align: center;
+    font-size: 30px;
+    font-color:white;
+    background-color: red;
+}
+
+.cargador {
+    z-index: 1033;
+    margin-top: 10%;
+    margin-left: auto;
+    margin-bot: auto;
+    margin-right: auto;
+    width: 550px;
+    height: 340px;
+    text-align: center;
+    font-size: 100px;
+    background-color: red;
+
+
+}
+
+.cargador > div {
+    background-color: white;
+    height: 80%;
+    width: 10%;
+    display: inline-block;
+
+    -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+    animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.cargador .rect2 {
+    -webkit-animation-delay: -1.1s;
+    animation-delay: -1.1s;
+}
+
+.cargador .rect3 {
+    -webkit-animation-delay: -1.0s;
+    animation-delay: -1.0s;
+}
+
+.cargador .rect4 {
+    -webkit-animation-delay: -0.9s;
+    animation-delay: -0.9s;
+}
+
+.cargador .rect5 {
+    -webkit-animation-delay: -0.8s;
+    animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+    0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+    20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+    0%, 40%, 100% {
+        transform: scaleY(0.4);
+        -webkit-transform: scaleY(0.4);
+    }  20% {
+           transform: scaleY(1.0);
+           -webkit-transform: scaleY(1.0);
+       }
+}

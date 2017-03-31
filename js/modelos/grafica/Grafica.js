@@ -63,6 +63,7 @@ function graficaTemporal(opciones){
         chart: {
             zoomType: 'x'
         },
+
         rangeSelector: {
             selected: 4,
             inputEnabled: false,
@@ -91,7 +92,7 @@ function graficaTemporal(opciones){
 //     month: '%b \'%y',
 //     year: '%Y'
 //
-            pointFormat: 'val: {point.y:f}'
+            pointFormat: '<br>val: {point.y:f}</br>'
 
         },
 
@@ -116,7 +117,7 @@ function graficaXY(opciones){
         title: {
             text: opciones["tipoGrafica"]
         },
-    series: opciones["datos"]
+        series: opciones["datos"]
         ,
         legend: {
             enabled: false
@@ -133,7 +134,6 @@ function graficaXY(opciones){
 function graficaXYZ(opciones){
 
 }
-
 
 
 

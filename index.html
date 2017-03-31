@@ -5,15 +5,39 @@
     <meta charset="UTF-8">
     <meta content="IE=edge" http-equiv="X-UA-Compatible" />
     <meta content="width=device-width, initial-scale=1" name="viewport" />
-    <title>Visualizador de Tramas</title>
+    <title>Data Frame Displayer</title>
     <link href="css/librerias/bootstrap.min.css" rel="stylesheet" type="text/css"/>
     <link href="css/librerias/bootstrap-select.min.css" rel="stylesheet" type="text/css"/>
     <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
-    <link href="css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="css/styleDFD.css" rel="stylesheet" type="text/css"/>
     <link href="css/spinner.css" rel="stylesheet" type="text/css"/>
+    <link href="css/cargador.css" rel="stylesheet" type="text/css"/>
 </head>
 <body>
+<div class="cargadorDatos">
 
+
+    <div class="cargador">
+        <div class="rect1"></div>
+        <div class="rect2"></div>
+        <div class="rect3"></div>
+        <div class="rect4"></div>
+        <div class="rect5"></div>
+    </div>
+    <div class=textoCargador>
+
+        <span style="color:white">Loading data </span>
+        <br>
+        <span style="color:white"> it could take a while</span>
+        </br>
+        <br>
+        <span id="porcentaje" style="color:white"></span>
+        </br>
+    </div>
+
+
+
+</div>
 <div class="spinner">
     <div class="sk-fading-circle">
         <div class="sk-circle1 sk-circle"></div>
@@ -42,54 +66,42 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="#">Visualizador de tramas</a>
+                    <a class="navbar-brand" href="#">Date frame displayer</a>
+
                 </div>
                 <div id="navbar" class="collapse navbar-collapse">
-                    <!--<ul class="nav navbar-nav">-->
-                    <!--<li class="active"><a href="#">Inicio</a></li>-->
-                    <!--<li><a href="#about">Sobre el proyecto</a></li>-->
-                    <!--<li><a href="#contact">Datos del alumno</a></li>-->
-                    <!--</ul>-->
 
-                    <!--<form class="navbar-form navbar-right">-->
-                    <!--<div class="form-group">-->
-                    <!--<input type="text" placeholder="Nombre" class="form-control">-->
-                    <!--</div>-->
-                    <!--<button id="nueva-ventana" type="submit" class="btn btn-primary">Nueva ventana</button>-->
-                    <!--</form>-->
-                    <form class="navbar-form navbar-right">
 
-                    <select id="selector-graficas" class="selectpicker">
-                        <option>Gráfica temporal</option>
-                        <option>Gráfica X Y</option>
-                        <option>Gráfica X Y Z</option>
-                    </select>
-                    </form>
-                    <form class="navbar-form navbar-right">
-                        <button type="submit" class="btn btn-primary" data-toggle="modal" data-target="#myModal">Configuración</button>
-                    </form>
+                    <div class="navbar-form navbar-right">
 
-                    <form class="navbar-form navbar-right">
+
+                        <button type="button" id="boton-configuracion" class="btn btn-primary" data-toggle="modal" data-target="#myModal">XML configuration</button>
+
+                    </div>
+
+                    <div class="navbar-form navbar-right">
+                        <span style="color:#f9fbff">FILES :</span>
                         <select id="ventana-ficheros" class="selectpicker ventana-ficheros" multiple>
                             <!--<option>Data0001</option>-->
                             <!--<option>Data0002</option>-->
                         </select>
-                    </form>
+                    </div>
 
-                    <form class="navbar-form navbar-right">
+                    <div class="navbar-form navbar-right">
+                        <span style="color:#f9fbff">VARIABLES :</span>
                         <select id="ventana-variables" class="selectpicker ventana-variables" multiple>
                             <!--<option>Data0001</option>-->
                             <!--<option>temperatura</option>-->
                         </select>
                         <!--<div class="ventana-variables"></div>-->
-                    </form>
+                    </div>
                 </div>
             </div>
         </nav>
     </header>
 
     <main>
-        <div id="grafica" style="height: 450px;"></div>
+        <div id="grafica" class="grafica" style="height: 450px;"></div>
 
 
         <!-- Modal -->
@@ -100,10 +112,10 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Archivo de configuración</h4>
+                        <h4 class="modal-title">XML CONFIGURATION</h4>
                     </div>
                     <div class="modal-body">
-                        <p>Visualizador de tramas carga por defecto un archivo de configuración xml pero tu puedes seleccionar uno</p>
+                        <p>Load a xml from your local folder in order to apply settings to data frames</p>
                     </div>
                     <div class="modal-body">
                         <input id="elegir-archivo" type="file" class="filestyle" data-icon="false">
@@ -118,47 +130,38 @@
             </div>
         </div>
 
-        <!--<div class="container">-->
-            <!--&lt;!&ndash;<div class="col-sm-12">&ndash;&gt;-->
-            <!--<div class="ventana-grafica">-->
-                <!--<div class="ventana-header row">-->
-                    <!--<div class="col-sm-4">-->
+        <div id="modalBienvenida" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Data frame displayer</h4>
+                    </div>
+                    <!--TODO añadir un selector ficheros-->
+                    <div class="modal-body">
+                        <p><h1>Select files:</h1></p>
+
+                        <img src="logobordesrojo.jpg" alt="asti-icon" style="width:304px;height:228px;">
+
+                        <select id="ventana-ficheros-bienvenida" class="selectpicker ventana-ficheros" multiple>
+
+                        </select>
 
 
-                    <!--</div>-->
-                    <!--<div class="col-sm-4 text-center">-->
-                        <!--&lt;!&ndash;<h1>Nombre ventana</h1>&ndash;&gt;-->
-                    <!--</div>-->
-                    <!--<div class="col-sm-4 text-right">-->
-                        <!--&lt;!&ndash;<h1>Tipo gráfica</h1>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<select id="selector-graficas" class="selectpicker">&ndash;&gt;-->
-                            <!--&lt;!&ndash;<option>Gráfica temporal</option>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<option>Gráfica X Y</option>&ndash;&gt;-->
-                            <!--&lt;!&ndash;<option>Gráfica X Y Z</option>&ndash;&gt;-->
-                        <!--&lt;!&ndash;</select>&ndash;&gt;-->
-                    <!--</div>-->
-                <!--</div>-->
-
-                <!--<div class="ventana-main row">-->
-                    <!--<div class="col-sm-2">-->
-                        <!--&lt;!&ndash;<h1>Variables</h1>&ndash;&gt;-->
-                        <!--&lt;!&ndash;<div class="ventana-variables"></div>&ndash;&gt;-->
-                    <!--</div>-->
-                    <!--&lt;!&ndash;GRAFICA CENTRAL&ndash;&gt;-->
-                    <!--<div class="col-sm-8">-->
+                    </div>
 
 
-                        <!--&lt;!&ndash;<div id="grafica" style="height: 350px;"></div>&ndash;&gt;-->
 
-                    <!--</div>-->
-                    <!--<div class="col-sm-2 text-right">-->
-                        <!--&lt;!&ndash;<h1>Ficheros</h1>&ndash;&gt;-->
-                        <!--<div class="ventana-ficheros"></div>-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Next</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
     </main>
 </div>
@@ -166,14 +169,11 @@
 <script src="js/vendor/bootstrap.min.js"></script>
 <script src="js/vendor/bootstrap-select.min.js"></script>
 <script src="js/vendor/bootstrap-filestyle.min.js"></script>
-<!--<script src="js/vendor/Rx.min.js"></script>-->
-<!--<script src="js/vendor/rx.all.js"></script>-->
-<!--TODO BORRAR BASURA DE JS-->
-<!--<script src="js/vendor/highcharts.js"></script>-->
+
 <script src="js/vendor/highstock.js"></script>
 <script src="js/vendor/exporting.js"></script>
 
-<!--<script src="js/fileloader.js"></script>-->
+
 <script src="js/modelos/configuracion/VariableXML.js"></script>
 <script src="js/modelos/configuracion/TramaXML.js"></script>
 <script src="js/modelos/configuracion/Configuracion.js"></script>
@@ -193,9 +193,6 @@
 
 <script src="js/main.js"></script>
 
-<!--<script src="js/rx_pruebas.js"></script> &lt;!&ndash;TODO DEBUG DEBUG DEBUG&ndash;&gt;-->
-
-<!--<script src="js/script.js"></script>-->
 
 </body>
 </html>

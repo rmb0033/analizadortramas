@@ -1,7 +1,12 @@
-main {
-    margin-top: 90px;
+.central {
+    z-index: 1032;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background-color: #000;
 }
 .ventana-grafica {
+    z-index: 1032;
     margin-bottom: 30px;
     padding: 15px;
     background-color: rgb(176, 185, 186);
@@ -20,5 +25,6 @@ main {
 .ventana-header {
     margin-bottom: 20px;
 }
-
-
+.grafica{
+    margin-top:10%;
+}

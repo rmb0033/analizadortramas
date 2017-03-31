@@ -22,5 +22,3 @@ function TramaXML(id, variablesXML) {
         return variables;
     }
 }
-
-

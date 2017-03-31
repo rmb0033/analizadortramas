@@ -45,4 +45,3 @@ function VariableXML(id, tipo, byteEntrada, byteSalida) {
     }
 
 }
-
