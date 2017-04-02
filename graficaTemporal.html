@@ -1,0 +1,82 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Time Scale Point Data</title>
+
+    <style>
+        canvas {
+            -moz-user-select: none;
+            -webkit-user-select: none;
+            -ms-user-select: none;
+        }
+    </style>
+
+</head>
+
+<body>
+<!--<div style="width:75%;">-->
+    <!--<canvas id="canvas"></canvas>-->
+<!--</div>-->
+<div id="pepe" class="grafica" style="height: 450px;">
+    <canvas id="canvasGrafica"></canvas>
+</div>
+
+<br>
+<br>
+<script src="js/vendor/jquery.min.js"></script>
+<script src="js/vendor/bootstrap.min.js"></script>
+<script src="js/vendor/bootstrap-select.min.js"></script>
+<script src="js/vendor/bootstrap-filestyle.min.js"></script>
+
+<script src="js/vendor/highstock.js"></script>
+<script src="js/vendor/exporting.js"></script>
+
+<script src="js/vendor/moment.min.js"></script>
+<script src="js/vendor/Chart.js"></script>
+<script src="js/vendor/utils.js"></script>
+
+
+
+<script src="js/modelos/configuracion/VariableXML.js"></script>
+<script src="js/modelos/configuracion/TramaXML.js"></script>
+<script src="js/modelos/configuracion/Configuracion.js"></script>
+<script src="js/modelos/biblioteca/Valor.js"></script>
+<script src="js/modelos/biblioteca/Variable.js"></script>
+<script src="js/modelos/biblioteca/Biblioteca.js"></script>
+
+
+<script src="js/modelos/cargadorFicheros/CargadorTramas.js"></script>
+<script src="js/modelos/cargadorFicheros/CargadorXML.js"></script>
+
+<script src="js/modelos/cargadorFicheros/CargadorFicheros.js"></script>
+<script src="js/modelos/behaviors/modal.js"></script>
+<script src="js/modelos/behaviors/opcionesVentanaGrafica.js"></script>
+
+<script src="js/modelos/grafica/Grafica.js"></script>
+
+<script src="js/modelos/grafica/OpcionesVariable.js"></script>
+<script src="js/modelos/grafica/OpcionesGrafica.js"></script>
+
+<script>
+
+
+    $(function() {
+        var opcionesVariable = new OpcionesVariable();
+        var opcionGrafica = new OpcionesGrafica();
+        var opcion = opcionesVariable.getOpciones();
+        opcionGrafica.addOpcionVariable(opcion);
+        opcionGrafica.getOpciones();
+        opcionGrafica.pintarGrafica();
+        console.log("Cambio aplicado 2");
+
+
+    });
+
+
+
+</script>
+</body>
+
+</html>
+

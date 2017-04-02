@@ -7,6 +7,12 @@ $(function() {
     $(".cargadorDatos").hide();
     modalBienvenida();
 
+    var opcionesVariable= new OpcionesVariable();
+    var opcionGrafica= new OpcionesGrafica();
+
+    opcionGrafica.addOpcionVariable(opcionesVariable.getOpciones());
+    opcionGrafica.getOpciones();
+    opcionGrafica.pintarGrafica();
 
 
 });

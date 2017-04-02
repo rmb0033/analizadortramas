@@ -12,6 +12,8 @@
     <link href="css/styleDFD.css" rel="stylesheet" type="text/css"/>
     <link href="css/spinner.css" rel="stylesheet" type="text/css"/>
     <link href="css/cargador.css" rel="stylesheet" type="text/css"/>
+
+
 </head>
 <body>
 <div class="cargadorDatos">
@@ -101,7 +103,9 @@
     </header>
 
     <main>
-        <div id="grafica" class="grafica" style="height: 450px;"></div>
+        <div id="contenedorGrafica" class="grafica" style="height: 450px;">
+            <canvas id="canvasGrafica"></canvas>
+        </div>
 
 
         <!-- Modal -->
@@ -173,6 +177,11 @@
 <script src="js/vendor/highstock.js"></script>
 <script src="js/vendor/exporting.js"></script>
 
+<script src="js/vendor/moment.min.js"></script>
+<script src="js/vendor/Chart.js"></script>
+<script src="js/vendor/utils.js"></script>
+
+
 
 <script src="js/modelos/configuracion/VariableXML.js"></script>
 <script src="js/modelos/configuracion/TramaXML.js"></script>
@@ -190,6 +199,9 @@
 <script src="js/modelos/behaviors/opcionesVentanaGrafica.js"></script>
 
 <script src="js/modelos/grafica/Grafica.js"></script>
+
+<script src="js/modelos/grafica/OpcionesVariable.js"></script>
+<script src="js/modelos/grafica/OpcionesGrafica.js"></script>
 
 <script src="js/main.js"></script>
 

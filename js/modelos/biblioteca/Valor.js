@@ -21,9 +21,10 @@ function Valor(fecha, fichero, valor) {
     }
     this.getFechams = function (){
 
-        // return Date.UTC(año, mes, dia, hora, )
+        // return Date.UTC(year, mes, dia, hora, )
         //TODO comprobar la compatibilidad en el fichero
-        var año=fichero[0]+fichero[1]+fichero[2]+fichero[3];
+        //Cambiamos year por año por problemas de compatibilidad ASCI
+        var year=fichero[0]+fichero[1]+fichero[2]+fichero[3];
         var mes=fichero[4]+fichero[5];
         var dia=(fecha[0])+(fecha[1]);
         var hora=fecha[3]+fecha[4];
@@ -33,18 +34,18 @@ function Valor(fecha, fichero, valor) {
         for(var y=12; y<fecha.length-3;y++){
             ms+=fecha[y];
         }
-        // var dia =new Date(año+"-"+mes+"-"+dia+"T"+hora+":"+minutos+":"+segundos+"+01:00");
+        // var dia =new Date(year+"-"+mes+"-"+dia+"T"+hora+":"+minutos+":"+segundos+"+01:00");
 
-        año= parseInt(año);
+        year= parseInt(year);
         mes = parseInt(mes) -1;
         dia=parseInt(dia);
         hora=parseInt(hora);
         minutos=parseInt(minutos);
         segundos=parseInt(segundos);
         ms= parseInt(ms);
-        // console.log("año :"+año+"mes :"+(mes+1)+"dia :"+dia+"hora :"+hora+"minutos"+minutos+"segundos"+segundos+"ms"+ms);
-        return Date.UTC(año,mes,dia,hora,minutos,segundos,ms);
-        // return Date.UTC(año, mes,dia);
+        // console.log("year :"+year+"mes :"+(mes+1)+"dia :"+dia+"hora :"+hora+"minutos"+minutos+"segundos"+segundos+"ms"+ms);
+        return Date.UTC(year,mes,dia,hora,minutos,segundos,ms);
+        // return Date.UTC(year, mes,dia);
         // console.log(dia);
         // return dia;
     };
