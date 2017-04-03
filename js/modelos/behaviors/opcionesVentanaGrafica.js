@@ -79,7 +79,12 @@ function obtenerDatosFecha(fileLoader, opciones) {
     var variblesCargadasBiblioteca = fileLoader.getBiblioteca().getVariables();
 
     //Nuestra solucion será un unico array o varios arrays
-    opciones["datos"]=obtenerDatosGraficaTemporal(opcVariables,opcFicheros,variblesCargadasBiblioteca);
+    //Aqui guardamos todos los datos
+    //Para el rediseño de código haremos lo siguiente
+
+    //ya no guardaremos en opciones["datos"], sino que añadiremos directamente a la clase
+
+    obtenerDatosGraficaTemporal(opcVariables,opcFicheros,variblesCargadasBiblioteca);
     //TODO para la version alfa no vamos a tener selector de gráficas
     //     switch (opciones["tipoGrafica"]) {
     //         case "Gráfica temporal":
@@ -92,24 +97,31 @@ function obtenerDatosFecha(fileLoader, opciones) {
     //             break;
     //     }
     // console.log(solucion);
-    dibujarGrafica(opciones);
+    //Aqui añadiremos los datos de una variable en concreto
+
+
+    // dibujarGrafica(opciones);
 };
 
 
 function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesCargadasBiblioteca ) {
     var solucion=[];
+
+    var opcionGrafica= new OpcionesGrafica();
+
+
+    //Recorremos las variables seleccionadas por la interfaz
     for (var indexVariable in opcionesVariables){
+        var opcionesVariable= new OpcionesVariable();
         var solucionVariable=[];
         // var index=0; //Nos interesa el orden en el que los añadimos
         var valoresVar =variblesCargadasBiblioteca[opcionesVariables[indexVariable]].getValores();
+        //Obtenemos de la biblioteca las variables que vamos a graficar.
         for(var indexValor in valoresVar){
-            // for(var indF=0;indF<opcionesFichero.length; indF++){
-            //     if(opcionesFichero[x]==valoresVar[indexValor].getFichero()){
-
+            //Comprobamos que la variable que está almacenada en la biblioteca, se encuentra en el fichero seleccionado
+            //por el usuario
             if($.inArray(valoresVar[indexValor].getFichero(),opcionesFichero)>-1){
-                // console.log("encontrado");
                 var solVal=[];
-                // console.log("P"+valoresVar[indexValor].getFechams());
                 //Guardamos tambien la fecha porque luego al iterarla con Object.keys, la fecha
                 //que estamos usando como entrada del diccionario se convierte a un string y queremos que sea
                 //un objeto de tipo Date.UTC
@@ -117,33 +129,40 @@ function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesC
                 solVal[1]=valoresVar[indexValor].getValor();
 
                 solucionVariable[valoresVar[indexValor].getFechams()]=solVal;
-                // if(valoresVar[indexValor].getFechams()==){
-                //     valoresVar[indexValor]
-                // }
 
-                // index++;
             }
         }
 
-
+        //Ordenamos la linea temporal
         var keys = Object.keys(solucionVariable);
         keys.sort();
         var solucionOrdenada=[];
         for(var i=0; i<keys.length;i++){
             var clave= keys[i];
-            var valoresOrdenados=[];
-            valoresOrdenados[0]=solucionVariable[clave][0];
-            valoresOrdenados[1]=solucionVariable[clave][1];
+            var valoresOrdenados={};
+            valoresOrdenados["x"]=solucionVariable[clave][0];
+            valoresOrdenados["y"]=solucionVariable[clave][1];
             solucionOrdenada[i]=valoresOrdenados;
         }
-        var dibujoGrafica= {};
-        dibujoGrafica["name"]=opcionesVariables[indexVariable];
-        dibujoGrafica["data"]=solucionOrdenada;
-        solucion.push(dibujoGrafica);
+        // var dibujoGrafica= {};
+        //Una vez procesada la variable, ya tendriamos todos los datos
+
+        // dibujoGrafica["name"]=opcionesVariables[indexVariable];
+        // dibujoGrafica["data"]=solucionOrdenada;
+        //Metemos los datos en una solucion global que abarca mas variables
+        // solucion.push(dibujoGrafica);
+
+        opcionesVariable.setNombreVariable(opcionesVariables[indexVariable]);
+        opcionesVariable.setDatos(solucionOrdenada);
+        opcionGrafica.addOpcionVariable(opcionesVariable.getOpciones());
     }
-    return solucion;
+    opcionGrafica.getOpciones();
+    opcionGrafica.setTipoGrafica("tiempo");
+    opcionGrafica.pintarGrafica();
 
 }
+
+
 function obtenerDatosGraficaXY(opcionesVariables,opcionesFichero,variblesCargadasBiblioteca ){
     var solucion=[];
     var valores=[];

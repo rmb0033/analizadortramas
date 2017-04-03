@@ -14,33 +14,24 @@ function OpcionesVariable() {
 //Nombre de la variable
     opciones["label"] = "Temperatura";
 //Color del punto
-    opciones["backgroundColor"] = window.chartColors.blue;
+    opciones["backgroundColor"] = window.chartColors.red;
 //    //Color de la linea
     opciones["borderColor"] = window.chartColors.red;
 //Opciones para que se adapte
-    opciones["pointRadius"] = 2;
+    opciones["pointRadius"] = 0.5;
     opciones["steppedLine"] = false; //Si queremos que sea de tipo cronograma
     opciones["fill"] = false;
     opciones["pointStyle"]="circle";
-    opciones["data"] = [{
-        x: Date.UTC(2017, 9, 21, 10, 20, 15, 999),
-        y: 1
-    }, {
-        x: Date.UTC(2017, 9, 21, 10, 20, 16, 200),
-        y: 2
-    }, {
-        x: Date.UTC(2017, 9, 21, 10, 20, 17, 200),
-        y: 3
-    },
-        {
-            x: Date.UTC(2017, 9, 21, 10, 20, 18, 200),
-            y: 1
-        }];
+    opciones["borderWidth"]= 0.3;
+
+
 
     this.setDatos = function(datos){
         opciones["data"]=datos;
     };
-
+    this.setGrosorLinea= function(grosorLinea){
+        opciones["borderWidth"]= grosorLinea;
+    };
     this.setColorPunto = function(color){
         opciones["backgroundColor"]=color;
     };
@@ -55,7 +46,8 @@ function OpcionesVariable() {
     this.tipoCronograma= function(booleano){
         opciones["steppedLine"] = booleano;
     };
-    this.setNombreVarialbe= function(nombreVariable){
+    this.setNombreVariable= function(nombreVariable){
+        console.log(nombreVariable);
         opciones["label"]=nombreVariable;
     };
 

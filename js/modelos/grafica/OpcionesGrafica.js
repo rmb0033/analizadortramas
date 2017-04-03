@@ -72,8 +72,7 @@ function OpcionesGrafica(){
             options: {
                 responsive: true,
                 title:{
-                    display:true,
-                    text:"Gráfica temporal"
+                    display:false
                 },
                 elements:{
                     line:{
