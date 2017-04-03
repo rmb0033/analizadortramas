@@ -15,9 +15,54 @@ function OpcionesGrafica(){
         return config;
     };
     this.addOpcionVariable= function(opcion){
-        //opcion = new OpcionesVariable().getOpciones();
         datosVariable.push(opcion);
     };
+    this.setTipodeCuerda= function(tipoCuerda){
+        if(tipoCuerda=="Cuerda"){
+            config["options"]["elements"]["line"]["tension"]=0.4;
+        }
+        else if(tipoCuerda=="Recta"){
+            config["options"]["elements"]["line"]["tension"]=0.0001;
+        }
+
+    };
+    this.setTipoGrafica=function(tipoGrafica){
+        if(tipoGrafica=="tiempo"){
+            config["options"]["scales"]["xAxes"]=[{
+                type: "time",
+                display: true,
+                time: {
+
+                    format: timeFormat,
+                    tooltipFormat: 'MM/DD/YYYY HH:mm:ss:SSS'
+                },
+                ticks: {
+                    autoSkip: true,
+                    minTicksLimit:1,
+                    maxTicksLimit: 8
+
+                },
+                //hasta aqui
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Date'
+                }
+            } ];
+        }
+
+    };
+    this.setLeyendaEjeX= function(leyendaEjex){
+
+    };
+    this.setLeyendaEjeY= function(leyendaEjex){
+
+    };
+
+    //Variables que debería recibir por interfaz
+    //Tipo de cuerda
+    //Tipo de gráfica (tiempo o x,y)
+    //Leyenda gráfica eje x
+    //Leyenda gráfica eje y
     this.getOpciones = function(){
       //Crear configuración
         datosGrafica["datasets"]=datosVariable;
@@ -40,25 +85,12 @@ function OpcionesGrafica(){
 
                 scales: {
                     xAxes: [{
-                        type: "time",
                         display: true,
-                        time: {
-
-                            format: timeFormat,
-                            tooltipFormat: 'MM/DD/YYYY HH:mm:ss:SSS'
-                        },
-                        ticks: {
-                            autoSkip: true,
-                            minTicksLimit:1,
-                            maxTicksLimit: 8
-
-                        },
-                        //hasta aqui
-                        scaleLabel: {
-                            display: true,
-                            labelString: 'Date'
+                        scaleLabel:{
+                            display: false
                         }
-                    }, ],
+
+                    }] ,
                     yAxes: [{
                         display: true,
                         scaleLabel: {
