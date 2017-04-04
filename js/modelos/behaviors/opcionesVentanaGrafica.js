@@ -105,8 +105,6 @@ function obtenerDatosFecha(fileLoader, opciones) {
 
 
 function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesCargadasBiblioteca ) {
-    var solucion=[];
-
     var opcionGrafica= new OpcionesGrafica();
 
 
@@ -155,6 +153,7 @@ function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesC
         opcionesVariable.setNombreVariable(opcionesVariables[indexVariable]);
         opcionesVariable.setDatos(solucionOrdenada);
         opcionGrafica.addOpcionVariable(opcionesVariable.getOpciones());
+
     }
     opcionGrafica.getOpciones();
     opcionGrafica.setTipoGrafica("tiempo");

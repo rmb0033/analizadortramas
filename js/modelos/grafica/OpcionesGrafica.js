@@ -10,6 +10,7 @@ function OpcionesGrafica(){
     var color = Chart.helpers.color;
     var timeFormat = 'MM/DD/YYYY HH:mm:ss:SSS';
     var config;
+    var grafica;
 
     this.getConfiguracion = function() {
         return config;
@@ -97,18 +98,37 @@ function OpcionesGrafica(){
                             labelString: 'value'
                         }
                     }]
+                },
+                zoom: {
+                    enabled: true,
+                    drag: true,
+                    mode: 'x'
+                },
+                onClick: function(e) {
+                    var activeElement = grafica.getElementAtEvent(e);
+                    if(activeElement.length>0){
+                        console.log(grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index]);
+
+                    }
+
                 }
-            }
+            },
+
         };
     };
 
 
     this.pintarGrafica = function (){
-            var ctx = document.getElementById("canvasGrafica").getContext("2d");
-
-            window.myLine = new Chart(ctx, config);
-
-        };
+            $(".grafica").html("");
+            $(".grafica").html('<canvas id="canvasGrafica" class="canvas"></canvas>');
+            grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
+            // console.log(window.myLine);
+            var puntosGraficados=0;
+            for(var x in grafica.data.datasets){
+                puntosGraficados+=grafica.data.datasets[x].data.length;
+            }
+            console.log("Puntos graficados: "+puntosGraficados);
+    };
     // }
 
 
