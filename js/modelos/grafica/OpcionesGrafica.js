@@ -12,6 +12,46 @@ function OpcionesGrafica(){
     var config;
     var grafica=null;
 
+    function simularEvento(x,y, sizeX, sizeY){
+        this.x=x;
+        this.y=y;
+        this.native=true; //emulamos que es un mouseEvent real
+    }
+    function encontrarPuntoMasProximo(e){
+        var ejeX=e.offsetX;
+        var maxEjeX=$("#canvasGrafica").width();
+        var maxEjeY=$("#canvasGrafica").height();
+
+        for(var x=0; x<maxEjeX; x++){
+            for(var y=0; y<maxEjeY; y++){
+                //Si la diferencia en el eje x
+                var diferenciaIzquierda=ejeX-x;
+                var diferenciaDerecha=ejeX+x;
+                if(diferenciaIzquierda>=0){
+                    //hacemos comprobaciones
+                    var activeElement = grafica.getElementAtEvent(new simularEvento(diferenciaIzquierda,y));
+                    if(activeElement.length>0){
+                        return grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
+                    }
+                }
+                if(diferenciaDerecha<=maxEjeX){
+                    var activeElement = grafica.getElementAtEvent(new simularEvento(diferenciaDerecha,y));
+                    if(activeElement.length>0){
+                        return grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
+                    }
+                }
+                if(diferenciaDerecha>maxEjeX && diferenciaIzquierda<0){
+                    break;
+                }
+
+
+            }
+
+        }
+        return null;
+
+    };
+
     this.getConfiguracion = function() {
         return config;
     };
@@ -71,6 +111,14 @@ function OpcionesGrafica(){
             type: 'line',
             data: datosGrafica,
             options: {
+                hover: {
+                    mode: 'nearest',
+                    intersect: false
+                },
+                tooltips: {
+                    mode: 'nearest',
+                    intersect: false
+                },
                 responsive: true,
                 title:{
                     display:false
@@ -109,6 +157,9 @@ function OpcionesGrafica(){
                     if(activeElement.length>0){
                         console.log(grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index]);
 
+                    }else{
+                        console.log(encontrarPuntoMasProximo(e));
+                        //calculamos punto relativo
                     }
 
                 }
