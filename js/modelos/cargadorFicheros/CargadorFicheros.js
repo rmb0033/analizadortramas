@@ -21,7 +21,6 @@ function CargadorFicheros(ficheros) {
 
     this.actualizarBiblioteca=function(){
         var conf=new Configuracion(xmlLoader.getXML());
-        // console.log("LLamado constructor");
         biblioteca= new Biblioteca(conf, tramaLoader.getTramas())
     };
 }

@@ -8,7 +8,6 @@
  */
 //todo falla con comentarios dentro de la trama
 function Configuracion(xml) {
-
     var configuracionXML = obtenerConfdesdeXML(xml);// diccionario de TramaXML <TramaXML.id, TramaXML>
 
 

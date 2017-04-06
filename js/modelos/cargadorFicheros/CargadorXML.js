@@ -27,10 +27,11 @@ function CargadorXML(){
      * @param file
      */
     this.cargarConfiguracionJS=function (file){
-
+        xml=null;
         fr = new FileReader();
-        fr.onload = textoaXML;
         fr.readAsText(file);
+        fr.onload = textoaXML;
+
     };
     /**
      * Convierte un objeto tipo texto a uno xml
@@ -38,5 +39,6 @@ function CargadorXML(){
     function textoaXML() {
         var parser = new DOMParser();
         xml = parser.parseFromString(fr.result, "text/xml");
+        console.log("Parseo completado");
     }
 }

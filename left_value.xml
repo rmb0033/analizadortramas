@@ -1,0 +1,9 @@
+<configuracionTrama>
+    <trama id="03E">
+        <var id="Left drive value" >
+            <tipo>int16</tipo>
+            <startBit>16</startBit>
+            <endBit>31</endBit>
+        </var>
+    </trama>
+</configuracionTrama>

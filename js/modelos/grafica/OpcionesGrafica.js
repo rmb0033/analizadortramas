@@ -10,7 +10,7 @@ function OpcionesGrafica(){
     var color = Chart.helpers.color;
     var timeFormat = 'MM/DD/YYYY HH:mm:ss:SSS';
     var config;
-    var grafica;
+    var grafica=null;
 
     this.getConfiguracion = function() {
         return config;
@@ -119,8 +119,13 @@ function OpcionesGrafica(){
 
 
     this.pintarGrafica = function (){
+        if(grafica!=null){
+            console.log("Recreando grafica");
+            grafica.destroy();
+        }
             $(".grafica").html("");
             $(".grafica").html('<canvas id="canvasGrafica" class="canvas"></canvas>');
+
             grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
             // console.log(window.myLine);
             var puntosGraficados=0;

@@ -59,6 +59,8 @@ function cargarOpciones(fileLoader) {
     opciones["variables"]=variables;
     opciones["ficheros"]=ficheros;
     opciones["tipoGrafica"]=tipoGrafica;
+    //TODO hay que hacer un campo donde se pueda guardar esto
+    opciones["maximoPuntos"]=600;
     if(variables.length >0 & ficheros.length >0) {
         obtenerDatosFecha(fileLoader, opciones);
     }
@@ -74,39 +76,21 @@ function aplicarListenerTipoGrafica() {
 
 function obtenerDatosFecha(fileLoader, opciones) {
 
-    var opcVariables = opciones["variables"];
-    var opcFicheros = opciones["ficheros"];
+
     var variblesCargadasBiblioteca = fileLoader.getBiblioteca().getVariables();
 
-    //Nuestra solucion será un unico array o varios arrays
-    //Aqui guardamos todos los datos
-    //Para el rediseño de código haremos lo siguiente
-
-    //ya no guardaremos en opciones["datos"], sino que añadiremos directamente a la clase
-
-    obtenerDatosGraficaTemporal(opcVariables,opcFicheros,variblesCargadasBiblioteca);
-    //TODO para la version alfa no vamos a tener selector de gráficas
-    //     switch (opciones["tipoGrafica"]) {
-    //         case "Gráfica temporal":
-    //             // console.log("Temporal opciones");
-    //             opciones["datos"]=obtenerDatosGraficaTemporal(opcVariables,opcFicheros,variblesCargadasBiblioteca);
-    //             break;
-    //         case "Gráfica X Y" :
-    //             // console.log("Temporal grafica");
-    //             opciones["datos"]=obtenerDatosGraficaXY(opcVariables,opcFicheros,variblesCargadasBiblioteca);
-    //             break;
-    //     }
-    // console.log(solucion);
-    //Aqui añadiremos los datos de una variable en concreto
+    obtenerDatosGraficaTemporal(opciones,variblesCargadasBiblioteca);
 
 
     // dibujarGrafica(opciones);
 };
 
 
-function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesCargadasBiblioteca ) {
+function obtenerDatosGraficaTemporal(opciones,variblesCargadasBiblioteca ) {
     var opcionGrafica= new OpcionesGrafica();
-
+    var opcionesVariables = opciones["variables"];
+    var opcionesFichero = opciones["ficheros"];
+    var limitePuntos=opciones["maximoPuntos"];
 
     //Recorremos las variables seleccionadas por la interfaz
     for (var indexVariable in opcionesVariables){
@@ -131,16 +115,21 @@ function obtenerDatosGraficaTemporal(opcionesVariables,opcionesFichero,variblesC
             }
         }
 
-        //Ordenamos la linea temporal
+        //Ordenamos la linea temporal podemos modularlo como como opcion
         var keys = Object.keys(solucionVariable);
         keys.sort();
         var solucionOrdenada=[];
-        for(var i=0; i<keys.length;i++){
+        var numeroDiezMado=parseInt(keys.length/limitePuntos);
+        if(numeroDiezMado==0){
+            numeroDiezMado=1;
+        }
+        console.log("Diezmado de 1 punto por cada : "+numeroDiezMado);
+        for(var i=0; i<keys.length;i+=numeroDiezMado){
             var clave= keys[i];
             var valoresOrdenados={};
             valoresOrdenados["x"]=solucionVariable[clave][0];
             valoresOrdenados["y"]=solucionVariable[clave][1];
-            solucionOrdenada[i]=valoresOrdenados;
+            solucionOrdenada.push(valoresOrdenados);
         }
         // var dibujoGrafica= {};
         //Una vez procesada la variable, ya tendriamos todos los datos

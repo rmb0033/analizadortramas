@@ -10,31 +10,29 @@ function iniciarModal(fileLoader) {
 
     //Activamos la carga de fichero.
     $("#elegir-archivo").change(function() {
-        $("#elegir-archivo-aceptar").prop("disabled", false);
+        var file = $("#elegir-archivo").prop('files')[0];
+        if (file) {
+            console.log("Cambio detectado");
+            fileLoader.getCargadorXML().cargarConfiguracionJS(file);
+            $("#elegir-archivo-aceptar").prop("disabled", false);
+        }
     });
-
 
     //Comportamiento cuando clickamos en aceptar
     $("#elegir-archivo-aceptar").click(function() {
-        file = $("#elegir-archivo").prop('files')[0];
-        if (file) {
-            $(".cargadorDatos").show();
-            $(".spinner").hide();
-            $("#myModal").modal('hide');
-            fileLoader.getCargadorXML().cargarConfiguracionJS(file);
+        var operaciones=[];
+        operaciones.push($("#myModal").modal('hide'));
+        operaciones.push($(".spinner").hide());
+        operaciones.push($(".cargadorDatos").show());
+        $.when.apply(this, operaciones).done(function() {
+            dormir(4000);
             fileLoader.actualizarBiblioteca();
-            //TODO aqui deberia ir el funcionamiento de las opciones de la gráfica
-            $("#ventana-ficheros").html("");
+            var cadenaHTMLVar = '<span style="color:#f9fbff">VARIABLES :</span>';
+            cadenaHTMLVar += '<select id="ventana-variables" class="selectpicker ventana-variables" multiple>';
+            $("#contenedorVariablesRapida").html(cadenaHTMLVar);
             cBoxVariables(fileLoader.getBiblioteca());
-
-
-
-            aplicarListerVariables(fileLoader);
-            aplicarListenerTipoGrafica();
-
             $(".cargadorDatos").hide();
-
-        }
+        });
     });
 
 
@@ -65,22 +63,12 @@ function modalBienvenida() {
         $(".cargadorDatos").show();
         //TODO ficheros tiene que tener el directorio real de los ficheros, si se cambia hay que filtrarlo
         ficheros= cargarFicheros();
-        // var fileLoader = new CargadorFicheros(ficheros);
-
-        // console.log("Directorio ficheros");
-
         if(ficheros.length>0){
-            // var peticionAjaxDirectorio=fileLoader.getCargadorTramas().setDirectorioFicheros(ficheros);
-            // $.when.apply(this, peticionAjaxDirectorio).done(function() {
             var fileLoader = new CargadorFicheros(ficheros);
-            // console.log(peticionAjaxDirectorio);
-            // console.log(ficheros);
             var peticionesAjax = fileLoader.getCargadorTramas().getpeticionesAjax();
             peticionesAjax.push(fileLoader.getCargadorXML().cargarConfiguracionDefecto("config_prueba.xml"));
             $.when.apply(this, peticionesAjax).done(function() {
-
                 fileLoader.actualizarBiblioteca();
-                //TODO aqui deberia ir el funcionamiento de las opciones de la gráfica
                 cBoxVariables(fileLoader.getBiblioteca());
                 cBoxFicheros(fileLoader);
 
@@ -92,13 +80,6 @@ function modalBienvenida() {
 
 
             });
-            // });
-
-            peticionesAjax = fileLoader.getCargadorTramas().getpeticionesAjax();
-            // console.log(peticionesAjax.length);
-
-            peticionesAjax.push(fileLoader.getCargadorXML().cargarConfiguracionDefecto("config_prueba.xml"));
-
         }
         else{
             $(".spinner").show();
@@ -123,8 +104,9 @@ function modalBienvenida() {
  */
 function dormir(milliseconds) {
     var start = new Date().getTime();
-    for (var i = 0; i < 1e7; i++) {
+    while(true){
         if ((new Date().getTime() - start) > milliseconds){
+            console.log(start, new Date().getTime());
             break;
         }
     }
