@@ -34,3 +34,7 @@
     -webkit-user-select: none;
     -ms-user-select: none;
 }
+.contenedorMaestro{
+    height: 100px;
+    border-style: solid;
+}

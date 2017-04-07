@@ -144,9 +144,13 @@ function obtenerDatosGraficaTemporal(opciones,variblesCargadasBiblioteca ) {
         opcionGrafica.addOpcionVariable(opcionesVariable.getOpciones());
 
     }
+    //TODO cambiar estructura de llamadas, opcionGrafica deberia llamarse Grafica.
+    //Cuando la creemos deberiamos pasarle
     opcionGrafica.getOpciones();
     opcionGrafica.setTipoGrafica("tiempo");
     opcionGrafica.pintarGrafica();
+    console.log("cambio");
+    opcionGrafica.pintarGraficaMaestra();
 
 }
 

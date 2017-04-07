@@ -4,23 +4,29 @@
 //TODO
 
 function OpcionesGrafica(){
-
+    //TODO diferenciar llamadas #canvas o #canvasMaestro, tenemos que pasar el #creado o algo
+    //estudiar aplicabilidad
     var datosGrafica={};
     var datosVariable=[];
     var color = Chart.helpers.color;
     var timeFormat = 'MM/DD/YYYY HH:mm:ss:SSS';
     var config;
+    var configMaestro;
     var grafica=null;
+    var graficaMaestra=null;
+
+    var cantidadDiezmado=450;
+    var cantidadDiezmadoGMaestra=100;
 
     function simularEvento(x,y, sizeX, sizeY){
         this.x=x;
         this.y=y;
         this.native=true; //emulamos que es un mouseEvent real
     }
-    function encontrarPuntoMasProximo(e){
+    function encontrarPuntoMasProximo(e, graficaDeseada, idCanvas){
         var ejeX=e.offsetX;
-        var maxEjeX=$("#canvasGrafica").width();
-        var maxEjeY=$("#canvasGrafica").height();
+        var maxEjeX=$(idCanvas).width();
+        var maxEjeY=$(idCanvas).height();
 
         for(var x=0; x<maxEjeX; x++){
             for(var y=0; y<maxEjeY; y++){
@@ -29,15 +35,15 @@ function OpcionesGrafica(){
                 var diferenciaDerecha=ejeX+x;
                 if(diferenciaIzquierda>=0){
                     //hacemos comprobaciones
-                    var activeElement = grafica.getElementAtEvent(new simularEvento(diferenciaIzquierda,y));
+                    var activeElement = graficaDeseada.getElementAtEvent(new simularEvento(diferenciaIzquierda,y));
                     if(activeElement.length>0){
-                        return grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
+                        return obtenerInformacionPunto(activeElement,graficaDeseada);
                     }
                 }
                 if(diferenciaDerecha<=maxEjeX){
-                    var activeElement = grafica.getElementAtEvent(new simularEvento(diferenciaDerecha,y));
+                    var activeElement = graficaDeseada.getElementAtEvent(new simularEvento(diferenciaDerecha,y));
                     if(activeElement.length>0){
-                        return grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
+                        return obtenerInformacionPunto(activeElement,graficaDeseada);
                     }
                 }
                 if(diferenciaDerecha>maxEjeX && diferenciaIzquierda<0){
@@ -51,7 +57,11 @@ function OpcionesGrafica(){
         return null;
 
     };
-
+    function obtenerInformacionPunto(activeElement, graficaDeseada){
+        var resultado=graficaDeseada.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
+        resultado["label"]=graficaDeseada.data.datasets[activeElement[0]._datasetIndex].label;
+        return resultado;
+    }
     this.getConfiguracion = function() {
         return config;
     };
@@ -155,10 +165,70 @@ function OpcionesGrafica(){
                 onClick: function(e) {
                     var activeElement = grafica.getElementAtEvent(e);
                     if(activeElement.length>0){
-                        console.log(grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index]);
+                        var resultado=grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
+                        resultado["label"]=grafica.data.datasets[activeElement[0]._datasetIndex].label;
+                        console.log(resultado);
+                    }else{
+                        console.log(encontrarPuntoMasProximo(e,grafica, "#canvasGrafica"));
+                        //calculamos punto relativo
+                    }
+
+                }
+            },
+
+        };
+        getGraficaMaestra();
+    };
+
+
+    function getGraficaMaestra(){
+        configMaestro = {
+            type: 'line',
+            data: datosGrafica,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend:{
+                    display:false
+                },
+                elements:{
+                    line:{
+                        tension: 0.0001 //Tipo linea
+//                      tension: 0.4 //tipo de cuerda
+                    }
+                },
+                scales: {
+                    xAxes: [{
+                        type: "time",
+                        display: false,
+                        time: {
+
+                            format: timeFormat,
+                            tooltipFormat: 'MM/DD/YYYY HH:mm:ss:SSS'
+                        },
+                        ticks: {
+                            autoSkip: true,
+                            minTicksLimit:1,
+                            maxTicksLimit: 8
+
+                        },
+                        //hasta aqui
+                        scaleLabel: {
+                            display: false,
+                            labelString: 'Date'
+                        }
+                    } ],
+                    yAxes:[{
+                        display:false
+                    }]
+                },
+                onClick: function(e) {
+                    var activeElement = graficaMaestra.getElementAtEvent(e);
+                    if(activeElement.length>0){
+                        console.log(graficaMaestra.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index]);
 
                     }else{
-                        console.log(encontrarPuntoMasProximo(e));
+                        console.log(encontrarPuntoMasProximo(e,graficaMaestra, "#canvasMaestro"));
                         //calculamos punto relativo
                     }
 
@@ -168,14 +238,16 @@ function OpcionesGrafica(){
         };
     };
 
-
     this.pintarGrafica = function (){
         if(grafica!=null){
             console.log("Recreando grafica");
             grafica.destroy();
         }
-            $(".grafica").html("");
-            $(".grafica").html('<canvas id="canvasGrafica" class="canvas"></canvas>');
+        $(".grafica").html("");
+        $(".grafica").html('<canvas id="canvasGrafica" class="canvas"></canvas>'+
+            '<div class="contenedorMaestro">'+
+            '<canvas id="canvasMaestro" class="canvas"></canvas>'+
+            '</div>');
 
             grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
             // console.log(window.myLine);
@@ -185,6 +257,17 @@ function OpcionesGrafica(){
             }
             console.log("Puntos graficados: "+puntosGraficados);
     };
+
+    this.pintarGraficaMaestra= function(){
+        graficaMaestra = new Chart(document.getElementById("canvasMaestro").getContext("2d"), configMaestro);
+        // console.log(window.myLine);
+        var puntosGraficados=0;
+        for(var x in graficaMaestra.data.datasets){
+            puntosGraficados+=graficaMaestra.data.datasets[x].data.length;
+        }
+        console.log("Puntos graficados Maestra: "+puntosGraficados);
+    };
+
     // }
 
 

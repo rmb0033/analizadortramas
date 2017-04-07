@@ -19,9 +19,12 @@
     <!--<canvas id="canvas"></canvas>-->
 <!--</div>-->
 
-<div>
+<div class="container">
 <div id="pepe" class="grafica" style="height: 450px;">
     <canvas id="canvasGrafica" class="canvas"></canvas>
+    <div class="contenedorMaestro">
+    <canvas id="canvasMaestro" class="canvas"></canvas>
+    </div>
 </div>
 </div>
 <br>
@@ -64,6 +67,9 @@
 <script>
 
 
+
+
+
     $(function() {
         var opcionesVariable= new OpcionesVariable();
         var opcionGrafica= new OpcionesGrafica();
@@ -87,6 +93,7 @@
         opcionGrafica.getOpciones();
         opcionGrafica.setTipoGrafica("tiempo");
         opcionGrafica.pintarGrafica();
+        opcionGrafica.pintarGraficaMaestra();
 
 
         console.log("Cambio aplicado 2");
@@ -94,6 +101,8 @@
 
 
     });
+
+
 
 
 

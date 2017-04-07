@@ -22,7 +22,7 @@ function OpcionesVariable() {
     opciones["steppedLine"] = false; //Si queremos que sea de tipo cronograma
     opciones["fill"] = false;
     opciones["pointStyle"]="circle";
-    opciones["borderWidth"]= 0.3;
+    opciones["borderWidth"]= 1;
 
 
 
