@@ -89,7 +89,42 @@
                 x: Date.UTC(2017, 9, 21, 10, 20, 18, 200),
                 y: 1
             }]);
+        opcionesVariable.setNombreVariable("prueba 1");
         opcionGrafica.addOpcionVariable(opcionesVariable.getOpciones());
+        var opcionesVariable2= new OpcionesVariable();
+        opcionesVariable2.setDatos([{
+            x: Date.UTC(2017, 9, 21, 10, 20, 16, 399),
+            y: 4
+        }, {
+            x: Date.UTC(2017, 9, 21, 10, 20, 16, 450),
+            y: 3
+        }, {
+            x: Date.UTC(2017, 9, 21, 10, 20, 17, 050),
+            y: 2
+        },
+            {
+                x: Date.UTC(2017, 9, 21, 10, 20, 18, 200),
+                y: 1
+            }]);
+        opcionesVariable2.setNombreVariable("prueba 2");
+        opcionGrafica.addOpcionVariable(opcionesVariable2.getOpciones());
+        var opcionesVariable3= new OpcionesVariable();
+        opcionesVariable3.setDatos([{
+            x: Date.UTC(2017, 9, 21, 10, 20, 16, 199),
+            y: 6
+        }, {
+            x: Date.UTC(2017, 9, 21, 10, 20, 16, 550),
+            y: 3
+        }, {
+            x: Date.UTC(2017, 9, 21, 10, 20, 17, 450),
+            y: 6
+        },
+            {
+                x: Date.UTC(2017, 9, 21, 10, 20, 18, 000),
+                y: 3
+            }]);
+        opcionesVariable.setNombreVariable("prueba 3");
+        opcionGrafica.addOpcionVariable(opcionesVariable3.getOpciones());
         opcionGrafica.getOpciones();
         opcionGrafica.setTipoGrafica("tiempo");
         opcionGrafica.pintarGrafica();

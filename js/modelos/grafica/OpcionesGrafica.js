@@ -167,11 +167,13 @@ function OpcionesGrafica(){
                     if(activeElement.length>0){
                         var resultado=grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
                         resultado["label"]=grafica.data.datasets[activeElement[0]._datasetIndex].label;
-                        console.log(resultado);
                     }else{
-                        console.log(encontrarPuntoMasProximo(e,grafica, "#canvasGrafica"));
-                        //calculamos punto relativo
+                        var resultado=encontrarPuntoMasProximo(e,grafica, "#canvasGrafica");
                     }
+                    var puntosObtenidos=[];
+                    puntosObtenidos=encontrarPuntosizquierda(resultado);
+                    puntosObtenidos.push(resultado);
+                    console.log(puntosObtenidos);
 
                 }
             },
@@ -179,6 +181,29 @@ function OpcionesGrafica(){
         };
         getGraficaMaestra();
     };
+
+    function encontrarPuntosizquierda(resultado){
+        var puntos=[];
+        var ejex= resultado["x"];
+        if(grafica.data.datasets.length>1){
+            for(var x=0; x<grafica.data.datasets.length;x++){
+                if(resultado["label"]!= grafica.data.datasets[x].label){
+                    var puntoEncontrado={};
+                    for(var y=grafica.data.datasets[x].data.length-1; y>=0;y--){
+                        if(grafica.data.datasets[x].data[y]["x"]<ejex){
+                            puntoEncontrado["x"]=grafica.data.datasets[x].data[y]["x"];
+                            puntoEncontrado["y"]=grafica.data.datasets[x].data[y]["y"];
+                            puntoEncontrado["label"]=grafica.data.datasets[x].label;
+                            puntos.push(puntoEncontrado);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return puntos;
+    }
+
 
 
     function getGraficaMaestra(){
