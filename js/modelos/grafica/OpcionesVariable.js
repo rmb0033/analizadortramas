@@ -47,7 +47,6 @@ function OpcionesVariable() {
         opciones["steppedLine"] = booleano;
     };
     this.setNombreVariable= function(nombreVariable){
-        console.log(nombreVariable);
         opciones["label"]=nombreVariable;
     };
 

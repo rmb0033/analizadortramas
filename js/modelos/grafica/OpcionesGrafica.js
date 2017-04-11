@@ -115,7 +115,7 @@ function OpcionesGrafica(){
     //Leyenda gráfica eje x
     //Leyenda gráfica eje y
     this.getOpciones = function(){
-      //Crear configuración
+        //Crear configuración
         datosGrafica["datasets"]=datosVariable;
         config = {
             type: 'line',
@@ -173,8 +173,6 @@ function OpcionesGrafica(){
                     var puntosObtenidos=[];
                     puntosObtenidos=encontrarPuntosizquierda(resultado);
                     puntosObtenidos.push(resultado);
-                    console.log(puntosObtenidos);
-
                 }
             },
 
@@ -208,7 +206,7 @@ function OpcionesGrafica(){
 
     function getGraficaMaestra(){
         configMaestro = {
-            type: 'line',
+            type: 'scatter',
             data: datosGrafica,
             options: {
                 responsive: true,
@@ -250,20 +248,47 @@ function OpcionesGrafica(){
                     }]
                 },
                 onClick: function(e) {
-                    var activeElement = graficaMaestra.getElementAtEvent(e);
-                    if(activeElement.length>0){
-                        console.log(graficaMaestra.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index]);
-
-                    }else{
-                        console.log(encontrarPuntoMasProximo(e,graficaMaestra, "#canvasMaestro"));
-                        //calculamos punto relativo
-                    }
-
+                    cambiarCaja(e);
                 }
             },
 
         };
     };
+    function cambiarCaja(e){
+        var activeElement = graficaMaestra.getElementAtEvent(e);
+        var punto;
+        if(activeElement.length>0){
+            punto=graficaMaestra.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
+            punto["label"]=graficaMaestra.data.datasets[activeElement[0]._datasetIndex].label;
+        }else{
+            punto=encontrarPuntoMasProximo(e,graficaMaestra, "#canvasMaestro");
+            //calculamos punto relativo
+        }
+        var puntoEjeX= punto["x"];
+        if(($("#limiteizquierdo").hasClass('active'))){
+            if(puntoEjeX<graficaMaestra.valuesBox.xmax){
+                actualizarBorde(graficaMaestra,"xMin",puntoEjeX);
+                graficaMaestra.valuesBox.xmin=puntoEjeX;
+                graficaMaestra.update();
+            }
+        }
+        else if(($("#limitederecho").hasClass('active'))){
+            if(puntoEjeX>graficaMaestra.valuesBox.xmin) {
+                actualizarBorde(graficaMaestra, "xMax", puntoEjeX);
+                graficaMaestra.valuesBox.xmax = puntoEjeX;
+                graficaMaestra.update();
+            }
+        }
+    }
+    function actualizarBorde(grafica, cadenaTexto,puntoEjeX ){
+        for(x in grafica.options.annotation.annotations){
+            if(grafica.options.annotation.annotations[x]["id"]=="Grafica morada"){
+                grafica.options.annotation.annotations[x][cadenaTexto]=puntoEjeX;
+                break;
+            }
+        }
+
+    }
 
     this.pintarGrafica = function (){
         if(grafica!=null){
@@ -275,10 +300,10 @@ function OpcionesGrafica(){
             '<div class="contenedorMaestro">'+
             '<canvas id="canvasMaestro" class="canvas"></canvas>'+
             '</div>'+
-        '<div class="contenedorBotones">'+
-        '<button type="button" id="limiteizquierdo" class="btn btn-default">'+
-        '<span class="glyphicon glyphicon-indent-left"></span>'+
-        '</button>'+
+            '<div class="contenedorBotones">'+
+            '<button type="button" id="limiteizquierdo" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-indent-left"></span>'+
+            '</button>'+
             '<button type="button" id="limitederecho" class="btn btn-default">'+
             '<span class="glyphicon glyphicon-indent-right"></span>'+
             '</button>'+
@@ -287,7 +312,7 @@ function OpcionesGrafica(){
             '<span class="glyphicon glyphicon-chevron-left"></span>'+
             '</button>'+
 
-            '<button type="button" id="moverDerecha" class="btn btn-default">'+
+            '<button type="button" id="moverderecha" class="btn btn-default">'+
             '<span class="glyphicon glyphicon-chevron-right"></span>'+
             '</button>'+
             '<button type="button" id="play" class="btn btn-default">'+
@@ -303,41 +328,53 @@ function OpcionesGrafica(){
             '<span class="glyphicon glyphicon-forward"></span>'+
             '</button>'+
 
-        '</div>');
-            aplicarListenersBotones();
-            grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
-            // console.log(window.myLine);
-            var puntosGraficados=0;
-            for(var x in grafica.data.datasets){
-                puntosGraficados+=grafica.data.datasets[x].data.length;
-            }
-            console.log("Puntos graficados: "+puntosGraficados);
+            '</div>');
+        grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
+        // console.log(window.myLine);
+        var puntosGraficados=0;
+        for(var x in grafica.data.datasets){
+            puntosGraficados+=grafica.data.datasets[x].data.length;
+        }
+        console.log("Puntos graficados: "+puntosGraficados);
     };
 
     this.pintarGraficaMaestra= function(){
         graficaMaestra = new Chart(document.getElementById("canvasMaestro").getContext("2d"), configMaestro);
-        // console.log(window.myLine);
         var puntosGraficados=0;
         for(var x in graficaMaestra.data.datasets){
             puntosGraficados+=graficaMaestra.data.datasets[x].data.length;
         }
-
         console.log("Puntos graficados Maestra: "+puntosGraficados);
         inicializarCaja(graficaMaestra);
+        aplicarListenersBotones(grafica, graficaMaestra);
     };
 
+    function obtenerValoresEjeX(grafica){
+        var valorMaximo=null;
+        var valorMinimo=null;
+        for(var x in grafica.data.datasets){
+            if(valorMaximo==null && valorMinimo==null){
+                valorMinimo=grafica.data.datasets[x].data[0]["x"];
+                valorMaximo=grafica.data.datasets[x].data[grafica.data.datasets[x].data.length-1]["x"];
+            }
+            if(grafica.data.datasets[x].data[0]["x"]<valorMinimo ){
+                valorMinimo=grafica.data.datasets[x].data[0]["x"];
+            }
+            if(grafica.data.datasets[x].data[grafica.data.datasets[x].data.length-1]["x"]>valorMaximo){
+                valorMaximo=grafica.data.datasets[x].data[grafica.data.datasets[x].data.length-1]["x"];
 
+            }
+        }
+        return {max:valorMaximo, min:valorMinimo};
+    }
     // }
     function inicializarCaja(grafica){
-        console.log(grafica.scales);
-        var axisY = grafica.scales["y-axis-0"];
+        var axisY = grafica.scales["y-axis-1"];
         var maxY = axisY.max;
         var minY = axisY.min;
-        var axisX = grafica.scales["x-axis-0"];
+        var axisX = obtenerValoresEjeX(grafica);
         var maxX = axisX.max;
         var minX = axisX.min;
-
-        //esto va dentro de scales
 
         var cajaTemporal= {
             drawTime: "afterDraw",
@@ -348,16 +385,17 @@ function OpcionesGrafica(){
                 yScaleID: 'y-axis-1',
                 xMin: minX,
                 xMax: maxX,
-                yMin: maxY,
-                yMax: minY,
+                yMin: minY,
+                yMax: maxY,
                 backgroundColor: 'rgba(101, 33, 171, 0.5)',
                 borderColor: 'rgb(101, 33, 171)',
                 borderWidth: 1,
             }]
         };
         grafica.options.annotation=cajaTemporal;
+        grafica.options.scales.yAxes[0].ticks.max=maxY;
+        grafica.valuesBox={xmin:minX, xmax:maxX};
         grafica.update();
-        console.log(grafica.options.annotation)
     }
 
 }
