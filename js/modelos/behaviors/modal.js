@@ -25,7 +25,6 @@ function iniciarModal(fileLoader) {
         operaciones.push($(".spinner").hide());
         operaciones.push($(".cargadorDatos").show());
         $.when.apply(this, operaciones).done(function() {
-            dormir(4000);
             fileLoader.actualizarBiblioteca();
             var cadenaHTMLVar = '<span style="color:#f9fbff">VARIABLES :</span>';
             cadenaHTMLVar += '<select id="ventana-variables" class="selectpicker ventana-variables" multiple>';

@@ -222,6 +222,8 @@ function OpcionesGrafica(){
 //                      tension: 0.4 //tipo de cuerda
                     }
                 },
+                tooltips: {enabled: false},
+                hover: {mode: null},
                 scales: {
                     xAxes: [{
                         type: "time",
@@ -272,8 +274,37 @@ function OpcionesGrafica(){
         $(".grafica").html('<canvas id="canvasGrafica" class="canvas"></canvas>'+
             '<div class="contenedorMaestro">'+
             '<canvas id="canvasMaestro" class="canvas"></canvas>'+
-            '</div>');
+            '</div>'+
+        '<div class="contenedorBotones">'+
+        '<button type="button" id="limiteizquierdo" class="btn btn-default">'+
+        '<span class="glyphicon glyphicon-indent-left"></span>'+
+        '</button>'+
+            '<button type="button" id="limitederecho" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-indent-right"></span>'+
+            '</button>'+
 
+            '<button type="button" id="moverizquierda" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-chevron-left"></span>'+
+            '</button>'+
+
+            '<button type="button" id="moverDerecha" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-chevron-right"></span>'+
+            '</button>'+
+            '<button type="button" id="play" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-play"></span>'+
+            '</button>'+
+            '<button type="button" id="pause" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-pause"></span>'+
+            '</button>'+
+            '<button type="button" id="pasoanterior" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-backward"></span>'+
+            '</button>'+
+            '<button type="button" id="pasosiguiente" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-forward"></span>'+
+            '</button>'+
+
+        '</div>');
+            aplicarListenersBotones();
             grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
             // console.log(window.myLine);
             var puntosGraficados=0;
@@ -290,10 +321,43 @@ function OpcionesGrafica(){
         for(var x in graficaMaestra.data.datasets){
             puntosGraficados+=graficaMaestra.data.datasets[x].data.length;
         }
+
         console.log("Puntos graficados Maestra: "+puntosGraficados);
+        inicializarCaja(graficaMaestra);
     };
 
-    // }
 
+    // }
+    function inicializarCaja(grafica){
+        console.log(grafica.scales);
+        var axisY = grafica.scales["y-axis-0"];
+        var maxY = axisY.max;
+        var minY = axisY.min;
+        var axisX = grafica.scales["x-axis-0"];
+        var maxX = axisX.max;
+        var minX = axisX.min;
+
+        //esto va dentro de scales
+
+        var cajaTemporal= {
+            drawTime: "afterDraw",
+            annotations: [{
+                id: "Grafica morada",
+                type: 'box',
+                xScaleID: 'x-axis-1',
+                yScaleID: 'y-axis-1',
+                xMin: minX,
+                xMax: maxX,
+                yMin: maxY,
+                yMax: minY,
+                backgroundColor: 'rgba(101, 33, 171, 0.5)',
+                borderColor: 'rgb(101, 33, 171)',
+                borderWidth: 1,
+            }]
+        };
+        grafica.options.annotation=cajaTemporal;
+        grafica.update();
+        console.log(grafica.options.annotation)
+    }
 
 }
