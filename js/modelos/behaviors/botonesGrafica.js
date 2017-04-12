@@ -6,7 +6,9 @@
 // '<span class="glyphicon glyphicon-indent-right"></span>'+
 // '</button>'+
 //
-function aplicarListenersBotones(grafica, graficaMaestra){
+function aplicarListenersBotones(ventanaGrafica){
+    var grafica= ventanaGrafica.getGrafica();
+    var graficaMaestra= ventanaGrafica.getGraficaMaestra();
 
     function desactivarFuncionesReproduccion(){
         $("#play").prop("disabled", true);
@@ -60,6 +62,7 @@ function aplicarListenersBotones(grafica, graficaMaestra){
             activarFuncionesMovimiento();
         }
     });
+
     function obtenerTodosDatosEjex(grafica){
         var datos=[];
         for (var x in grafica.data.datasets){
@@ -139,7 +142,7 @@ function aplicarListenersBotones(grafica, graficaMaestra){
         if(dato<graficaMaestra.valuesBox.xmax){
             graficaMaestra.valuesBox.xmin = dato;
             graficaMaestra.options.annotation.annotations[0].xMin = dato;
-            graficaMaestra.update();
+            ventanaGrafica.actualizarGraficas();
             return true;
         }else{
             return false;
@@ -150,7 +153,7 @@ function aplicarListenersBotones(grafica, graficaMaestra){
         if(dato>graficaMaestra.valuesBox.xmin) {
             graficaMaestra.valuesBox.xmax = dato;
             graficaMaestra.options.annotation.annotations[0].xMax = dato;
-            graficaMaestra.update();
+            ventanaGrafica.actualizarGraficas();
             return true;
 
         }
@@ -159,6 +162,13 @@ function aplicarListenersBotones(grafica, graficaMaestra){
         }
     }
 
+    function actualizarGraficas() {
+        graficaMaestra.update();
+        var min = graficaMaestra.valuesBox.xmin;
+        var max = graficaMaestra.valuesBox.xmax;
+        // grafica.config.data.datasets = conectorDiccionario(max, min, 800);
+        grafica.update();
+    }
 
     $("#play").click(function() {
         if (!$(this).hasClass('active')) {
@@ -171,6 +181,8 @@ function aplicarListenersBotones(grafica, graficaMaestra){
 
 
         }});
+
+
     //Función por la cual no bloquea la interfaz gráfica.
     function animacionReproduccion() {
         window.setTimeout(function() {
@@ -186,8 +198,9 @@ function aplicarListenersBotones(grafica, graficaMaestra){
             else{
                 animacionReproduccion();
             }
-        }, 60);
+        }, 600);
     }
+    //Aqui.
 
     $("#pause").click(function() {
         if ($(this).hasClass('active')) {

@@ -6,8 +6,7 @@
 function OpcionesGrafica(){
     //TODO diferenciar llamadas #canvas o #canvasMaestro, tenemos que pasar el #creado o algo
     //estudiar aplicabilidad
-    var datosGrafica={};
-    var datosVariable=[];
+    var diccionarioDatos=[];
     var color = Chart.helpers.color;
     var timeFormat = 'MM/DD/YYYY HH:mm:ss:SSS';
     var config;
@@ -66,7 +65,7 @@ function OpcionesGrafica(){
         return config;
     };
     this.addOpcionVariable= function(opcion){
-        datosVariable.push(opcion);
+        diccionarioDatos.push(opcion);
     };
     this.setTipodeCuerda= function(tipoCuerda){
         if(tipoCuerda=="Cuerda"){
@@ -109,6 +108,40 @@ function OpcionesGrafica(){
 
     };
 
+    function conectorDiccionario(max, min, numeroPuntos){
+        //clonamos el objeto
+        var solucion = JSON.parse(JSON.stringify(diccionarioDatos));
+
+        for(var variable in diccionarioDatos){
+
+          var datos= diccionarioDatos[variable]["diccionario"];
+          // Diezmado y ordenamiento de los datos
+          //Ordenamos la linea temporal podemos modularlo como como opcion
+          var keys = Object.keys(datos);
+          keys.sort();
+          // console.log(keys);
+          var solucionOrdenada=[];
+          var numeroDiezMado=parseInt(keys.length/numeroPuntos);
+          if(numeroDiezMado==0){
+              numeroDiezMado=1;
+          }
+          // console.log("Diezmado de 1 punto por cada : "+numeroDiezMado);
+          for(var i=0; i<keys.length;i+=numeroDiezMado){
+              var clave= keys[i];
+              var valoresOrdenados={};
+              if((datos[clave][0]>=min && datos[clave][0]<=max) || min==null || max==null){
+                  valoresOrdenados["x"]=datos[clave][0];
+                  valoresOrdenados["y"]=datos[clave][1];
+                  solucionOrdenada.push(valoresOrdenados);
+              }
+          }
+            solucion[variable]["data"]=solucionOrdenada;
+      }
+      // console.log(solucion);
+      //   console.log(diccionarioDatos);
+        return solucion;
+    };
+
     //Variables que debería recibir por interfaz
     //Tipo de cuerda
     //Tipo de gráfica (tiempo o x,y)
@@ -116,11 +149,15 @@ function OpcionesGrafica(){
     //Leyenda gráfica eje y
     this.getOpciones = function(){
         //Crear configuración
-        datosGrafica["datasets"]=datosVariable;
+        //Todo hay que filtrar el diccionario de datos con las opciones
+        //conectorDiccionario(diccionarioDatos, max, min, numeroPuntos)
         config = {
             type: 'line',
-            data: datosGrafica,
+            data: {datasets:conectorDiccionario(null, null, 800)},
             options: {
+                animation: {
+                    duration: 0
+                },
                 hover: {
                     mode: 'nearest',
                     intersect: false
@@ -207,7 +244,7 @@ function OpcionesGrafica(){
     function getGraficaMaestra(){
         configMaestro = {
             type: 'scatter',
-            data: datosGrafica,
+            data: {datasets:conectorDiccionario(null, null, 300)},
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
@@ -254,6 +291,15 @@ function OpcionesGrafica(){
 
         };
     };
+
+    function actualizarGraficas() {
+        graficaMaestra.update();
+        var min = graficaMaestra.valuesBox.xmin;
+        var max = graficaMaestra.valuesBox.xmax;
+        grafica.config.data.datasets = conectorDiccionario(max, min, 800);
+        grafica.update();
+    }
+
     function cambiarCaja(e){
         var activeElement = graficaMaestra.getElementAtEvent(e);
         var punto;
@@ -267,16 +313,18 @@ function OpcionesGrafica(){
         var puntoEjeX= punto["x"];
         if(($("#limiteizquierdo").hasClass('active'))){
             if(puntoEjeX<graficaMaestra.valuesBox.xmax){
+
                 actualizarBorde(graficaMaestra,"xMin",puntoEjeX);
                 graficaMaestra.valuesBox.xmin=puntoEjeX;
-                graficaMaestra.update();
+                actualizarGraficas();
             }
         }
         else if(($("#limitederecho").hasClass('active'))){
             if(puntoEjeX>graficaMaestra.valuesBox.xmin) {
+
                 actualizarBorde(graficaMaestra, "xMax", puntoEjeX);
                 graficaMaestra.valuesBox.xmax = puntoEjeX;
-                graficaMaestra.update();
+                actualizarGraficas();
             }
         }
     }
@@ -289,6 +337,8 @@ function OpcionesGrafica(){
         }
 
     }
+
+
 
     this.pintarGrafica = function (){
         if(grafica!=null){
@@ -331,6 +381,7 @@ function OpcionesGrafica(){
             '</div>');
         grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
         // console.log(window.myLine);
+        // console.log(config);
         var puntosGraficados=0;
         for(var x in grafica.data.datasets){
             puntosGraficados+=grafica.data.datasets[x].data.length;
@@ -346,7 +397,22 @@ function OpcionesGrafica(){
         }
         console.log("Puntos graficados Maestra: "+puntosGraficados);
         inicializarCaja(graficaMaestra);
-        aplicarListenersBotones(grafica, graficaMaestra);
+        graficaMaestra.update();
+        aplicarListenersBotones(this);
+    };
+
+    this.actualizarGraficas= function(){
+        graficaMaestra.update();
+        var min = graficaMaestra.valuesBox.xmin;
+        var max = graficaMaestra.valuesBox.xmax;
+        grafica.config.data.datasets = conectorDiccionario(max, min, 800);
+        grafica.update();
+    };
+    this.getGrafica=function(){
+        return grafica;
+    };
+    this.getGraficaMaestra=function(){
+        return graficaMaestra;
     };
 
     function obtenerValoresEjeX(grafica){
@@ -398,7 +464,6 @@ function OpcionesGrafica(){
         grafica.options.scales.xAxes[0].ticks.max=maxX;
         grafica.options.scales.xAxes[0].ticks.min=minX;
         grafica.valuesBox={xmin:minX, xmax:maxX};
-        grafica.update();
     }
 
 }

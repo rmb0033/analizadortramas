@@ -27,7 +27,7 @@ function OpcionesVariable() {
 
 
     this.setDatos = function(datos){
-        opciones["data"]=datos;
+        opciones["diccionario"]=datos;
     };
     this.setGrosorLinea= function(grosorLinea){
         opciones["borderWidth"]= grosorLinea;

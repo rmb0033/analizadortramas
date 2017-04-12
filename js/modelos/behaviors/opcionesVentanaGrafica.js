@@ -115,32 +115,9 @@ function obtenerDatosGraficaTemporal(opciones,variblesCargadasBiblioteca ) {
             }
         }
 
-        //Ordenamos la linea temporal podemos modularlo como como opcion
-        var keys = Object.keys(solucionVariable);
-        keys.sort();
-        var solucionOrdenada=[];
-        var numeroDiezMado=parseInt(keys.length/limitePuntos);
-        if(numeroDiezMado==0){
-            numeroDiezMado=1;
-        }
-        console.log("Diezmado de 1 punto por cada : "+numeroDiezMado);
-        for(var i=0; i<keys.length;i+=numeroDiezMado){
-            var clave= keys[i];
-            var valoresOrdenados={};
-            valoresOrdenados["x"]=solucionVariable[clave][0];
-            valoresOrdenados["y"]=solucionVariable[clave][1];
-            solucionOrdenada.push(valoresOrdenados);
-        }
-        // var dibujoGrafica= {};
-        //Una vez procesada la variable, ya tendriamos todos los datos
-
-        // dibujoGrafica["name"]=opcionesVariables[indexVariable];
-        // dibujoGrafica["data"]=solucionOrdenada;
-        //Metemos los datos en una solucion global que abarca mas variables
-        // solucion.push(dibujoGrafica);
 
         opcionesVariable.setNombreVariable(opcionesVariables[indexVariable]);
-        opcionesVariable.setDatos(solucionOrdenada);
+        opcionesVariable.setDatos(solucionVariable);
         opcionGrafica.addOpcionVariable(opcionesVariable.getOpciones());
 
     }
@@ -182,7 +159,7 @@ function obtenerDatosGraficaXY(opcionesVariables,opcionesFichero,variblesCargada
     }
     var dibujoGrafica= {};
     dibujoGrafica["name"]=opcionesVariables[0]+ " / "+opcionesVariables[1];
-    dibujoGrafica["data"]=SolucionDatos;
+    dibujoGrafica["diccionario"]=SolucionDatos;
     solucion.push(dibujoGrafica);
     return solucion;
 }
