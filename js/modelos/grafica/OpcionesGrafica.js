@@ -393,7 +393,10 @@ function OpcionesGrafica(){
             }]
         };
         grafica.options.annotation=cajaTemporal;
+        grafica.options.scales.yAxes[0].ticks.min=minY;
         grafica.options.scales.yAxes[0].ticks.max=maxY;
+        grafica.options.scales.xAxes[0].ticks.max=maxX;
+        grafica.options.scales.xAxes[0].ticks.min=minX;
         grafica.valuesBox={xmin:minX, xmax:maxX};
         grafica.update();
     }

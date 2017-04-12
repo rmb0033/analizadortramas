@@ -149,7 +149,6 @@ function obtenerDatosGraficaTemporal(opciones,variblesCargadasBiblioteca ) {
     opcionGrafica.getOpciones();
     opcionGrafica.setTipoGrafica("tiempo");
     opcionGrafica.pintarGrafica();
-    console.log("cambio");
     opcionGrafica.pintarGraficaMaestra();
 
 }

@@ -31,20 +31,20 @@ function aplicarListenersBotones(grafica, graficaMaestra){
 
     }
     desactivarFuncionesMovimiento();
-$("#limiteizquierdo").click(function(){
-    if($(this).hasClass('active')){
-        $(this).removeClass('active');
-        $("#limitederecho").prop("disabled", false);
-        activarFuncionesReproduccion();
-        desactivarFuncionesMovimiento();
+    $("#limiteizquierdo").click(function(){
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+            $("#limitederecho").prop("disabled", false);
+            activarFuncionesReproduccion();
+            desactivarFuncionesMovimiento();
 
-    }else{
-        $(this).addClass('active');
-        $("#limitederecho").prop("disabled", true);
-        desactivarFuncionesReproduccion();
-        activarFuncionesMovimiento();
-    }
-});
+        }else{
+            $(this).addClass('active');
+            $("#limitederecho").prop("disabled", true);
+            desactivarFuncionesReproduccion();
+            activarFuncionesMovimiento();
+        }
+    });
 
     $("#limitederecho").click(function(){
         if($(this).hasClass('active')){
@@ -110,14 +110,39 @@ $("#limiteizquierdo").click(function(){
             }
         }
     });
-
+    function reproducir() {
+        var datoxmin=null;
+        var datoxmax=null;
+        var cambio=null;
+        for (var x = 0; x < datosOrdenados.length; x++) {
+            if (datoxmin==null && datosOrdenados[x] > graficaMaestra.valuesBox.xmin) {
+                datoxmin=datosOrdenados[x];
+            }
+            if(datoxmax==null && datosOrdenados[x] > graficaMaestra.valuesBox.xmax){
+                datoxmax=datosOrdenados[x];
+            }
+        }
+        if(datoxmin!=null){
+            cambio= cambiarxMin(datoxmin);
+            if(datoxmax!=null)
+                cambiarxMax(datoxmax);
+        }
+        if(datoxmin==null || !cambio){
+            // console.log("fin");
+            return true;
+        }else{
+            return false;
+        }
+    }
 //TODO mirar si hace falta valuesBox
     function cambiarxMin(dato){
         if(dato<graficaMaestra.valuesBox.xmax){
             graficaMaestra.valuesBox.xmin = dato;
             graficaMaestra.options.annotation.annotations[0].xMin = dato;
             graficaMaestra.update();
-
+            return true;
+        }else{
+            return false;
         }
 
     }
@@ -126,32 +151,51 @@ $("#limiteizquierdo").click(function(){
             graficaMaestra.valuesBox.xmax = dato;
             graficaMaestra.options.annotation.annotations[0].xMax = dato;
             graficaMaestra.update();
+            return true;
+
+        }
+        else{
+            return false;
         }
     }
 
 
-    $("#moverDerecha").click(function(){
+    $("#play").click(function() {
+        if (!$(this).hasClass('active')) {
+            $(this).addClass('active');
+            $("#limiteizquierdo").prop("disabled", true);
+            $("#limitederecho").prop("disabled", true);
 
+            animacionReproduccion();
+
+
+
+        }});
+    //Función por la cual no bloquea la interfaz gráfica.
+    function animacionReproduccion() {
+        window.setTimeout(function() {
+            //condición salida proceso segundo plano
+
+            if($("#pause").hasClass('active') || reproducir()){
+                $("#pause").removeClass('active');
+                $("#play").removeClass('active');
+                $("#limiteizquierdo").prop("disabled", false);
+                $("#limitederecho").prop("disabled", false);
+                return true;
+            }
+            else{
+                animacionReproduccion();
+            }
+        }, 60);
+    }
+
+    $("#pause").click(function() {
+        if ($(this).hasClass('active')) {
+            $(this).removeClass('active');
+        }else{
+            $(this).addClass('active');
+            $("#play").removeClass('active');
+        }
     });
 
-
-// '<button type="button" id="moverizquierda" class="btn btn-default">'+
-// '<span class="glyphicon glyphicon-chevron-left"></span>'+
-// '</button>'+
-//
-// '<button type="button" id="moverDerecha" class="btn btn-default">'+
-// '<span class="glyphicon glyphicon-chevron-right"></span>'+
-// '</button>'+
-// '<button type="button" id="play" class="btn btn-default">'+
-// '<span class="glyphicon glyphicon-play"></span>'+
-// '</button>'+
-// '<button type="button" id="pause" class="btn btn-default">'+
-// '<span class="glyphicon glyphicon-pause"></span>'+
-// '</button>'+
-// '<button type="button" id="pasoanterior" class="btn btn-default">'+
-// '<span class="glyphicon glyphicon-backward"></span>'+
-// '</button>'+
-// '<button type="button" id="pasosiguiente" class="btn btn-default">'+
-// '<span class="glyphicon glyphicon-forward"></span>'+
-// '</button>'+
 }
