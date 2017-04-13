@@ -10,13 +10,16 @@ function OpcionesVariable() {
     //Cronograma o no
     //Datos
     //Nombre de la variable
+    var color='#' + (Math.random().toString(16) + '0000000').slice(2, 8);
     var opciones = {};
 //Nombre de la variable
     opciones["label"] = "Temperatura";
 //Color del punto
-    opciones["backgroundColor"] = window.chartColors.red;
+//     opciones["backgroundColor"] = window.chartColors.red;
+    opciones["backgroundColor"] = color;
 //    //Color de la linea
-    opciones["borderColor"] = window.chartColors.red;
+//     opciones["borderColor"] = window.chartColors.red;
+    opciones["borderColor"] = color;
 //Opciones para que se adapte
     opciones["pointRadius"] = 0.5;
     opciones["steppedLine"] = false; //Si queremos que sea de tipo cronograma

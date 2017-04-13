@@ -13,9 +13,8 @@ function OpcionesGrafica(){
     var configMaestro;
     var grafica=null;
     var graficaMaestra=null;
+    var comparadores=[];
 
-    var cantidadDiezmado=450;
-    var cantidadDiezmadoGMaestra=100;
 
     function simularEvento(x,y, sizeX, sizeY){
         this.x=x;
@@ -111,34 +110,74 @@ function OpcionesGrafica(){
     function conectorDiccionario(max, min, numeroPuntos){
         //clonamos el objeto
         var solucion = JSON.parse(JSON.stringify(diccionarioDatos));
+        var puntosTotales=0;
+        for(var variable in diccionarioDatos) {
+            //Datos no tiene atributo lenght
+            puntosTotales+=Object.keys(diccionarioDatos[variable]["diccionario"]).length;
+        }
 
         for(var variable in diccionarioDatos){
 
-          var datos= diccionarioDatos[variable]["diccionario"];
-          // Diezmado y ordenamiento de los datos
-          //Ordenamos la linea temporal podemos modularlo como como opcion
-          var keys = Object.keys(datos);
-          keys.sort();
-          // console.log(keys);
-          var solucionOrdenada=[];
-          var numeroDiezMado=parseInt(keys.length/numeroPuntos);
-          if(numeroDiezMado==0){
-              numeroDiezMado=1;
-          }
-          // console.log("Diezmado de 1 punto por cada : "+numeroDiezMado);
-          for(var i=0; i<keys.length;i+=numeroDiezMado){
-              var clave= keys[i];
-              var valoresOrdenados={};
-              if((datos[clave][0]>=min && datos[clave][0]<=max) || min==null || max==null){
-                  valoresOrdenados["x"]=datos[clave][0];
-                  valoresOrdenados["y"]=datos[clave][1];
-                  solucionOrdenada.push(valoresOrdenados);
-              }
-          }
-            solucion[variable]["data"]=solucionOrdenada;
-      }
-      // console.log(solucion);
-      //   console.log(diccionarioDatos);
+            var datos= diccionarioDatos[variable]["diccionario"];
+            // Diezmado y ordenamiento de los datos
+            //Ordenamos la linea temporal podemos modularlo como como opcion
+            var keys = Object.keys(datos);
+            keys.sort();
+            // console.log(keys);
+            var solucionOrdenada=[];
+            var numeroDiezMado=parseInt((puntosTotales/numeroPuntos)/diccionarioDatos.length);
+            if(numeroDiezMado==0){
+                numeroDiezMado=1;
+            }
+            if(min==null || max==null){
+                for(var i=0; i<keys.length;i+=numeroDiezMado){
+                    var clave= keys[i];
+                    var valoresOrdenados={};
+                    valoresOrdenados["x"]=datos[clave][0];
+                    valoresOrdenados["y"]=datos[clave][1];
+                    solucionOrdenada.push(valoresOrdenados);
+
+                }
+                solucion[variable]["data"]=solucionOrdenada;
+            }
+            else{
+                var menor=0;
+                var mayor=0;
+                for(var x=0;x<keys.length;x++){
+                    var clave= keys[x];
+                    if(datos[clave][0]>=min){
+                        menor=x;
+                        break;
+                    }
+                }
+                for(var x=keys.length-1;x>=0;x--){
+                    var clave= keys[x];
+                    if(datos[clave][0]<=max){
+                        mayor=x;
+                        break;
+                    }
+                }
+                var numeroDiezMado=parseInt(((mayor-menor)/numeroPuntos)/diccionarioDatos.length);
+                if(!parseInt(((mayor-menor)/numeroPuntos)%diccionarioDatos.length))
+                    numeroDiezMado++;
+
+                if(numeroDiezMado==0){
+                    numeroDiezMado=1;
+                }
+                // console.log(mayor-menor+" puntos", keys.length+" total.", numeroDiezMado+" diezmado");
+                for(var x=menor;x<=mayor;x+=numeroDiezMado) {
+                    var clave= keys[x];
+                    var valoresOrdenados={};
+                    valoresOrdenados["x"]=datos[clave][0];
+                    valoresOrdenados["y"]=datos[clave][1];
+                    solucionOrdenada.push(valoresOrdenados);
+
+                }
+                solucion[variable]["data"]=solucionOrdenada;
+            }
+        }
+        // console.log(solucion);
+        //   console.log(diccionarioDatos);
         return solucion;
     };
 
@@ -153,7 +192,7 @@ function OpcionesGrafica(){
         //conectorDiccionario(diccionarioDatos, max, min, numeroPuntos)
         config = {
             type: 'line',
-            data: {datasets:conectorDiccionario(null, null, 800)},
+            data: {datasets:conectorDiccionario(null, null, 700)},
             options: {
                 animation: {
                     duration: 0
@@ -196,26 +235,92 @@ function OpcionesGrafica(){
                 },
                 zoom: {
                     enabled: true,
-                    drag: true,
-                    mode: 'x'
+                    mode: 'xy'
                 },
                 onClick: function(e) {
-                    var activeElement = grafica.getElementAtEvent(e);
-                    if(activeElement.length>0){
-                        var resultado=grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
-                        resultado["label"]=grafica.data.datasets[activeElement[0]._datasetIndex].label;
-                    }else{
-                        var resultado=encontrarPuntoMasProximo(e,grafica, "#canvasGrafica");
-                    }
-                    var puntosObtenidos=[];
-                    puntosObtenidos=encontrarPuntosizquierda(resultado);
-                    puntosObtenidos.push(resultado);
+                    crearTablaPuntos(e);
                 }
             },
 
         };
         getGraficaMaestra();
     };
+
+    function crearTablaPuntos(e) {
+        var activeElement = grafica.getElementAtEvent(e);
+        if (activeElement.length > 0) {
+            var resultado = grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
+            resultado["label"] = grafica.data.datasets[activeElement[0]._datasetIndex].label;
+        } else {
+            var resultado = encontrarPuntoMasProximo(e, grafica, "#canvasGrafica");
+        }
+        if(resultado!=null){
+            obtenerPuntosTabla(resultado);
+        }else{
+            //aqui hariamos un reset
+            grafica.resetZoom();
+        }
+    }
+    function obtenerPuntosTabla(resultado){
+        var puntosObtenidos=[];
+        puntosObtenidos=encontrarPuntosizquierda(resultado);
+        puntosObtenidos.push(resultado);
+        comparadores.push(puntosObtenidos);
+        if(comparadores.length>2){
+            comparadores.shift();
+        }
+        if(comparadores.length==2){
+
+            //recorremos del primer posición del array y buscamos el equivalente con el segundo
+            var solucionesTabla=[];
+            for (var x in comparadores[0]){
+                var nombreVariable= comparadores[0][x]["label"];
+                for(var y in comparadores[1]){
+                    if(nombreVariable==comparadores[1][y]["label"]){
+                        var contenidoFila=[];
+                        contenidoFila.push(nombreVariable);
+                        var numero1=comparadores[0][x]["y"];
+                        var numero2=comparadores[1][y]["y"];
+                        contenidoFila.push(numero1);
+                        contenidoFila.push(numero2);
+                        contenidoFila.push(Math.abs(numero1-numero2));
+                        contenidoFila.push(numero1+numero2);
+                        solucionesTabla.push(contenidoFila);
+                    }
+                }
+            }
+            if(solucionesTabla.length>0){
+                $("#tabla").html(
+                    '<table class="table">'+
+                    '<thead>'+
+                    '<tr>'+
+                    '<th>Variable</th>'+
+                    '<th>Value1</th>'+
+                    '<th>Value2</th>'+
+                    '<th>Difference (Abs)</th>'+
+                    '<th>Sum</th>'+
+                    '</tr>'+
+                    '</thead>'+
+                    '<tbody id="resultados">'+
+                    '</tbody>'+
+                    '</table>');
+                var cadenaHTML='';
+
+                for(var fila in solucionesTabla){
+                    cadenaHTML+='<tr>';
+                    for(var columna in solucionesTabla[fila]){
+                        cadenaHTML+='<td>'+solucionesTabla[fila][columna]+'</td>';
+                    }
+                    cadenaHTML+='</tr>';
+                }
+                $("#resultados").html(cadenaHTML);
+            }
+            else{
+                $("#tabla").html('');
+            }
+
+        }
+    }
 
     function encontrarPuntosizquierda(resultado){
         var puntos=[];
@@ -296,8 +401,9 @@ function OpcionesGrafica(){
         graficaMaestra.update();
         var min = graficaMaestra.valuesBox.xmin;
         var max = graficaMaestra.valuesBox.xmax;
-        grafica.config.data.datasets = conectorDiccionario(max, min, 800);
+        grafica.config.data.datasets = conectorDiccionario(max, min, 700);
         grafica.update();
+
     }
 
     function cambiarCaja(e){
@@ -377,7 +483,8 @@ function OpcionesGrafica(){
             '<button type="button" id="pasosiguiente" class="btn btn-default">'+
             '<span class="glyphicon glyphicon-forward"></span>'+
             '</button>'+
-
+            '</div>'+
+            '<div id="tabla" class="table-responsive">'+
             '</div>');
         grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
         // console.log(window.myLine);
@@ -405,7 +512,7 @@ function OpcionesGrafica(){
         graficaMaestra.update();
         var min = graficaMaestra.valuesBox.xmin;
         var max = graficaMaestra.valuesBox.xmax;
-        grafica.config.data.datasets = conectorDiccionario(max, min, 800);
+        grafica.config.data.datasets = conectorDiccionario(max, min, 700);
         grafica.update();
     };
     this.getGrafica=function(){

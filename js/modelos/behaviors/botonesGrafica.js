@@ -83,7 +83,7 @@ function aplicarListenersBotones(ventanaGrafica){
         for(var x=datosOrdenados.length-1;x>=0; x--) {
             if($("#limiteizquierdo").hasClass('active')) {
                 if (datosOrdenados[x] < graficaMaestra.valuesBox.xmin) {
-                    cambiarxMin(datosOrdenados[x]);
+                    cambiarxMin(datosOrdenados[x], null);
                     break;
                 }
             }
@@ -100,7 +100,7 @@ function aplicarListenersBotones(ventanaGrafica){
         for(var x=0;x<datosOrdenados.length; x++) {
             if($("#limiteizquierdo").hasClass('active')) {
                 if (datosOrdenados[x] > graficaMaestra.valuesBox.xmin) {
-                    cambiarxMin(datosOrdenados[x]);
+                    cambiarxMin(datosOrdenados[x], null);
                     break;
                 }
             }
@@ -126,20 +126,19 @@ function aplicarListenersBotones(ventanaGrafica){
             }
         }
         if(datoxmin!=null){
-            cambio= cambiarxMin(datoxmin);
+            cambio= cambiarxMin(datoxmin,datoxmax);
             if(datoxmax!=null)
                 cambiarxMax(datoxmax);
         }
         if(datoxmin==null || !cambio){
-            // console.log("fin");
             return true;
         }else{
             return false;
         }
     }
 //TODO mirar si hace falta valuesBox
-    function cambiarxMin(dato){
-        if(dato<graficaMaestra.valuesBox.xmax){
+    function cambiarxMin(dato,datoMax){
+        if(dato<graficaMaestra.valuesBox.xmax || datoMax>graficaMaestra.valuesBox.xmin){
             graficaMaestra.valuesBox.xmin = dato;
             graficaMaestra.options.annotation.annotations[0].xMin = dato;
             ventanaGrafica.actualizarGraficas();
@@ -162,13 +161,6 @@ function aplicarListenersBotones(ventanaGrafica){
         }
     }
 
-    function actualizarGraficas() {
-        graficaMaestra.update();
-        var min = graficaMaestra.valuesBox.xmin;
-        var max = graficaMaestra.valuesBox.xmax;
-        // grafica.config.data.datasets = conectorDiccionario(max, min, 800);
-        grafica.update();
-    }
 
     $("#play").click(function() {
         if (!$(this).hasClass('active')) {
