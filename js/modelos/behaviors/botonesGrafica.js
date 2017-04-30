@@ -136,6 +136,31 @@ function aplicarListenersBotones(ventanaGrafica){
             return false;
         }
     }
+    function retroceder(){
+        var datoxmin=null;
+        var datoxmax=null;
+        var cambio=null;
+        for (var x = datosOrdenados.length-1; x >=0; x--) {
+            if (datoxmin==null && datosOrdenados[x] < graficaMaestra.valuesBox.xmin) {
+                datoxmin=datosOrdenados[x];
+            }
+            if(datoxmax==null && datosOrdenados[x] < graficaMaestra.valuesBox.xmax){
+                datoxmax=datosOrdenados[x];
+            }
+        }
+        if(datoxmin!=null){
+            cambio= cambiarxMin(datoxmin,datoxmax);
+            if(datoxmax!=null)
+                cambiarxMax(datoxmax);
+        }
+        if(datoxmin==null || !cambio){
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
 //TODO mirar si hace falta valuesBox
     function cambiarxMin(dato,datoMax){
         if(dato<graficaMaestra.valuesBox.xmax || datoMax>graficaMaestra.valuesBox.xmin){
@@ -202,5 +227,18 @@ function aplicarListenersBotones(ventanaGrafica){
             $("#play").removeClass('active');
         }
     });
+
+
+    $("#pasosiguiente").click(function(){
+        reproducir();
+    });
+
+    $("#pasoanterior").click(function(){
+       retroceder();
+    });
+
+
+
+
 
 }
