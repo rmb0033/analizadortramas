@@ -14,6 +14,7 @@ function OpcionesGrafica(){
     var grafica=null;
     var graficaMaestra=null;
     var comparadores=[];
+    var punteros=[];
 
 
     function simularEvento(x,y, sizeX, sizeY){
@@ -191,7 +192,7 @@ function OpcionesGrafica(){
         //Todo hay que filtrar el diccionario de datos con las opciones
         //conectorDiccionario(diccionarioDatos, max, min, numeroPuntos)
         config = {
-            type: 'line',
+            type: 'scatter',
             data: {datasets:conectorDiccionario(null, null, 700)},
             options: {
                 animation: {
@@ -233,44 +234,95 @@ function OpcionesGrafica(){
                         }
                     }]
                 },
-                zoom: {
-                    enabled: true,
-                    mode: 'xy'
-                },
                 onClick: function(e) {
-                    crearTablaPuntos(e);
+                    if ($("#bandera1").hasClass('active')) {
+                        dibujarPuntero(e, "f1");
+                        $("#bandera1").removeClass('active');
+                    }
+                    else if ($("#bandera2").hasClass('active')) {
+                        dibujarPuntero(e, "f2");
+                        $("#bandera2").removeClass('active');
+
+                    }
                 }
             },
 
         };
         getGraficaMaestra();
     };
+    function calcularEjeXPunto(e, graficaDeseada,idCanvas){
+        var maxEjeX=$(idCanvas).width();
+        var maxEjeY=$(idCanvas).height();
+        var ejeX=e.offsetX;
 
-    function crearTablaPuntos(e) {
-        var activeElement = grafica.getElementAtEvent(e);
-        if (activeElement.length > 0) {
-            var resultado = grafica.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index];
-            resultado["label"] = grafica.data.datasets[activeElement[0]._datasetIndex].label;
-        } else {
-            var resultado = encontrarPuntoMasProximo(e, grafica, "#canvasGrafica");
+        var resultados=[];
+        for(var x=maxEjeX-1; x>=0; x--) {
+            for (var y = 0; y < maxEjeY; y++) {
+                var activeElement = graficaDeseada.getElementAtEvent(new simularEvento(x, y));
+                if (activeElement.length > 0) {
+                    var valorX=graficaDeseada.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index].x;
+                    var cadenaResultados=[];
+                    cadenaResultados.push(x);
+                    cadenaResultados.push(valorX);
+                    resultados.push(cadenaResultados);
+                    break;
+                }
+            }
+            if(resultados.length>0){
+                break;
+            }
         }
-        if(resultado!=null){
-            obtenerPuntosTabla(resultado);
+        if(resultados.length==0){
+            return null;
         }else{
-            //aqui hariamos un reset
-            grafica.resetZoom();
+            for(var x=0; x<maxEjeX; x++) {
+                for (var y = 0; y < maxEjeY; y++) {
+                    var activeElement = graficaDeseada.getElementAtEvent(new simularEvento(x, y));
+                    if (activeElement.length == 1) {
+                        var valorX=graficaDeseada.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index].x;
+                        var cadenaResultados=[];
+                        if(resultados.length==1 && valorX != resultados[0][1]){
+                            cadenaResultados.push(x);
+                            cadenaResultados.push(valorX);
+                            resultados.push(cadenaResultados);
+                            break;
+                        }
+                    }
+                }
+                if(resultados.length>1){
+                    break;
+                }
+            }
+        }
+
+        if(resultados.length==2){
+            var diferenciaPixel=Math.abs(resultados[0][0]-resultados[1][0]);
+            var diferenciaValor= Math.abs(resultados[0][1]-resultados[1][1]);
+            var escala=diferenciaValor/diferenciaPixel;
+            var diferencia=parseInt((ejeX-resultados[0][0])*escala);
+            var solucion=resultados[0][1]+diferencia;
+            // console.log(resultados[0][1],diferencia,solucion);
+            return solucion;
+        }else{
+            return null;
         }
     }
-    function obtenerPuntosTabla(resultado){
-        var puntosObtenidos=[];
-        puntosObtenidos=encontrarPuntosizquierda(resultado);
-        puntosObtenidos.push(resultado);
-        comparadores.push(puntosObtenidos);
-        if(comparadores.length>2){
-            comparadores.shift();
-        }
-        if(comparadores.length==2){
 
+    function dibujarPuntero(e, flag) {
+        var ejeX=calcularEjeXPunto(e, grafica,"#canvasGrafica");
+        if(ejeX!=null){
+            insertarPuntero(ejeX,flag);
+            var puntosObtenidos=[];
+            puntosObtenidos=encontrarPuntosizquierda(ejeX);
+            comparadores.push(puntosObtenidos);
+            if(comparadores.length>2){
+                comparadores.shift();
+            }
+            obtenerPuntosTabla();
+        }
+    }
+    function obtenerPuntosTabla(){
+        if(comparadores.length==2){
             //recorremos del primer posición del array y buscamos el equivalente con el segundo
             var solucionesTabla=[];
             for (var x in comparadores[0]){
@@ -322,15 +374,14 @@ function OpcionesGrafica(){
         }
     }
 
-    function encontrarPuntosizquierda(resultado){
+    function encontrarPuntosizquierda(ejeX){
         var puntos=[];
-        var ejex= resultado["x"];
         if(grafica.data.datasets.length>1){
             for(var x=0; x<grafica.data.datasets.length;x++){
-                if(resultado["label"]!= grafica.data.datasets[x].label){
+                // if(resultado["label"]!= grafica.data.datasets[x].label){
                     var puntoEncontrado={};
                     for(var y=grafica.data.datasets[x].data.length-1; y>=0;y--){
-                        if(grafica.data.datasets[x].data[y]["x"]<ejex){
+                        if(grafica.data.datasets[x].data[y]["x"]<=ejeX){
                             puntoEncontrado["x"]=grafica.data.datasets[x].data[y]["x"];
                             puntoEncontrado["y"]=grafica.data.datasets[x].data[y]["y"];
                             puntoEncontrado["label"]=grafica.data.datasets[x].label;
@@ -338,7 +389,7 @@ function OpcionesGrafica(){
                             break;
                         }
                     }
-                }
+                // }
             }
         }
         return puntos;
@@ -453,9 +504,18 @@ function OpcionesGrafica(){
         }
         $(".grafica").html("");
         $(".grafica").html('<canvas id="canvasGrafica" class="canvas"></canvas>'+
+            '<div class="contenedorBanderas">'   +
+            '<button type="button" id="bandera1" class="btn btn-default btn-success">'+
+            '<span class="glyphicon glyphicon-flag"></span>'+
+            '</button>'+
+            '<button type="button" id="bandera2" class="btn btn-default btn-info">'+
+            '<span class="glyphicon glyphicon-flag"></span>'+
+            '</button>'+
+            '</div>'+
             '<div class="contenedorMaestro">'+
             '<canvas id="canvasMaestro" class="canvas"></canvas>'+
             '</div>'+
+
             '<div class="contenedorBotones">'+
             '<button type="button" id="limiteizquierdo" class="btn btn-default">'+
             '<span class="glyphicon glyphicon-indent-left"></span>'+
@@ -483,6 +543,8 @@ function OpcionesGrafica(){
             '<button type="button" id="pasosiguiente" class="btn btn-default">'+
             '<span class="glyphicon glyphicon-forward"></span>'+
             '</button>'+
+            //    .glyphicon .glyphicon-flag
+                //TODO queda añadir la velocidad y el stop
             '</div>'+
             '<div id="tabla" class="table-responsive">'+
             '</div>');
@@ -571,6 +633,49 @@ function OpcionesGrafica(){
         grafica.options.scales.xAxes[0].ticks.max=maxX;
         grafica.options.scales.xAxes[0].ticks.min=minX;
         grafica.valuesBox={xmin:minX, xmax:maxX};
+    }
+    function insertarPuntero(ejeX, flag){
+        var color;
+        if("f1"==flag){
+            color='rgba(11,122,27,0.75)';
+        }else if("f2"==flag){
+            color='rgba(7,186,207,0.75)';
+        }
+        if(punteros.length==0){
+            var listaPunteros={
+                drawTime: "afterDraw",
+                annotations: punteros
+            };
+            grafica.options.annotation=listaPunteros;
+        }
+        var insertado=false;
+        for(var x in punteros){
+            if(punteros[x]["name"]==flag){
+                punteros[x]={
+                    name:flag,
+                    type: 'line',
+                    mode: 'vertical',
+                    scaleID: 'x-axis-1',
+                    value: ejeX,
+                    borderColor:color,
+                    borderWidth: 2
+                };
+                insertado=true;
+            }
+        }
+        if(!insertado){
+            punteros.push({
+                name:flag,
+                type: 'line',
+                mode: 'vertical',
+                scaleID: 'x-axis-1',
+                value: ejeX,
+                borderColor:color,
+                borderWidth: 2
+            });
+        }
+
+        grafica.update();
     }
 
 }

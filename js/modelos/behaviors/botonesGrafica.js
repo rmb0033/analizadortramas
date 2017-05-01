@@ -237,6 +237,22 @@ function aplicarListenersBotones(ventanaGrafica){
        retroceder();
     });
 
+    $("#bandera1").click(function(){
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+        }else{
+            $(this).addClass('active');
+        }
+    });
+
+    $("#bandera2").click(function(){
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+
+        }else{
+            $(this).addClass('active');
+        }
+    });
 
 
 
