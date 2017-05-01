@@ -13,7 +13,7 @@ function OpcionesGrafica(){
     var configMaestro;
     var grafica=null;
     var graficaMaestra=null;
-    var comparadores=[];
+    var comparadores={};
     var punteros=[];
 
 
@@ -314,25 +314,22 @@ function OpcionesGrafica(){
             insertarPuntero(ejeX,flag);
             var puntosObtenidos=[];
             puntosObtenidos=encontrarPuntosizquierda(ejeX);
-            comparadores.push(puntosObtenidos);
-            if(comparadores.length>2){
-                comparadores.shift();
-            }
+            comparadores[flag]=puntosObtenidos;
             obtenerPuntosTabla();
         }
     }
     function obtenerPuntosTabla(){
-        if(comparadores.length==2){
+        if(Object.keys(comparadores).length==2){
             //recorremos del primer posición del array y buscamos el equivalente con el segundo
             var solucionesTabla=[];
-            for (var x in comparadores[0]){
-                var nombreVariable= comparadores[0][x]["label"];
-                for(var y in comparadores[1]){
-                    if(nombreVariable==comparadores[1][y]["label"]){
+            for (var x in comparadores["f1"]){
+                var nombreVariable= comparadores["f1"][x]["label"];
+                for(var y in comparadores["f2"]){
+                    if(nombreVariable==comparadores["f2"][y]["label"]){
                         var contenidoFila=[];
                         contenidoFila.push(nombreVariable);
-                        var numero1=comparadores[0][x]["y"];
-                        var numero2=comparadores[1][y]["y"];
+                        var numero1=comparadores["f1"][x]["y"];
+                        var numero2=comparadores["f2"][y]["y"];
                         contenidoFila.push(numero1);
                         contenidoFila.push(numero2);
                         contenidoFila.push(Math.abs(numero1-numero2));
@@ -347,8 +344,8 @@ function OpcionesGrafica(){
                     '<thead>'+
                     '<tr>'+
                     '<th>Variable</th>'+
-                    '<th>Value1</th>'+
-                    '<th>Value2</th>'+
+                    '<th>Value1(Green)</th>'+
+                    '<th>Value2(Blue)</th>'+
                     '<th>Difference (Abs)</th>'+
                     '<th>Sum</th>'+
                     '</tr>'+
@@ -376,7 +373,7 @@ function OpcionesGrafica(){
 
     function encontrarPuntosizquierda(ejeX){
         var puntos=[];
-        if(grafica.data.datasets.length>1){
+        if(grafica.data.datasets.length>=1){
             for(var x=0; x<grafica.data.datasets.length;x++){
                 // if(resultado["label"]!= grafica.data.datasets[x].label){
                     var puntoEncontrado={};
