@@ -8,6 +8,7 @@ $(function() {
     modalBienvenida();
 
 
+
     // var opcionesVariable= new OpcionesVariable();
     // var opcionGrafica= new OpcionesGrafica();
     //

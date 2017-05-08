@@ -15,8 +15,19 @@ function OpcionesGrafica(){
     var graficaMaestra=null;
     var comparadores={};
     var punteros=[];
+    var self = this;
 
+    this.obtenerReferencia = function(){
+        return this;
+    };
 
+    function lanzarFiltro(){
+        var filtro=new IntervalosGramatica(self.obtenerReferencia(), "hola");
+        console.log(filtro.getIntervalos());
+    }
+    this.getDiccionario=function(){
+        return diccionarioDatos;
+    };
     function simularEvento(x,y, sizeX, sizeY){
         this.x=x;
         this.y=y;
@@ -243,6 +254,8 @@ function OpcionesGrafica(){
                         dibujarPuntero(e, "f2");
                         $("#bandera2").removeClass('active');
 
+                    }else{
+                        lanzarFiltro();
                     }
                 }
             },
