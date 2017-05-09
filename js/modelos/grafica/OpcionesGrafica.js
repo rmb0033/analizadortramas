@@ -16,15 +16,18 @@ function OpcionesGrafica(){
     var comparadores={};
     var punteros=[];
     var self = this;
+    var filtro;
+    var busqueda;
 
     this.obtenerReferencia = function(){
         return this;
     };
 
-    function lanzarFiltro(){
-        var filtro=new IntervalosGramatica(self.obtenerReferencia(), "hola");
-        console.log(filtro.getIntervalos());
+    function inicializarFiltraje(){
+        filtro=new FiltrajeDatos(self.obtenerReferencia());
+        busqueda=new BusquedaDatos(self.obtenerReferencia());
     }
+
     this.getDiccionario=function(){
         return diccionarioDatos;
     };
@@ -198,6 +201,9 @@ function OpcionesGrafica(){
     //Tipo de gráfica (tiempo o x,y)
     //Leyenda gráfica eje x
     //Leyenda gráfica eje y
+
+
+
     this.getOpciones = function(){
         //Crear configuración
         //Todo hay que filtrar el diccionario de datos con las opciones
@@ -263,6 +269,10 @@ function OpcionesGrafica(){
         };
         getGraficaMaestra();
     };
+
+
+
+
     function calcularEjeXPunto(e, graficaDeseada,idCanvas){
         var maxEjeX=$(idCanvas).width();
         var maxEjeY=$(idCanvas).height();
@@ -331,6 +341,9 @@ function OpcionesGrafica(){
             obtenerPuntosTabla();
         }
     }
+
+
+
     function obtenerPuntosTabla(){
         if(Object.keys(comparadores).length==2){
             //recorremos del primer posición del array y buscamos el equivalente con el segundo
@@ -457,7 +470,7 @@ function OpcionesGrafica(){
 
         };
     };
-
+    //TODO eliminar con self
     function actualizarGraficas() {
         graficaMaestra.update();
         var min = graficaMaestra.valuesBox.xmin;
@@ -515,10 +528,10 @@ function OpcionesGrafica(){
         $(".grafica").html("");
         $(".grafica").html('<canvas id="canvasGrafica" class="canvas"></canvas>'+
             '<div class="contenedorBanderas">'   +
-            '<button type="button" id="bandera1" class="btn btn-default btn-success">'+
+            '<button type="button" id="bandera1" class="btn btn-default banderaverde">'+
             '<span class="glyphicon glyphicon-flag"></span>'+
             '</button>'+
-            '<button type="button" id="bandera2" class="btn btn-default btn-info">'+
+            '<button type="button" id="bandera2" class="btn btn-default banderaazul">'+
             '<span class="glyphicon glyphicon-flag"></span>'+
             '</button>'+
             '</div>'+
@@ -556,6 +569,39 @@ function OpcionesGrafica(){
             //    .glyphicon .glyphicon-flag
                 //TODO queda añadir la velocidad y el stop
             '</div>'+
+
+            '<div id="filtro" class="filtraje">'+
+            // '<textarea id="filtro-texto class="form-control" rows="4"></textarea>'+
+            '<input id="texto" type="text" class="form-control" placeholder="Insert a query">'+
+            '<button type="button" id="filtrado" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-filter"></span>'+
+            '</button>'+
+
+            '<button type="button" id="borrarfiltro" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-trash"></span>'+
+            '</button>'+
+
+            '<button type="button" id="busqueda" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-search"></span>'+
+            '</button>'+
+
+
+            '<button type="button" id="busquedaizq" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-chevron-left"></span>'+
+            '</button>'+
+
+            '<button type="button" id="busquedader" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-chevron-right"></span>'+
+            '</button>'+
+            '<button type="button" id="igualarb1" class="btn btn-default banderaverde">'+
+            '<span class="glyphicon glyphicon-flag"></span>'+
+            '</button>'+
+            '<button type="button" id="igualarb2" class="btn btn-default banderaazul">'+
+            '<span class="glyphicon glyphicon-flag"></span>'+
+            '</button>'+
+
+            '</div>'+
+
             '<div id="tabla" class="table-responsive">'+
             '</div>');
         grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
@@ -577,7 +623,11 @@ function OpcionesGrafica(){
         console.log("Puntos graficados Maestra: "+puntosGraficados);
         inicializarCaja(graficaMaestra);
         graficaMaestra.update();
+        //TODO mirar que tipo de grafica es
         aplicarListenersBotones(this);
+        BotonesFiltraje();
+        inicializarFiltraje();
+
     };
 
     this.actualizarGraficas= function(){

@@ -4,12 +4,27 @@
 function IntervalosGramatica(ventanaGrafica,codigo){
     var intervalos=[];
     var diccionarioDatos= ventanaGrafica.getDiccionario();
-    console.log(diccionarioDatos);
-    var code= "readed tag=27 or readed tag=1009";
+
+    var code= codigo;
     code=code.toLowerCase();
     var sentencias=[];
     var separadores=[];
     var contador=0;
+    //Acción cuando se ejecuta
+    calcularIntervalos();
+
+    this.getIntervalos = function(){
+        return intervalos;
+    };
+
+    function calcularIntervalos(){
+        getSentencias(code);
+        intervalos=procesarCodigo();
+
+    }
+
+
+
 
     function getSentencias(code){
         while(contador<code.length){
@@ -30,9 +45,9 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                 break;
             }
         }
-        console.log(sentencias);
-        console.log(separadores);
     }
+
+
     function obtenerSeparador(){
         var separador=[];
         var encontrado=false;
@@ -61,6 +76,8 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         return false;
     }
 
+
+
     function esLetra(caracter){
         if(caracter>="a" && caracter<="z"){
             return true;
@@ -70,6 +87,9 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }
     }
 
+
+
+
     function esNumero(caracter){
         if(caracter>="0" && caracter<="9"){
             return true;
@@ -78,6 +98,9 @@ function IntervalosGramatica(ventanaGrafica,codigo){
             return false;
         }
     }
+
+
+
     function esOperador(caracter){
         if(caracter==">" || caracter=="<" || caracter=="=" || caracter=="!"){
             return true;
@@ -86,6 +109,8 @@ function IntervalosGramatica(ventanaGrafica,codigo){
             return false;
         }
     }
+
+
     function getToken(){
         var token=[];
         var contenedorEspacios=[];
@@ -138,6 +163,8 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }
         return null;
 
+
+
     }
     function getComparador(){
         var numero=[];
@@ -168,6 +195,9 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }
     }
 
+
+
+
     function procesarCodigo(){
         var intervalo=[];
         var solucion=[];
@@ -175,12 +205,12 @@ function IntervalosGramatica(ventanaGrafica,codigo){
             for(var i=0; i<sentencias.length;i++){
                 intervalo.push(procesarSentencia(sentencias[i]));
             }
-            console.log(intervalo);
             var solucion=intervalo[0];
-            console.log(solucion);
             for(var i=0; i<separadores.length;i++){
                 if(separadores[i]=="and"){
                     solucion=logicaAND(solucion, intervalo[i+1]);
+                    //simplificamos solucion
+                    solucion=logicaOR(solucion,[]);
                 }
                 else{
                     solucion=logicaOR(solucion, intervalo[i+1]);
@@ -189,9 +219,11 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }else{
             //TODO mensaje de error o quitar
         }
-        console.log(solucion);
         return solucion;
     }
+
+
+
     function logicaAND(intervalo1, intervalo2){
         var solucion=[];
         for(var int1 in intervalo1){
@@ -235,10 +267,11 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                 }
             }
         }
-        console.log(solucion);
         return solucion;
-
     }
+
+
+
     function logicaOR(intervalo1, intervalo2){
         var valor=[];
         for(var x in intervalo2){
@@ -258,10 +291,6 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                             intervalo1[j][1][1]==limderecho && intervalo1[j][1][0]){
                             cerrado=true;
                         }
-                        console.log(intervalo1[i][0][1],intervalo1[i][1][1]);
-                        console.log(intervalo1[j][0][1],intervalo1[j][1][1]);
-                        console.log(limiz,limderecho);
-                        console.log("nueva encontrada de"+intervalo1.length);
                         var valorizq=[];
                         valorizq.push(true);
                         valorizq.push(limiz);
@@ -295,6 +324,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
 
 
 
+
     function estaEnArray(valor, arrayContenido){
         for(var x in arrayContenido){
             if(arrayContenido[x]==valor){
@@ -303,6 +333,9 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }
         return false;
     }
+
+
+
     function procesarSentencia(sentencia){
         var intervalo=[];
         var solucionIntervalos=[];
@@ -403,6 +436,8 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }
     }
 
+
+
     function validacionVariables(){
         for(var x in sentencias){
             var encontrado=false;
@@ -425,10 +460,6 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         return true;
     }
 
-    getSentencias(code);
-    procesarCodigo();
 
-    this.getIntervalos = function(){
-        return intervalos;
-    }
+
 }
