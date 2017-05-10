@@ -20,6 +20,8 @@ function OpcionesGrafica(){
     var filtro;
     var busqueda;
 
+
+
     this.setDatosFiltrados = function(nuevoResultadoFiltrado){
         datosFiltrados=JSON.parse(JSON.stringify(nuevoResultadoFiltrado));
         graficaMaestra.config.data.datasets=conectorDiccionario(null, null, 300);
@@ -375,14 +377,22 @@ function OpcionesGrafica(){
 
     function dibujarPuntero(e, flag) {
         var ejeX=calcularEjeXPunto(e, grafica,"#canvasGrafica");
+        console.log(ejeX);
+
+
         if(ejeX!=null){
-            insertarPuntero(ejeX,flag);
-            var puntosObtenidos=[];
-            puntosObtenidos=encontrarPuntosizquierda(ejeX);
-            comparadores[flag]=puntosObtenidos;
-            obtenerPuntosTabla();
+            self.obtenerTabla(ejeX, flag);
         }
     }
+
+
+    this.obtenerTabla=function(ejeX, flag){
+        self.insertarPuntero(ejeX,flag);
+        var puntosObtenidos=[];
+        puntosObtenidos=encontrarPuntosizquierda(ejeX);
+        comparadores[flag]=puntosObtenidos;
+        obtenerPuntosTabla();
+    };
 
 
 
@@ -736,12 +746,15 @@ function OpcionesGrafica(){
         grafica.options.scales.xAxes[0].ticks.min=minX;
         grafica.valuesBox={xmin:minX, xmax:maxX};
     }
-    function insertarPuntero(ejeX, flag){
+    this.insertarPuntero= function(ejeX, flag){
+
         var color;
         if("f1"==flag){
             color='rgba(11,122,27,0.75)';
         }else if("f2"==flag){
             color='rgba(7,186,207,0.75)';
+        }else if("f3"==flag){
+            color='rgba(255,0,0,0.75)';
         }
         if(punteros.length==0){
             var listaPunteros={
@@ -776,7 +789,6 @@ function OpcionesGrafica(){
                 borderWidth: 2
             });
         }
-
         grafica.update();
     }
 
