@@ -5,6 +5,8 @@ function FiltrajeDatos(grafica){
     var codigo;
     var intervalos;
     var diccionarioDatos;
+    var graficaContenido=grafica.getGrafica();
+
 
     $('#filtrado').click(function() {
         if($(this).hasClass('active')){
@@ -34,44 +36,42 @@ function FiltrajeDatos(grafica){
     });
 
 
-    //
-    // function filtrarDatosDiccionario(){
-    //     //recorremos el diccionario de datos cada variable
-    //     for(var x in diccionarioDatos){
-    //         var variable= diccionarioDatos[x];
-    //         var size=0;
-    //         //Recorremos cada dato del diccionario
-    //         for(var dato in variable["diccionario"]){
-    //             size++;
-    //             if(!isNaN(dato) && !estaEnElIntervalo(dato,variable["diccionario"][dato][1])) {
-    //                 variable["diccionario"][dato][1] = null;
-    //             }
-    //         }
-    //     }
-    // }
-    function filtrarDatosDiccionario(){
-        var indiceIntervalo=0;
-        for(var x in diccionarioDatos){
-            var variable= diccionarioDatos[x];
-            var datos=variable["diccionario"];
-            var keys = Object.keys(datos);
-            keys.sort();
-            for(var i=0; i<keys.length;i++){
-                var clave= keys[i];
+    function filtrarDatosDiccionario() {
+        for (var vargrafica in graficaContenido.config.data.datasets) {
+            var nombre = graficaContenido.config.data.datasets[vargrafica]["label"];
+            filtrarDatosDiccionarioVariable(nombre);
+        }
+    }
 
-                if(!isNaN(clave)){
-                    while(indiceIntervalo<intervalos.length && clave>intervalos[indiceIntervalo][1][1] ){
-                        indiceIntervalo++;
-                    }
-                    if(indiceIntervalo>=intervalos.length){
-                        variable["diccionario"][clave][1] = null;
-                    }
-                    else if(!estaEnElIntervalo(clave, intervalos[indiceIntervalo])){
-                        variable["diccionario"][clave][1] = null;
+
+    function filtrarDatosDiccionarioVariable(nombre) {
+        for (var x in diccionarioDatos) {
+                var variable = diccionarioDatos[x];
+                var datos = variable["diccionario"];
+                if(nombre==variable["label"]){
+                    var indiceIntervalo = 0;
+                    var keys = Object.keys(datos);
+                    keys.sort();
+                    for (var i = 0; i < keys.length; i++) {
+                        var clave = keys[i];
+
+                        if (!isNaN(clave)) {
+                            while (indiceIntervalo < intervalos.length && clave > intervalos[indiceIntervalo][1][1]) {
+                                indiceIntervalo++;
+                            }
+                            if (indiceIntervalo >= intervalos.length) {
+                                variable["diccionario"][clave][1] = null;
+                            }
+                            else if (!estaEnElIntervalo(clave, intervalos[indiceIntervalo])) {
+                                variable["diccionario"][clave][1] = null;
+                            }
+
+                        }
+
                     }
                 }
 
-            }
+
         }
     }
 

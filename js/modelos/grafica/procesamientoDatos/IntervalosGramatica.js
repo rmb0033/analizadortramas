@@ -206,7 +206,6 @@ function IntervalosGramatica(ventanaGrafica,codigo){
 
 
             var solucion=procesarSentencia(sentencias[0]);
-
             for(var i=0; i<separadores.length;i++){
                 if(separadores[i]=="and"){
                     solucion=logicaAND(solucion, sentencias[i+1]);
@@ -219,27 +218,10 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }
         return solucion;
     }
-    function evaluarIntervalo(dato,solucion){
 
-        for(var indiceIntervalo in solucion){
-
-            if(!isNaN(dato)){
-                if(dato>solucion[indiceIntervalo][1][1]){
-                    return false;
-                }
-                else if(estaEnElIntervalo(dato, solucion[indiceIntervalo])){
-                    console.log(dato, solucion[indiceIntervalo]);
-                    return true;
-                }
-
-            }
-        }
-        return false;
-    }
 
 
     function estaEnElIntervalo(dato,intervalo){
-
         if(dato<intervalo[0][1]){
             return false;
         }
@@ -257,7 +239,6 @@ function IntervalosGramatica(ventanaGrafica,codigo){
 
 
     function logicaAND(solucion, sentencia){
-
         var intervalo=[];
         var solucionIntervalos=[];
         var nombreVariable= sentencia[0];
@@ -273,18 +254,24 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }
 
         for(var variable in diccionarioDatos){
+            var indiceIntervalo=0;
             if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
                 var datos= diccionarioDatos[variable]["diccionario"];
                 var keys = Object.keys(datos);
                 keys.sort();
+
                 for(var x=0; x<keys.length;x++) {
                     var valor=keys[x];
                     if(!isNaN(valor)){
                         ultimaiteracion=valor;
                     }
 
-                    if((evaluador(datos[valor][1],sentencia[2],sentencia[1]) &&
-                        (evaluarIntervalo(valor,solucion)))){
+                    while(indiceIntervalo<solucion.length && valor>solucion[indiceIntervalo][1][1] ){
+                        indiceIntervalo++;
+                    }
+
+                    if((evaluador(datos[valor][1],sentencia[2],sentencia[1])) &&
+                        (indiceIntervalo<solucion.length && estaEnElIntervalo(valor,solucion[indiceIntervalo]))){
                         if(!intervaloAbierto){
                             var segmento=[];
                             segmento.push(true, datos[valor][0]);
@@ -294,9 +281,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                     }
                     //Si no se cumple la condición y el intervalo esta abierto
                     else{
-
                         if(intervaloAbierto){
-
                             intervaloAbierto=false;
                             var segmento=[];
                             segmento.push(false, datos[valor][0]);
@@ -338,19 +323,24 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }
 
         for(var variable in diccionarioDatos){
+            var indiceIntervalo=0;
             if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
                 var datos= diccionarioDatos[variable]["diccionario"];
                 var keys = Object.keys(datos);
                 keys.sort();
+
                 for(var x=0; x<keys.length;x++) {
                     var valor=keys[x];
                     if(!isNaN(valor)){
                         ultimaiteracion=valor;
                     }
 
+                    while(indiceIntervalo<solucion.length && valor>solucion[indiceIntervalo][1][1] ){
+                        indiceIntervalo++;
+                    }
+
                     if((evaluador(datos[valor][1],sentencia[2],sentencia[1])) ||
-                        (evaluarIntervalo(valor,solucion))){
-                        console.log("si cumple",datos[valor],intervaloAbierto,intervalo, solucionIntervalos);
+                        (indiceIntervalo<solucion.length && estaEnElIntervalo(valor,solucion[indiceIntervalo]))){
                         if(!intervaloAbierto){
                             var segmento=[];
                             segmento.push(true, datos[valor][0]);
@@ -360,9 +350,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                     }
                     //Si no se cumple la condición y el intervalo esta abierto
                     else{
-                        console.log("no cumple",datos[valor],intervaloAbierto,intervalo,solucionIntervalos);
                         if(intervaloAbierto){
-
                             intervaloAbierto=false;
                             var segmento=[];
                             segmento.push(false, datos[valor][0]);
@@ -372,7 +360,6 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                         }
                     }
                 }
-                console.log("no cumple y encima sale",datos[valor],intervaloAbierto,intervalo,solucionIntervalos);
                 if(intervaloAbierto){
                     intervaloAbierto=false;
                     var segmento=[];
@@ -383,7 +370,6 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                 }
             }
         }
-        console.log("fin", solucionIntervalos);
         return solucionIntervalos;
     }
 
