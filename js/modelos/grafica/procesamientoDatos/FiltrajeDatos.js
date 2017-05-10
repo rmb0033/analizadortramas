@@ -58,10 +58,10 @@ function FiltrajeDatos(grafica){
             keys.sort();
             for(var i=0; i<keys.length;i++){
                 var clave= keys[i];
+
                 if(!isNaN(clave)){
                     while(indiceIntervalo<intervalos.length && clave>intervalos[indiceIntervalo][1][1] ){
                         indiceIntervalo++;
-                        variable["diccionario"][clave][1] = null;
                     }
                     if(indiceIntervalo>=intervalos.length){
                         variable["diccionario"][clave][1] = null;
@@ -69,7 +69,6 @@ function FiltrajeDatos(grafica){
                     else if(!estaEnElIntervalo(clave, intervalos[indiceIntervalo])){
                         variable["diccionario"][clave][1] = null;
                     }
-
                 }
 
             }

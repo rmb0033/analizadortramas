@@ -303,7 +303,7 @@ function OpcionesGrafica(){
                         $("#bandera2").removeClass('active');
 
                     }else{
-                        lanzarFiltro();
+                        console.log(grafica.config.data);
                     }
                 }
             },

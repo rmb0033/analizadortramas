@@ -350,6 +350,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
 
                     if((evaluador(datos[valor][1],sentencia[2],sentencia[1])) ||
                         (evaluarIntervalo(valor,solucion))){
+                        console.log("si cumple",datos[valor],intervaloAbierto,intervalo, solucionIntervalos);
                         if(!intervaloAbierto){
                             var segmento=[];
                             segmento.push(true, datos[valor][0]);
@@ -359,7 +360,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                     }
                     //Si no se cumple la condición y el intervalo esta abierto
                     else{
-
+                        console.log("no cumple",datos[valor],intervaloAbierto,intervalo,solucionIntervalos);
                         if(intervaloAbierto){
 
                             intervaloAbierto=false;
@@ -371,6 +372,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                         }
                     }
                 }
+                console.log("no cumple y encima sale",datos[valor],intervaloAbierto,intervalo,solucionIntervalos);
                 if(intervaloAbierto){
                     intervaloAbierto=false;
                     var segmento=[];
@@ -381,6 +383,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                 }
             }
         }
+        console.log("fin", solucionIntervalos);
         return solucionIntervalos;
     }
 
