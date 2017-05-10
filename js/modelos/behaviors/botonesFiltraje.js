@@ -5,7 +5,6 @@ function BotonesFiltraje(){
 
     desactivarFuncionesBusqueda();
     desactivarFuncionesFiltro();
-    console.log("llega");
     function desactivarFuncionesBusqueda(){
         $("#busquedaizq").prop("disabled", true);
         $("#busquedader").prop("disabled", true);

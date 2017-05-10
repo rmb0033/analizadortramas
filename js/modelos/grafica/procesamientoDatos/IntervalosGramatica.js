@@ -10,6 +10,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     var sentencias=[];
     var separadores=[];
     var contador=0;
+    var simplificable=true;
     //Acción cuando se ejecuta
     calcularIntervalos();
 
@@ -202,124 +203,185 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         var intervalo=[];
         var solucion=[];
         if(validacionVariables() && sentencias.length-1==separadores.length && sentencias.length!=0){
-            for(var i=0; i<sentencias.length;i++){
-                intervalo.push(procesarSentencia(sentencias[i]));
-            }
-            var solucion=intervalo[0];
+
+
+            var solucion=procesarSentencia(sentencias[0]);
+
             for(var i=0; i<separadores.length;i++){
                 if(separadores[i]=="and"){
-                    solucion=logicaAND(solucion, intervalo[i+1]);
-                    //simplificamos solucion
-                    solucion=logicaOR(solucion,[]);
+                    solucion=logicaAND(solucion, sentencias[i+1]);
                 }
                 else{
-                    solucion=logicaOR(solucion, intervalo[i+1]);
-                }
-            }
-        }else{
-            //TODO mensaje de error o quitar
-        }
-        return solucion;
-    }
-
-
-
-    function logicaAND(intervalo1, intervalo2){
-        var solucion=[];
-        for(var int1 in intervalo1){
-            for(var int2 in intervalo2){
-                var valorMin1=intervalo1[int1][0][1];
-                var valorMin2=intervalo2[int2][0][1];
-                var valorMax1=intervalo1[int1][1][1];
-                var valorMax2=intervalo2[int2][1][1];
-                var limiz=Math.max(valorMin1, valorMin2);
-                var limderecho=Math.min(valorMax1, valorMax2);
-                if(limderecho-limiz>=0){
-                    //Comprobamos si se cumple el limite
-
-                    if((limderecho==valorMax1 && intervalo1[int1][1][0])||
-                        (limderecho==valorMax2 && intervalo2[int2][1][0]) ||
-                        (limiz==limderecho && intervalo1[int1][1][0]
-                        && intervalo2[int2][1][0])){
-                        //es una caso favorable
-                        var intervaloizq=[];
-                        var intervaloder=[];
-                        var nuevoIntervalo=[];
-                        intervaloizq.push(true,limiz);
-                        intervaloder.push(true,limderecho);
-                        nuevoIntervalo.push(intervaloizq);
-                        nuevoIntervalo.push(intervaloder);
-                        solucion.push(nuevoIntervalo);
-
-                    }else{
-                        if(limderecho-limiz!=0){
-                            var intervaloizq=[];
-                            var intervaloder=[];
-                            var nuevoIntervalo=[];
-                            intervaloizq.push(true,limiz);
-                            intervaloder.push(false,limderecho);
-                            nuevoIntervalo.push(intervaloizq);
-                            nuevoIntervalo.push(intervaloder);
-                            solucion.push(nuevoIntervalo);
-                        }
-                    }
+                    solucion=logicaOR(solucion, sentencias[i+1]);
 
                 }
             }
         }
         return solucion;
     }
+    function evaluarIntervalo(dato,solucion){
+
+        for(var indiceIntervalo in solucion){
+
+            if(!isNaN(dato)){
+                if(dato>solucion[indiceIntervalo][1][1]){
+                    return false;
+                }
+                else if(estaEnElIntervalo(dato, solucion[indiceIntervalo])){
+                    console.log(dato, solucion[indiceIntervalo]);
+                    return true;
+                }
+
+            }
+        }
+        return false;
+    }
 
 
+    function estaEnElIntervalo(dato,intervalo){
 
-    function logicaOR(intervalo1, intervalo2){
-        var valor=[];
-        for(var x in intervalo2){
-            intervalo1.push(intervalo2[x]);
+        if(dato<intervalo[0][1]){
+            return false;
+        }
+        else if(dato==intervalo[0][1] && intervalo[0][0]){
+            return true;
+        }
+        else if(dato==intervalo[1][1] && intervalo[1][0]){
+            return true;
+        }
+        else if(dato<intervalo[1][1]){
+            return true;
+        }
+        return false;
+    }
+
+
+    function logicaAND(solucion, sentencia){
+
+        var intervalo=[];
+        var solucionIntervalos=[];
+        var nombreVariable= sentencia[0];
+        var intervaloAbierto=false;
+        var tamano=0;
+        var ultimaiteracion;
+        for(var variable in diccionarioDatos){
+            if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
+                for(var x in diccionarioDatos[variable]["diccionario"]){
+                    tamano++;
+                }
+            }
         }
 
-        var cambio=false;
-        for(var i=0;i<intervalo1.length;i++){
-            for(var j=0;j<intervalo1.length;j++){
-                if(i!=j){
-                    if(intervalo1[i][1][1]>=intervalo1[j][0][1] &&
-                        intervalo1[j][1][1]>=intervalo1[i][0][1]){
-                        var limiz=Math.min(intervalo1[i][0][1], intervalo1[j][0][1]);
-                        var limderecho=Math.max(intervalo1[i][1][1], intervalo1[j][1][1]);
-                        var cerrado=false;
-                        if((intervalo1[i][1][1]==limderecho && intervalo1[i][1][0])||
-                            intervalo1[j][1][1]==limderecho && intervalo1[j][1][0]){
-                            cerrado=true;
+        for(var variable in diccionarioDatos){
+            if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
+                var datos= diccionarioDatos[variable]["diccionario"];
+                var keys = Object.keys(datos);
+                keys.sort();
+                for(var x=0; x<keys.length;x++) {
+                    var valor=keys[x];
+                    if(!isNaN(valor)){
+                        ultimaiteracion=valor;
+                    }
+
+                    if((evaluador(datos[valor][1],sentencia[2],sentencia[1]) &&
+                        (evaluarIntervalo(valor,solucion)))){
+                        if(!intervaloAbierto){
+                            var segmento=[];
+                            segmento.push(true, datos[valor][0]);
+                            intervalo.push(segmento);
+                            intervaloAbierto=true;
                         }
-                        var valorizq=[];
-                        valorizq.push(true);
-                        valorizq.push(limiz);
-                        var valorder=[];
-                        valorder.push(cerrado);
-                        valorder.push(limderecho);
-                        valor.push(valorizq);
-                        valor.push(valorder);
-                        cambio=true;
-                        break;
+                    }
+                    //Si no se cumple la condición y el intervalo esta abierto
+                    else{
+
+                        if(intervaloAbierto){
+
+                            intervaloAbierto=false;
+                            var segmento=[];
+                            segmento.push(false, datos[valor][0]);
+                            intervalo.push(segmento);
+                            solucionIntervalos.push(intervalo);
+                            intervalo=[];
+                        }
                     }
                 }
+                if(intervaloAbierto){
+                    intervaloAbierto=false;
+                    var segmento=[];
+                    segmento.push(true, datos[ultimaiteracion][0]);
+                    intervalo.push(segmento);
+                    solucionIntervalos.push(intervalo);
+                    intervalo=[];
+                }
             }
-            if(cambio){
-                break;
+        }
+        return solucionIntervalos;
+    }
+
+
+
+    function logicaOR(solucion, sentencia){
+
+        var intervalo=[];
+        var solucionIntervalos=[];
+        var nombreVariable= sentencia[0];
+        var intervaloAbierto=false;
+        var tamano=0;
+        var ultimaiteracion;
+        for(var variable in diccionarioDatos){
+            if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
+                for(var x in diccionarioDatos[variable]["diccionario"]){
+                    tamano++;
+                }
             }
         }
 
-        if(cambio){
-            var nuevoIntervalo=[];
-            for(var k=0; k<intervalo1.length;k++){
-                if(k!=i && k!=j){
-                    nuevoIntervalo.push(intervalo1[k]);
+        for(var variable in diccionarioDatos){
+            if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
+                var datos= diccionarioDatos[variable]["diccionario"];
+                var keys = Object.keys(datos);
+                keys.sort();
+                for(var x=0; x<keys.length;x++) {
+                    var valor=keys[x];
+                    if(!isNaN(valor)){
+                        ultimaiteracion=valor;
+                    }
+
+                    if((evaluador(datos[valor][1],sentencia[2],sentencia[1])) ||
+                        (evaluarIntervalo(valor,solucion))){
+                        if(!intervaloAbierto){
+                            var segmento=[];
+                            segmento.push(true, datos[valor][0]);
+                            intervalo.push(segmento);
+                            intervaloAbierto=true;
+                        }
+                    }
+                    //Si no se cumple la condición y el intervalo esta abierto
+                    else{
+
+                        if(intervaloAbierto){
+
+                            intervaloAbierto=false;
+                            var segmento=[];
+                            segmento.push(false, datos[valor][0]);
+                            intervalo.push(segmento);
+                            solucionIntervalos.push(intervalo);
+                            intervalo=[];
+                        }
+                    }
+                }
+                if(intervaloAbierto){
+                    intervaloAbierto=false;
+                    var segmento=[];
+                    segmento.push(true, datos[ultimaiteracion][0]);
+                    intervalo.push(segmento);
+                    solucionIntervalos.push(intervalo);
+                    intervalo=[];
                 }
             }
-            nuevoIntervalo.push(valor);
-            return logicaOR(nuevoIntervalo, []);
         }
-        return intervalo1;
+        return solucionIntervalos;
     }
 
 
@@ -340,48 +402,65 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         var intervalo=[];
         var solucionIntervalos=[];
         var nombreVariable= sentencia[0];
-        var index=0;
+        var intervaloAbierto=false;
+        var tamano=0;
+        var ultimaiteracion;
         for(var variable in diccionarioDatos){
             if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
+                for(var x in diccionarioDatos[variable]["diccionario"]){
+                    tamano++;
+                }
+            }
+        }
 
-                for(var x in diccionarioDatos[variable]["diccionario"]) {
-                    if(evaluador(diccionarioDatos[variable]["diccionario"][x][1],sentencia[2],sentencia[1])){
-                        if(index==0){
-                            var segmento=[];
-                            segmento.push(true, diccionarioDatos[variable]["diccionario"][x][0]);
-                            intervalo.push(segmento);
-                            index++;
-                        }
-
+        for(var variable in diccionarioDatos){
+            if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
+                var datos= diccionarioDatos[variable]["diccionario"];
+                var keys = Object.keys(datos);
+                keys.sort();
+                for(var x=0; x<keys.length;x++) {
+                    var valor=keys[x];
+                    if(!isNaN(valor)){
+                        ultimaiteracion=valor;
                     }
-                    else{
-                        if(index==1){
-                            index=0;
+
+                    if(evaluador(datos[valor][1],sentencia[2],sentencia[1])){
+                        if(!intervaloAbierto){
                             var segmento=[];
-                            segmento.push(false, diccionarioDatos[variable]["diccionario"][x][0])
+                            segmento.push(true, datos[valor][0]);
+                            intervalo.push(segmento);
+                            intervaloAbierto=true;
+                        }
+                    }
+                    //Si no se cumple la condición y el intervalo esta abierto
+                    else{
+
+                        if(intervaloAbierto){
+
+                            intervaloAbierto=false;
+                            var segmento=[];
+                            segmento.push(false, datos[valor][0]);
                             intervalo.push(segmento);
                             solucionIntervalos.push(intervalo);
                             intervalo=[];
                         }
                     }
-
                 }
-                if(index==1){
-                    index=0;
+                if(intervaloAbierto){
+                    intervaloAbierto=false;
                     var segmento=[];
-                    segmento.push(true, diccionarioDatos[variable]["diccionario"][x][0]);
+                    segmento.push(true, datos[ultimaiteracion][0]);
                     intervalo.push(segmento);
                     solucionIntervalos.push(intervalo);
                     intervalo=[];
                 }
-                break;
             }
-
         }
         return solucionIntervalos;
 
-
     }
+
+
     function evaluador(valor1, valor2, comparador){
         switch(comparador){
             case ">":

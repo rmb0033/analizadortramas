@@ -7,6 +7,7 @@ function OpcionesGrafica(){
     //TODO diferenciar llamadas #canvas o #canvasMaestro, tenemos que pasar el #creado o algo
     //estudiar aplicabilidad
     var diccionarioDatos=[];
+    var datosFiltrados=[];
     var color = Chart.helpers.color;
     var timeFormat = 'MM/DD/YYYY HH:mm:ss:SSS';
     var config;
@@ -19,6 +20,21 @@ function OpcionesGrafica(){
     var filtro;
     var busqueda;
 
+    this.setDatosFiltrados = function(nuevoResultadoFiltrado){
+        datosFiltrados=JSON.parse(JSON.stringify(nuevoResultadoFiltrado));
+        graficaMaestra.config.data.datasets=conectorDiccionario(null, null, 300);
+        self.actualizarGraficas();
+
+    };
+
+    this.eliminarFiltro = function(){
+
+        datosFiltrados=JSON.parse(JSON.stringify(diccionarioDatos));
+        graficaMaestra.config.data.datasets=conectorDiccionario(null, null, 300);
+        self.actualizarGraficas();
+
+    };
+
     this.obtenerReferencia = function(){
         return this;
     };
@@ -28,9 +44,25 @@ function OpcionesGrafica(){
         busqueda=new BusquedaDatos(self.obtenerReferencia());
     }
 
+
+    //esto es necesario porque entre el envio de objetos en javascript diccionario,
+    //que está definido en principio como un diccionario pasa a ser un array
     this.getDiccionario=function(){
-        return diccionarioDatos;
+        var nuevoDiccionario = JSON.parse(JSON.stringify(diccionarioDatos));
+        for(var x in diccionarioDatos){
+            var diccionarioVariable= diccionarioDatos[x]["diccionario"];
+            nuevoDiccionario[x]["diccionario"]={};
+            for(var variableDiccionario in diccionarioVariable){
+                var datos=[];
+                for(var y in diccionarioVariable[variableDiccionario]){
+                    datos.push(diccionarioVariable[variableDiccionario][y]);
+                }
+                nuevoDiccionario[x]["diccionario"][variableDiccionario]=datos;
+            }
+        }
+        return nuevoDiccionario;
     };
+
     function simularEvento(x,y, sizeX, sizeY){
         this.x=x;
         this.y=y;
@@ -80,6 +112,7 @@ function OpcionesGrafica(){
     };
     this.addOpcionVariable= function(opcion){
         diccionarioDatos.push(opcion);
+        diccionarioDatos=self.getDiccionario();
     };
     this.setTipodeCuerda= function(tipoCuerda){
         if(tipoCuerda=="Cuerda"){
@@ -124,23 +157,28 @@ function OpcionesGrafica(){
 
     function conectorDiccionario(max, min, numeroPuntos){
         //clonamos el objeto
-        var solucion = JSON.parse(JSON.stringify(diccionarioDatos));
+        var solucion = JSON.parse(JSON.stringify(datosFiltrados));
         var puntosTotales=0;
-        for(var variable in diccionarioDatos) {
+        for(var variable in datosFiltrados) {
             //Datos no tiene atributo lenght
-            puntosTotales+=Object.keys(diccionarioDatos[variable]["diccionario"]).length;
+            puntosTotales+=Object.keys(datosFiltrados[variable]["diccionario"]).length;
         }
 
-        for(var variable in diccionarioDatos){
+        for(var variable in datosFiltrados){
 
-            var datos= diccionarioDatos[variable]["diccionario"];
+            var datos= datosFiltrados[variable]["diccionario"];
+            // var fallo= datosFiltrados[variable]["diccionario"];
+
             // Diezmado y ordenamiento de los datos
             //Ordenamos la linea temporal podemos modularlo como como opcion
             var keys = Object.keys(datos);
+
             keys.sort();
+
+
             // console.log(keys);
             var solucionOrdenada=[];
-            var numeroDiezMado=parseInt((puntosTotales/numeroPuntos)/diccionarioDatos.length);
+            var numeroDiezMado=parseInt((puntosTotales/numeroPuntos)/datosFiltrados.length);
             if(numeroDiezMado==0){
                 numeroDiezMado=1;
             }
@@ -148,6 +186,7 @@ function OpcionesGrafica(){
                 for(var i=0; i<keys.length;i+=numeroDiezMado){
                     var clave= keys[i];
                     var valoresOrdenados={};
+
                     valoresOrdenados["x"]=datos[clave][0];
                     valoresOrdenados["y"]=datos[clave][1];
                     solucionOrdenada.push(valoresOrdenados);
@@ -167,13 +206,15 @@ function OpcionesGrafica(){
                 }
                 for(var x=keys.length-1;x>=0;x--){
                     var clave= keys[x];
-                    if(datos[clave][0]<=max){
+                    if(datos[clave][0]<=max && datos[clave][0]!=null){
                         mayor=x;
                         break;
                     }
                 }
-                var numeroDiezMado=parseInt(((mayor-menor)/numeroPuntos)/diccionarioDatos.length);
-                if(!parseInt(((mayor-menor)/numeroPuntos)%diccionarioDatos.length))
+
+
+                var numeroDiezMado=parseInt(((mayor-menor)/numeroPuntos)/datosFiltrados.length);
+                if(!parseInt(((mayor-menor)/numeroPuntos)%datosFiltrados.length))
                     numeroDiezMado++;
 
                 if(numeroDiezMado==0){
@@ -208,6 +249,7 @@ function OpcionesGrafica(){
         //Crear configuración
         //Todo hay que filtrar el diccionario de datos con las opciones
         //conectorDiccionario(diccionarioDatos, max, min, numeroPuntos)
+        datosFiltrados=JSON.parse(JSON.stringify(diccionarioDatos));
         config = {
             type: 'scatter',
             data: {datasets:conectorDiccionario(null, null, 700)},
@@ -402,16 +444,16 @@ function OpcionesGrafica(){
         if(grafica.data.datasets.length>=1){
             for(var x=0; x<grafica.data.datasets.length;x++){
                 // if(resultado["label"]!= grafica.data.datasets[x].label){
-                    var puntoEncontrado={};
-                    for(var y=grafica.data.datasets[x].data.length-1; y>=0;y--){
-                        if(grafica.data.datasets[x].data[y]["x"]<=ejeX){
-                            puntoEncontrado["x"]=grafica.data.datasets[x].data[y]["x"];
-                            puntoEncontrado["y"]=grafica.data.datasets[x].data[y]["y"];
-                            puntoEncontrado["label"]=grafica.data.datasets[x].label;
-                            puntos.push(puntoEncontrado);
-                            break;
-                        }
+                var puntoEncontrado={};
+                for(var y=grafica.data.datasets[x].data.length-1; y>=0;y--){
+                    if(grafica.data.datasets[x].data[y]["x"]<=ejeX){
+                        puntoEncontrado["x"]=grafica.data.datasets[x].data[y]["x"];
+                        puntoEncontrado["y"]=grafica.data.datasets[x].data[y]["y"];
+                        puntoEncontrado["label"]=grafica.data.datasets[x].label;
+                        puntos.push(puntoEncontrado);
+                        break;
                     }
+                }
                 // }
             }
         }
@@ -567,7 +609,7 @@ function OpcionesGrafica(){
             '<span class="glyphicon glyphicon-forward"></span>'+
             '</button>'+
             //    .glyphicon .glyphicon-flag
-                //TODO queda añadir la velocidad y el stop
+            //TODO queda añadir la velocidad y el stop
             '</div>'+
 
             '<div id="filtro" class="filtraje">'+

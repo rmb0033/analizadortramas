@@ -12,10 +12,11 @@ function BusquedaDatos(grafica){
             codigo = $('#texto').val();
             var gramatica=new IntervalosGramatica(grafica, codigo);
             intervalos=gramatica.getIntervalos();
-            console.log(intervalos);
+
             if(intervalos.length==0){
                 alert("Query has not been resolved: data not found");
             }
+
         }
     });
 
