@@ -19,6 +19,11 @@ function OpcionesGrafica(){
     var self = this;
     var filtro;
     var busqueda;
+    var tipografica="xy";
+
+    this.getTipoGrafica=function(){
+        return tipografica;
+    };
 
 
 
@@ -125,7 +130,9 @@ function OpcionesGrafica(){
         }
 
     };
+    //TODO cambiar el nombre
     this.setTipoGrafica=function(tipoGrafica){
+        tipografica="temporal";
         if(tipoGrafica=="tiempo"){
             config["options"]["scales"]["xAxes"]=[{
                 type: "time",
@@ -311,7 +318,6 @@ function OpcionesGrafica(){
             },
 
         };
-        getGraficaMaestra();
     };
 
 
@@ -521,15 +527,6 @@ function OpcionesGrafica(){
 
         };
     };
-    //TODO eliminar con self
-    function actualizarGraficas() {
-        graficaMaestra.update();
-        var min = graficaMaestra.valuesBox.xmin;
-        var max = graficaMaestra.valuesBox.xmax;
-        grafica.config.data.datasets = conectorDiccionario(max, min, 700);
-        grafica.update();
-
-    }
 
     function cambiarCaja(e){
         var activeElement = graficaMaestra.getElementAtEvent(e);
@@ -547,7 +544,7 @@ function OpcionesGrafica(){
 
                 actualizarBorde(graficaMaestra,"xMin",puntoEjeX);
                 graficaMaestra.valuesBox.xmin=puntoEjeX;
-                actualizarGraficas();
+                self.actualizarGraficas();
             }
         }
         else if(($("#limitederecho").hasClass('active'))){
@@ -555,7 +552,7 @@ function OpcionesGrafica(){
 
                 actualizarBorde(graficaMaestra, "xMax", puntoEjeX);
                 graficaMaestra.valuesBox.xmax = puntoEjeX;
-                actualizarGraficas();
+                self.actualizarGraficas();
             }
         }
     }
@@ -623,38 +620,43 @@ function OpcionesGrafica(){
 
             '<div id="filtro" class="filtraje">'+
             // '<textarea id="filtro-texto class="form-control" rows="4"></textarea>'+
-            '<input id="texto" type="text" class="form-control" placeholder="Insert a query">'+
-            '<button type="button" id="filtrado" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-filter"></span>'+
-            '</button>'+
-
-            '<button type="button" id="borrarfiltro" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-trash"></span>'+
-            '</button>'+
-
-            '<button type="button" id="busqueda" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-search"></span>'+
-            '</button>'+
-
-
-            '<button type="button" id="busquedaizq" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-chevron-left"></span>'+
-            '</button>'+
-
-            '<button type="button" id="busquedader" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-chevron-right"></span>'+
-            '</button>'+
-            '<button type="button" id="igualarb1" class="btn btn-default banderaverde">'+
-            '<span class="glyphicon glyphicon-flag"></span>'+
-            '</button>'+
-            '<button type="button" id="igualarb2" class="btn btn-default banderaazul">'+
-            '<span class="glyphicon glyphicon-flag"></span>'+
-            '</button>'+
-
             '</div>'+
 
             '<div id="tabla" class="table-responsive">'+
             '</div>');
+
+        if(tipografica=="temporal"){
+            var cadenaHTML='<input id="texto" type="text" class="form-control" placeholder="Insert a query">'+
+                '<button type="button" id="filtrado" class="btn btn-default">'+
+                '<span class="glyphicon glyphicon-filter"></span>'+
+                '</button>'+
+
+                '<button type="button" id="borrarfiltro" class="btn btn-default">'+
+                '<span class="glyphicon glyphicon-trash"></span>'+
+                '</button>'+
+
+                '<button type="button" id="busqueda" class="btn btn-default">'+
+                '<span class="glyphicon glyphicon-search"></span>'+
+                '</button>'+
+
+
+                '<button type="button" id="busquedaizq" class="btn btn-default">'+
+                '<span class="glyphicon glyphicon-chevron-left"></span>'+
+                '</button>'+
+
+                '<button type="button" id="busquedader" class="btn btn-default">'+
+                '<span class="glyphicon glyphicon-chevron-right"></span>'+
+                '</button>'+
+                '<button type="button" id="igualarb1" class="btn btn-default banderaverde">'+
+                '<span class="glyphicon glyphicon-flag"></span>'+
+                '</button>'+
+                '<button type="button" id="igualarb2" class="btn btn-default banderaazul">'+
+                '<span class="glyphicon glyphicon-flag"></span>'+
+                '</button>';
+            $('#filtro').html(cadenaHTML);
+        }
+
+
         grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
         // console.log(window.myLine);
         // console.log(config);
@@ -666,7 +668,15 @@ function OpcionesGrafica(){
     };
 
     this.pintarGraficaMaestra= function(){
-        graficaMaestra = new Chart(document.getElementById("canvasMaestro").getContext("2d"), configMaestro);
+        if(tipografica=="temporal"){
+            getGraficaMaestra();
+            graficaMaestra = new Chart(document.getElementById("canvasMaestro").getContext("2d"), configMaestro);
+        }else{
+            getGraficaMaestraXY();
+            graficaMaestra = new Chart(document.getElementById("canvasMaestro").getContext("2d"), configMaestro);
+
+        }
+
         var puntosGraficados=0;
         for(var x in graficaMaestra.data.datasets){
             puntosGraficados+=graficaMaestra.data.datasets[x].data.length;
@@ -680,14 +690,205 @@ function OpcionesGrafica(){
         inicializarFiltraje();
 
     };
+    function calcularGraficaMaestraXY(diezmado) {
+        var solucion = JSON.parse(JSON.stringify(datosFiltrados));
+        var puntosTotales=0;
+        for(var variable in datosFiltrados) {
+            //Datos no tiene atributo lenght
+            puntosTotales+=Object.keys(datosFiltrados[variable]["diccionario"]).length;
+        }
+
+        for(var variable in datosFiltrados){
+
+            var datos= datosFiltrados[variable]["diccionario"];
+            // var fallo= datosFiltrados[variable]["diccionario"];
+
+            // Diezmado y ordenamiento de los datos
+            //Ordenamos la linea temporal podemos modularlo como como opcion
+            var keys = Object.keys(datos);
+
+            keys=keys.sort();
+
+
+            // console.log(keys);
+            var solucionOrdenada=[];
+            var numeroDiezMado=parseInt((puntosTotales/diezmado)/datosFiltrados.length);
+            if(numeroDiezMado==0){
+                numeroDiezMado=1;
+            }
+
+            for(var i=0; i<keys.length;i+=numeroDiezMado){
+                var clave= keys[i];
+                var valoresOrdenados={};
+
+                valoresOrdenados["x"]=parseInt(clave);
+                valoresOrdenados["y"]=datos[clave][0];
+                solucionOrdenada.push(valoresOrdenados);
+
+            }
+            solucion[variable]["data"]=solucionOrdenada;
+
+        }
+        // console.log(solucion);
+        //   console.log(diccionarioDatos);
+        return solucion;
+    }
+
+
+    //TODO reutilizar codigo cambiando solo la llamada estudiar
+    function getGraficaMaestraXY(){
+        configMaestro = {
+            type: 'scatter',
+            data: {datasets:calcularGraficaMaestraXY(300)},
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend:{
+                    display:false
+                },
+                elements:{
+                    line:{
+                        tension: 0.0001 //Tipo linea
+//                      tension: 0.4 //tipo de cuerda
+                    }
+                },
+                tooltips: {enabled: false},
+                hover: {mode: null},
+                scales: {
+                    xAxes: [{
+                        type: "time",
+                        display: false,
+                        time: {
+
+                            format: timeFormat,
+                            tooltipFormat: 'MM/DD/YYYY HH:mm:ss:SSS'
+                        },
+                        ticks: {
+                            autoSkip: true,
+                            minTicksLimit:1,
+                            maxTicksLimit: 8
+
+                        },
+                        //hasta aqui
+                        scaleLabel: {
+                            display: false,
+                            labelString: 'Date'
+                        }
+                    } ],
+                    yAxes:[{
+                        display:false
+                    }]
+                },
+                onClick: function(e) {
+                    cambiarCaja(e);
+                }
+            },
+
+        };
+    }
+
 
     this.actualizarGraficas= function(){
         graficaMaestra.update();
         var min = graficaMaestra.valuesBox.xmin;
         var max = graficaMaestra.valuesBox.xmax;
-        grafica.config.data.datasets = conectorDiccionario(max, min, 700);
+        if(tipografica=="temporal"){
+            grafica.config.data.datasets = conectorDiccionario(max, min, 700);
+        }
+        else{
+            grafica.config.data.datasets = conectorXY(max, min, 700);
+        }
         grafica.update();
     };
+
+    function conectorXY(max, min, numeroPuntos){
+        //clonamos el objeto
+        var solucion = JSON.parse(JSON.stringify(datosFiltrados));
+        var puntosTotales=0;
+        for(var variable in datosFiltrados) {
+            //Datos no tiene atributo lenght
+            puntosTotales+=Object.keys(datosFiltrados[variable]["diccionario"]).length;
+        }
+
+        for(var variable in datosFiltrados){
+
+            var datos= datosFiltrados[variable]["diccionario"];
+            // var fallo= datosFiltrados[variable]["diccionario"];
+
+            // Diezmado y ordenamiento de los datos
+            //Ordenamos la linea temporal podemos modularlo como como opcion
+            var keys = Object.keys(datos);
+
+            keys=keys.sort();
+
+
+            // console.log(keys);
+            var solucionOrdenada=[];
+            var numeroDiezMado=parseInt((puntosTotales/numeroPuntos)/datosFiltrados.length);
+            if(numeroDiezMado==0){
+                numeroDiezMado=1;
+            }
+            if(min==null || max==null){
+                for(var i=0; i<keys.length;i+=numeroDiezMado){
+                    var clave= keys[i];
+                    var valoresOrdenados={};
+
+                    valoresOrdenados["x"]=datos[clave][0];
+                    valoresOrdenados["y"]=datos[clave][1];
+                    solucionOrdenada.push(valoresOrdenados);
+
+                }
+                solucion[variable]["data"]=solucionOrdenada;
+            }
+            else{
+                var menor=0;
+                var mayor=0;
+                for(var x=0;x<keys.length;x++){
+                    var clave= parseInt(keys[x]);
+                    if(clave>=min){
+                        menor=x;
+                        break;
+                    }
+                }
+                for(var x=keys.length-1;x>=0;x--){
+                    var clave= parseInt(keys[x]);
+                    if(clave<=max && clave!=null){
+                        mayor=x;
+                        break;
+                    }
+                }
+
+
+                var numeroDiezMado=parseInt(((mayor-menor)/numeroPuntos)/datosFiltrados.length);
+                if(!parseInt(((mayor-menor)/numeroPuntos)%datosFiltrados.length))
+                    numeroDiezMado++;
+
+                if(numeroDiezMado==0){
+                    numeroDiezMado=1;
+                }
+                // console.log(mayor-menor+" puntos", keys.length+" total.", numeroDiezMado+" diezmado");
+                for(var x=menor;x<=mayor;x+=numeroDiezMado) {
+                    var clave= keys[x];
+                    var valoresOrdenados={};
+                    valoresOrdenados["x"]=datos[clave][0];
+                    valoresOrdenados["y"]=datos[clave][1];
+                    solucionOrdenada.push(valoresOrdenados);
+
+                }
+                solucion[variable]["data"]=solucionOrdenada;
+            }
+        }
+        // console.log(solucion);
+        //   console.log(diccionarioDatos);
+        return solucion;
+
+    }
+
+
+
+
+
+
     this.getGrafica=function(){
         return grafica;
     };
