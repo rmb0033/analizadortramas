@@ -37,6 +37,15 @@ function aplicarListerVariables(fileLoader) {
 
         // cargarOpciones(fileLoader);
     });
+
+    $("#selector-graficas").change(function() {
+        $("#grafica").html("");
+        cargarOpciones(fileLoader);
+
+        //TODO resetear checkboxes tambien
+    });
+
+
 }
 
 function cargarVariablesOpciones(fileLoader) {
@@ -52,28 +61,33 @@ function cargarOpciones(fileLoader) {
     //TODO hacer clase parametros grafica y otra con checkboxes
     var variables = cargarVariablesOpciones(fileLoader);
     var ficheros= cargarFicherosOpciones(fileLoader);
-    var tipoGrafica = "Gráfica temporal";
+    //aqui cargamos una u otra
+    // var tipoGrafica = "Gráfica temporal";
     //TODO en la version alfa solo vamos a tener grafica temporal
-    // var tipoGrafica= $("#selector-graficas").val();
+    var tipoGrafica= $("#selector-graficas").val();
     var opciones={};
     opciones["variables"]=variables;
     opciones["ficheros"]=ficheros;
     opciones["tipoGrafica"]=tipoGrafica;
     //TODO hay que hacer un campo donde se pueda guardar esto
     opciones["maximoPuntos"]=600;
-    if(variables.length >0 & ficheros.length >0) {
-        obtenerDatosFecha(fileLoader, opciones);
+
+
+    if(tipoGrafica== "X Y chart"){
+        if(variables.length ==2 & ficheros.length >0){
+            obtenerDatosGraficaXY(fileLoader,opciones);
+        }
     }
+    else{
+        if(variables.length >0 & ficheros.length >0) {
+            obtenerDatosFecha(fileLoader, opciones);
+        }
+    }
+
+
 }
 
-function aplicarListenerTipoGrafica() {
-    $("#selector-graficas").change(function() {
-        // $("#grafica").html("");
-        //TODO resetear checkboxes tambien
-    });
-
-}
-
+//TODO quitar esta funcion
 function obtenerDatosFecha(fileLoader, opciones) {
 
 
@@ -131,35 +145,118 @@ function obtenerDatosGraficaTemporal(opciones,variblesCargadasBiblioteca ) {
 }
 
 
-function obtenerDatosGraficaXY(opcionesVariables,opcionesFichero,variblesCargadasBiblioteca ){
-    var solucion=[];
-    var valores=[];
+function obtenerDatosGraficaXY(fileLoader,opciones ){
+    var variablesBiblioteca=fileLoader.getBiblioteca().getVariables();
+    var opcionGrafica= new OpcionesGrafica();
+    var opcionesVariables = opciones["variables"];
+    var opcionesFichero = opciones["ficheros"];
+    var limitePuntos=opciones["maximoPuntos"];
+    var nombres=[];
+    var paresDatos=[];
+    //tenemos que ordenar las 2 colecciones con las que queremos trabajar
     for (var indexVariable in opcionesVariables){
-        valores.push(indexVariable);
+        var solucionVariable={};
+        var valoresVar =variablesBiblioteca[opcionesVariables[indexVariable]].getValores();
+        for(var indexValor in valoresVar){
+            //Comprobamos que la variable que está almacenada en la biblioteca, se encuentra en el fichero seleccionado
+            //por el usuario
+            if($.inArray(valoresVar[indexValor].getFichero(),opcionesFichero)>-1){
+                var solVal=[];
+                solVal[0]=valoresVar[indexValor].getFechams();
+                solVal[1]=valoresVar[indexValor].getValor();
+                solucionVariable[valoresVar[indexValor].getFechams()]=solVal;
+
+            }
+        }
+        nombres.push(opcionesVariables[indexVariable]);
+        paresDatos.push(solucionVariable);
+
     }
 
-    var valores1= variblesCargadasBiblioteca[opcionesVariables[valores[0]]].getValores();
-    var valores2= variblesCargadasBiblioteca[opcionesVariables[valores[1]]].getValores();
-    //Nos aseguramos que el numero de valores de 1 sea menor o igual que el numero de valores de 2
-    if(valores1.length>valores2.length){
-        valores2= variblesCargadasBiblioteca[opcionesVariables[valores[1]]].getValores();
-        valores1= variblesCargadasBiblioteca[opcionesVariables[valores[0]]].getValores();
-    }
-    var indexSolucionDatos=0;
-    var SolucionDatos=[];
-    for(var indexValor in valores1){
-        if(($.inArray(valores1[indexValor].getFichero(),opcionesFichero)>-1)
-            && $.inArray(valores2[indexValor].getFichero(),opcionesFichero)>-1){
-            var solVal=[];
-            solVal[0]=valores1[indexValor].getValor();
-            solVal[1]=valores2[indexValor].getValor();
-            SolucionDatos[indexSolucionDatos]=solVal;
-            indexSolucionDatos++;
+    var valores1=Object.keys(paresDatos[0]).sort();
+    var valores2=Object.keys(paresDatos[1]).sort();
+    // var sol=[];
+    // sol[0]=paresDatos[0][valores1[i]][1];
+    // sol[1]=paresDatos[1][valores2[j]][1];
+    // tablaXY[paresDatos[1][valores2[j]][0]]=sol;
+    var tablaXY=[];
+    if(valores2.length>0 && valores1.length>0){
+        var sincronizados=false;
+        var i=0;
+        var j=0;
+        var valor1;
+        var valor2;
+        while(i<valores1.length && j <valores2.length){
+
+            valor1=paresDatos[0][valores1[i]];
+            valor2=paresDatos[1][valores2[j]];
+            if(isNaN(valores1[i])){
+                i++;
+            }
+            else if(isNaN(valores2[j])){
+                j++;
+            }
+            else {
+                if (valor1[0] < valor2[0]) {
+                    if (!sincronizados) {
+                        while (valor1[0] >= valor2[0] || i < valor1.length - 1) {
+                            i++;
+                            valor1 = paresDatos[0][valores1[i]];
+                        }
+                        if (i < valor1.length - 1) {
+                            sincronizados = true;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        //Aqui deberia hacer las cosas normales
+                        var sol = [];
+                        sol[0] = valor1[1];
+                        sol[1] = valor2[1];
+                        tablaXY[valor1[0]] = sol;
+                        i++;
+                    }
+                }
+                else if (valor1[0] > valor2[0]) {
+                    if (!sincronizados) {
+                        while (valor1[0] <= valor2[0] || j < valor1.length - 1) {
+                            j++;
+                            valor2 = paresDatos[1][valores2[j]];
+                        }
+                        if (j < valor1.length - 1) {
+                            sincronizados = true;
+                        } else {
+                            break;
+                        }
+                    } else {
+                        var sol = [];
+                        sol[0] = valor1[1];
+                        sol[1] = valor2[1];
+                        tablaXY[valor2[0]] = sol;
+                        j++;
+                    }
+                }
+                else if (valor1[0] = valor2[0]) {
+                    if (!sincronizados) {
+                        sincronizados = true;
+                    }
+                    var sol = [];
+                    sol[0] = valor1[1];
+                    sol[1] = valor2[1];
+                    tablaXY[valor1[0]] = sol;
+                    i++;
+                    j++;
+                }
+            }
         }
     }
-    var dibujoGrafica= {};
-    dibujoGrafica["name"]=opcionesVariables[0]+ " / "+opcionesVariables[1];
-    dibujoGrafica["diccionario"]=SolucionDatos;
-    solucion.push(dibujoGrafica);
-    return solucion;
+    var opcionesVariable= new OpcionesVariable();
+    opcionesVariable.setNombreVariable("X Y");
+    opcionesVariable.setDatos(tablaXY);
+    opcionGrafica.addOpcionVariable(opcionesVariable.getOpciones());
+    opcionGrafica.getOpciones();
+    opcionGrafica.pintarGrafica();
+    opcionGrafica.pintarGraficaMaestra();
+
 }
+

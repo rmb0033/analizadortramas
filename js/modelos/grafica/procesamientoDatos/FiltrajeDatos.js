@@ -51,7 +51,7 @@ function FiltrajeDatos(grafica){
                 if(nombre==variable["label"]){
                     var indiceIntervalo = 0;
                     var keys = Object.keys(datos);
-                    keys.sort();
+                    keys=keys.sort();
                     for (var i = 0; i < keys.length; i++) {
                         var clave = keys[i];
 

@@ -175,7 +175,7 @@ function OpcionesGrafica(){
             //Ordenamos la linea temporal podemos modularlo como como opcion
             var keys = Object.keys(datos);
 
-            keys.sort();
+            keys=keys.sort();
 
 
             // console.log(keys);
@@ -377,7 +377,6 @@ function OpcionesGrafica(){
 
     function dibujarPuntero(e, flag) {
         var ejeX=calcularEjeXPunto(e, grafica,"#canvasGrafica");
-        console.log(ejeX);
 
 
         if(ejeX!=null){

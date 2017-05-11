@@ -258,7 +258,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
             if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
                 var datos= diccionarioDatos[variable]["diccionario"];
                 var keys = Object.keys(datos);
-                keys.sort();
+                keys=keys.sort();
 
                 for(var x=0; x<keys.length;x++) {
                     var valor=keys[x];
@@ -327,7 +327,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
             if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
                 var datos= diccionarioDatos[variable]["diccionario"];
                 var keys = Object.keys(datos);
-                keys.sort();
+                keys=keys.sort();
 
                 for(var x=0; x<keys.length;x++) {
                     var valor=keys[x];
@@ -406,7 +406,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
             if(nombreVariable==diccionarioDatos[variable]["label"].toLowerCase()){
                 var datos= diccionarioDatos[variable]["diccionario"];
                 var keys = Object.keys(datos);
-                keys.sort();
+                keys=keys.sort();
                 for(var x=0; x<keys.length;x++) {
                     var valor=keys[x];
                     if(!isNaN(valor)){

@@ -72,7 +72,6 @@ function modalBienvenida() {
                 cBoxFicheros(fileLoader);
 
                 aplicarListerVariables(fileLoader);
-                aplicarListenerTipoGrafica();
                 $(".cargadorDatos").hide();
                 iniciarModal(fileLoader);
                 // iniciarModal(fileLoader);
