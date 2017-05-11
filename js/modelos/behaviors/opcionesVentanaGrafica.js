@@ -199,9 +199,17 @@ function obtenerDatosGraficaXY(fileLoader,opciones ){
             else {
                 if (valor1[0] < valor2[0]) {
                     if (!sincronizados) {
-                        while (valor1[0] >= valor2[0] || i < valor1.length - 1) {
+                        while (valor1[0] >= valor2[0] && i < valor1.length - 1) {
                             i++;
-                            valor1 = paresDatos[0][valores1[i]];
+                            if(isNaN(valores1[i] && i<valores1.length)){
+                                i++;
+                            }
+                            else if(isNaN(valores2[j] && j <valores2.length)){
+                                j++;
+                            }
+                            else{
+                                valor1 = paresDatos[0][valores1[i]];
+                            }
                         }
                         if (i < valor1.length - 1) {
                             sincronizados = true;
@@ -219,9 +227,17 @@ function obtenerDatosGraficaXY(fileLoader,opciones ){
                 }
                 else if (valor1[0] > valor2[0]) {
                     if (!sincronizados) {
-                        while (valor1[0] <= valor2[0] || j < valor1.length - 1) {
+                        while (valor1[0] <= valor2[0] && j < valor1.length - 1) {
                             j++;
-                            valor2 = paresDatos[1][valores2[j]];
+                            if(isNaN(valores1[i] && i<valores1.length)){
+                                i++;
+                            }
+                            else if(isNaN(valores2[j] && j <valores2.length)){
+                                j++;
+                            }
+                            else{
+                                valor2 = paresDatos[1][valores2[j]];
+                            }
                         }
                         if (j < valor1.length - 1) {
                             sincronizados = true;
