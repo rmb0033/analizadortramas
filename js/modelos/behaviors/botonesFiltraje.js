@@ -65,7 +65,26 @@ function BotonesFiltraje(){
 
 
 
+    $("#bandera1").click(function(){
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+            $("#bandera2").prop("disabled", false);
+        }else{
+            $(this).addClass('active');
+            $("#bandera2").prop("disabled", true);
+        }
+    });
 
+    $("#bandera2").click(function(){
+        if($(this).hasClass('active')){
+            $(this).removeClass('active');
+            $("#bandera1").prop("disabled", false);
+
+        }else{
+            $(this).addClass('active');
+            $("#bandera1").prop("disabled", true);
+        }
+    });
 
 
 

@@ -9,18 +9,28 @@
 function aplicarListenersBotones(ventanaGrafica){
     var grafica= ventanaGrafica.getGrafica();
     var graficaMaestra= ventanaGrafica.getGraficaMaestra();
+    var datosOrdenados= obtenerTodosDatosEjex(graficaMaestra);
+    var velocidadReproduccion=400; //ms que tarda en moverse
+
 
     function desactivarFuncionesReproduccion(){
         $("#play").prop("disabled", true);
         $("#pause").prop("disabled", true);
         $("#pasoanterior").prop("disabled", true);
         $("#pasosiguiente").prop("disabled", true);
+        $("#stop").prop("disabled", true);
+        // $("#incvelocidad").prop("disabled", true);
+        // $("#decvelocidad").prop("disabled", true);
+
     }
     function activarFuncionesReproduccion(){
         $("#play").prop("disabled", false);
         $("#pause").prop("disabled", false);
         $("#pasoanterior").prop("disabled", false);
         $("#pasosiguiente").prop("disabled", false);
+        $("#stop").prop("disabled", false);
+        // $("#incvelocidad").prop("disabled", false);
+        // $("#decvelocidad").prop("disabled", false);
     }
     function desactivarFuncionesMovimiento(){
         $("#moverizquierda").prop("disabled", true);
@@ -75,7 +85,6 @@ function aplicarListenersBotones(ventanaGrafica){
 
 
 
-    var datosOrdenados= obtenerTodosDatosEjex(graficaMaestra);
 
 
     $("#moverizquierda").click(function(){
@@ -193,6 +202,7 @@ function aplicarListenersBotones(ventanaGrafica){
             $("#limiteizquierdo").prop("disabled", true);
             $("#limitederecho").prop("disabled", true);
 
+
             animacionReproduccion();
 
 
@@ -215,7 +225,7 @@ function aplicarListenersBotones(ventanaGrafica){
             else{
                 animacionReproduccion();
             }
-        }, 600);
+        }, velocidadReproduccion);
     }
     //Aqui.
 
@@ -236,27 +246,53 @@ function aplicarListenersBotones(ventanaGrafica){
     $("#pasoanterior").click(function(){
        retroceder();
     });
+    $("#stop").click(function(){
+        var minimo=ventanaGrafica.obtenerValoresEjeX(graficaMaestra)["min"];
+        var maximo=ventanaGrafica.obtenerValoresEjeX(graficaMaestra)["max"];
+        graficaMaestra.valuesBox.xmax = maximo;
+        graficaMaestra.options.annotation.annotations[0].xMax = maximo;
+        graficaMaestra.valuesBox.xmin = minimo;
+        graficaMaestra.options.annotation.annotations[0].xMin = minimo;
+        ventanaGrafica.actualizarGraficas();
 
-    $("#bandera1").click(function(){
-        if($(this).hasClass('active')){
-            $(this).removeClass('active');
-            $("#bandera2").prop("disabled", false);
-        }else{
-            $(this).addClass('active');
-            $("#bandera2").prop("disabled", true);
+    });
+    $("#cambvelocidad").click(function(){
+
+        var valor=$("#cambvelocidad").text();;
+        console.log(valor);
+        switch(valor){
+            case "1x":
+                $("#cambvelocidad").text("1/4x");
+                velocidadReproduccion=velocidadReproduccion*4;
+                break;
+            case "1/4x":
+                $("#cambvelocidad").text("1/2x");
+                velocidadReproduccion=velocidadReproduccion/2;
+                break;
+            case "1/2x":
+                $("#cambvelocidad").text("2x");
+                velocidadReproduccion=velocidadReproduccion/4;
+                break;
+            case "2x":
+                $("#cambvelocidad").text("5x");
+                velocidadReproduccion=velocidadReproduccion/2.5;
+                break;
+            case "5x":
+                velocidadReproduccion=velocidadReproduccion/2;
+                $("#cambvelocidad").text("10x");
+                break;
+            case "10x":
+                $("#cambvelocidad").text("1x");
+                velocidadReproduccion=velocidadReproduccion*10;
+                break;
+
         }
     });
 
-    $("#bandera2").click(function(){
-        if($(this).hasClass('active')){
-            $(this).removeClass('active');
-            $("#bandera1").prop("disabled", false);
 
-        }else{
-            $(this).addClass('active');
-            $("#bandera1").prop("disabled", true);
-        }
-    });
+
+
+
 
 
 

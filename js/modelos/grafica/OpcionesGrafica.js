@@ -600,11 +600,8 @@ function OpcionesGrafica(){
             '<button type="button" id="stop" class="btn btn-default">'+
             '<span class="glyphicon glyphicon-stop"></span>'+
             '</button>'+
-            '<button type="button" id="incvelocidad" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-fast-forward"></span>'+
-            '</button>'+
-            '<button type="button" id="decvelocidad" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-fast-backward"></span>'+
+            '<button type="button" id="cambvelocidad" class="btn btn-default">'+
+            '<span id="velocidad">1x</span>'+
             '</button>'+
 
             //    .glyphicon .glyphicon-flag
@@ -889,7 +886,7 @@ function OpcionesGrafica(){
         return graficaMaestra;
     };
 
-    function obtenerValoresEjeX(grafica){
+    this.obtenerValoresEjeX=function (grafica){
         var valorMaximo=null;
         var valorMinimo=null;
         for(var x in grafica.data.datasets){
@@ -912,7 +909,7 @@ function OpcionesGrafica(){
         var axisY = grafica.scales["y-axis-1"];
         var maxY = axisY.max;
         var minY = axisY.min;
-        var axisX = obtenerValoresEjeX(grafica);
+        var axisX = self.obtenerValoresEjeX(grafica);
         var maxX = axisX.max;
         var minX = axisX.min;
 
