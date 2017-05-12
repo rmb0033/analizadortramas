@@ -31,17 +31,23 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         while(contador<code.length){
             var token= getToken();
             if(token==null){
+                alert("Not found variable");
                 break;
             }
 
             var operador= getOperador();
             if(operador==null){
+                alert("Not found operator");
                 break;
             }
 
             var comparador=getComparador();
-            if(comparador!=null)
+            if(comparador!=null){
                 sentencias.push([token,operador,comparador]);
+            }
+            else{
+                alert("Not found value");
+            }
             if(!obtenerSeparador()){
                 break;
             }
@@ -73,6 +79,10 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         if(separador=="and" || separador=="or"){
             separadores.push(separador);
             return true;
+        }else{
+            alert(separador+ " is not valid like a logic connector.");
+            sentencias=[];
+            return false;
         }
         return false;
     }
@@ -521,6 +531,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
 
             }
             if(!encontrado){
+                alert(nombreVariable +" is not a variable");
                 return false;
             }
 
