@@ -303,16 +303,15 @@ function OpcionesGrafica(){
                     }]
                 },
                 onClick: function(e) {
+
                     if ($("#bandera1").hasClass('active')) {
                         dibujarPuntero(e, "f1");
-                        $("#bandera1").removeClass('active');
                     }
                     else if ($("#bandera2").hasClass('active')) {
                         dibujarPuntero(e, "f2");
-                        $("#bandera2").removeClass('active');
-
                     }else{
-                        console.log(grafica.config.data);
+
+
                     }
                 }
             },
@@ -324,60 +323,44 @@ function OpcionesGrafica(){
 
 
     function calcularEjeXPunto(e, graficaDeseada,idCanvas){
-        var maxEjeX=$(idCanvas).width();
-        var maxEjeY=$(idCanvas).height();
         var ejeX=e.offsetX;
 
         var resultados=[];
-        for(var x=maxEjeX-1; x>=0; x--) {
-            for (var y = 0; y < maxEjeY; y++) {
-                var activeElement = graficaDeseada.getElementAtEvent(new simularEvento(x, y));
-                if (activeElement.length > 0) {
-                    var valorX=graficaDeseada.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index].x;
-                    var cadenaResultados=[];
-                    cadenaResultados.push(x);
-                    cadenaResultados.push(valorX);
-                    resultados.push(cadenaResultados);
-                    break;
-                }
-            }
-            if(resultados.length>0){
-                break;
-            }
-        }
-        if(resultados.length==0){
-            return null;
-        }else{
-            for(var x=0; x<maxEjeX; x++) {
-                for (var y = 0; y < maxEjeY; y++) {
-                    var activeElement = graficaDeseada.getElementAtEvent(new simularEvento(x, y));
-                    if (activeElement.length == 1) {
-                        var valorX=graficaDeseada.data.datasets[activeElement[0]._datasetIndex].data[activeElement[0]._index].x;
-                        var cadenaResultados=[];
-                        if(resultados.length==1 && valorX != resultados[0][1]){
-                            cadenaResultados.push(x);
-                            cadenaResultados.push(valorX);
-                            resultados.push(cadenaResultados);
-                            break;
-                        }
-                    }
-                }
-                if(resultados.length>1){
-                    break;
-                }
-            }
-        }
+        if(graficaDeseada.config.data.datasets.length>0 && graficaDeseada.config.data.datasets[0]._meta[0].data.length>1){
 
-        if(resultados.length==2){
-            var diferenciaPixel=Math.abs(resultados[0][0]-resultados[1][0]);
-            var diferenciaValor= Math.abs(resultados[0][1]-resultados[1][1]);
-            var escala=diferenciaValor/diferenciaPixel;
-            var diferencia=parseInt((ejeX-resultados[0][0])*escala);
-            var solucion=resultados[0][1]+diferencia;
-            // console.log(resultados[0][1],diferencia,solucion);
-            return solucion;
-        }else{
-            return null;
+            var x1=graficaDeseada.config.data.datasets[0]._meta[0].data[0]._model.x;
+            var y1=graficaDeseada.config.data.datasets[0]._meta[0].data[0]._model.y;
+            var ultimaposicion=graficaDeseada.config.data.datasets[0]._meta[0].data.length-1;
+            var x2=graficaDeseada.config.data.datasets[0]._meta[0].data[ultimaposicion]._model.x;
+            var y2=graficaDeseada.config.data.datasets[0]._meta[0].data[ultimaposicion]._model.y;
+
+
+            var activeElement1 = graficaDeseada.getElementAtEvent(new simularEvento(x1, y1));
+            var activeElement2 = graficaDeseada.getElementAtEvent(new simularEvento(x2, y2));
+
+            var valorx1=graficaDeseada.data.datasets[activeElement1[0]._datasetIndex].data[activeElement1[0]._index].x;
+            var valorx2=graficaDeseada.data.datasets[activeElement2[0]._datasetIndex].data[activeElement2[0]._index].x;
+            var primeraPOS=[];
+            var ultimaPOS=[];
+            primeraPOS.push(x1);
+            primeraPOS.push(valorx1);
+            resultados.push(primeraPOS);
+            ultimaPOS.push(x2);
+            ultimaPOS.push(valorx2);
+            resultados.push(ultimaPOS);
+
+
+            if(resultados.length==2){
+                var diferenciaPixel=Math.abs(x1-x2);
+                var diferenciaValor= Math.abs(valorx1-valorx2);
+
+                var escala=diferenciaValor/diferenciaPixel;
+                var diferencia=parseInt((ejeX-resultados[0][0])*escala);
+                var solucion=resultados[0][1]+diferencia;
+                return solucion;
+            }else{
+                return null;
+            }
         }
     }
 
@@ -609,11 +592,21 @@ function OpcionesGrafica(){
             '<span class="glyphicon glyphicon-pause"></span>'+
             '</button>'+
             '<button type="button" id="pasoanterior" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-backward"></span>'+
+            '<span class="glyphicon glyphicon-step-backward"></span>'+
             '</button>'+
             '<button type="button" id="pasosiguiente" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-forward"></span>'+
+            '<span class="glyphicon glyphicon-step-forward"></span>'+
             '</button>'+
+            '<button type="button" id="stop" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-stop"></span>'+
+            '</button>'+
+            '<button type="button" id="incvelocidad" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-fast-forward"></span>'+
+            '</button>'+
+            '<button type="button" id="decvelocidad" class="btn btn-default">'+
+            '<span class="glyphicon glyphicon-fast-backward"></span>'+
+            '</button>'+
+
             //    .glyphicon .glyphicon-flag
             //TODO queda añadir la velocidad y el stop
             '</div>'+

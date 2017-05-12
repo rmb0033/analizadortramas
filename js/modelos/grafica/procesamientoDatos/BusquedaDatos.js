@@ -34,6 +34,11 @@ function BusquedaDatos(grafica){
         }
 
     });
+    //ultimo punto consulta
+    function calcularUPC(){
+        //Para ello recorrer punteros donde name="f3"
+
+    }
 
     $("#busquedaizq").click(function () {
         if(indice>0 && busquedas.length>0){
