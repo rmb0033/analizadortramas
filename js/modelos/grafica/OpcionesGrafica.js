@@ -323,45 +323,41 @@ function OpcionesGrafica(){
 
 
     function calcularEjeXPunto(e, graficaDeseada,idCanvas){
+
         var ejeX=e.offsetX;
 
-        var resultados=[];
-        if(graficaDeseada.config.data.datasets.length>0 && graficaDeseada.config.data.datasets[0]._meta[0].data.length>1){
-
-            var x1=graficaDeseada.config.data.datasets[0]._meta[0].data[0]._model.x;
-            var y1=graficaDeseada.config.data.datasets[0]._meta[0].data[0]._model.y;
-            var ultimaposicion=graficaDeseada.config.data.datasets[0]._meta[0].data.length-1;
-            var x2=graficaDeseada.config.data.datasets[0]._meta[0].data[ultimaposicion]._model.x;
-            var y2=graficaDeseada.config.data.datasets[0]._meta[0].data[ultimaposicion]._model.y;
+        for(var x in graficaDeseada.config.data.datasets[0]._meta){
 
 
-            var activeElement1 = graficaDeseada.getElementAtEvent(new simularEvento(x1, y1));
-            var activeElement2 = graficaDeseada.getElementAtEvent(new simularEvento(x2, y2));
+            if(graficaDeseada.config.data.datasets.length>0 && graficaDeseada.config.data.datasets[0]._meta[x].data.length>1){
 
-            var valorx1=graficaDeseada.data.datasets[activeElement1[0]._datasetIndex].data[activeElement1[0]._index].x;
-            var valorx2=graficaDeseada.data.datasets[activeElement2[0]._datasetIndex].data[activeElement2[0]._index].x;
-            var primeraPOS=[];
-            var ultimaPOS=[];
-            primeraPOS.push(x1);
-            primeraPOS.push(valorx1);
-            resultados.push(primeraPOS);
-            ultimaPOS.push(x2);
-            ultimaPOS.push(valorx2);
-            resultados.push(ultimaPOS);
+                var x1=graficaDeseada.config.data.datasets[0]._meta[x].data[0]._model.x;
+                var y1=graficaDeseada.config.data.datasets[0]._meta[x].data[0]._model.y;
+                var ultimaposicion=graficaDeseada.config.data.datasets[0]._meta[x].data.length-1;
+                var x2=graficaDeseada.config.data.datasets[0]._meta[x].data[ultimaposicion]._model.x;
+                var y2=graficaDeseada.config.data.datasets[0]._meta[x].data[ultimaposicion]._model.y;
 
 
-            if(resultados.length==2){
-                var diferenciaPixel=Math.abs(x1-x2);
-                var diferenciaValor= Math.abs(valorx1-valorx2);
+                var activeElement1 = graficaDeseada.getElementAtEvent(new simularEvento(x1, y1));
+                var activeElement2 = graficaDeseada.getElementAtEvent(new simularEvento(x2, y2));
 
-                var escala=diferenciaValor/diferenciaPixel;
-                var diferencia=parseInt((ejeX-resultados[0][0])*escala);
-                var solucion=resultados[0][1]+diferencia;
-                return solucion;
-            }else{
-                return null;
+
+                if(activeElement1.length>0 && activeElement2.length>0){
+                    var valorx1=graficaDeseada.data.datasets[activeElement1[0]._datasetIndex].data[activeElement1[0]._index].x;
+                    var valorx2=graficaDeseada.data.datasets[activeElement2[0]._datasetIndex].data[activeElement2[0]._index].x;
+
+                    var diferenciaPixel=Math.abs(x1-x2);
+                    var diferenciaValor= Math.abs(valorx1-valorx2);
+
+                    var escala=diferenciaValor/diferenciaPixel;
+                    var diferencia=parseInt((ejeX-x1)*escala);
+                    var solucion=valorx1+diferencia;
+                    return solucion;
+                }
+
             }
         }
+        return null;
     }
 
     function dibujarPuntero(e, flag) {
@@ -557,15 +553,8 @@ function OpcionesGrafica(){
             grafica.destroy();
         }
         $(".grafica").html("");
-        $(".grafica").html('<canvas id="canvasGrafica" class="canvas"></canvas>'+
-            '<div class="contenedorBanderas">'   +
-            '<button type="button" id="bandera1" class="btn btn-default banderaverde">'+
-            '<span class="glyphicon glyphicon-flag"></span>'+
-            '</button>'+
-            '<button type="button" id="bandera2" class="btn btn-default banderaazul">'+
-            '<span class="glyphicon glyphicon-flag"></span>'+
-            '</button>'+
-            '</div>'+
+        $(".grafica").html('<div id="contenedorTemporal"></div>'+
+            '<canvas id="canvasGrafica" class="canvas"></canvas>'+
             '<div class="contenedorMaestro">'+
             '<canvas id="canvasMaestro" class="canvas"></canvas>'+
             '</div>'+
@@ -603,17 +592,12 @@ function OpcionesGrafica(){
             '<button type="button" id="cambvelocidad" class="btn btn-default">'+
             '<span id="velocidad">1x</span>'+
             '</button>'+
-
-            //    .glyphicon .glyphicon-flag
-            //TODO queda añadir la velocidad y el stop
             '</div>'+
-
             '<div id="filtro" class="filtraje">'+
-            // '<textarea id="filtro-texto class="form-control" rows="4"></textarea>'+
-            '</div>'+
-
-            '<div id="tabla" class="table-responsive">'+
             '</div>');
+
+
+
 
         if(tipografica=="temporal"){
             var cadenaHTML='<input id="texto" type="text" class="form-control" placeholder="Insert a query">'+
@@ -643,7 +627,19 @@ function OpcionesGrafica(){
                 '<button type="button" id="igualarb2" class="btn btn-default banderaazul">'+
                 '<span class="glyphicon glyphicon-flag"></span>'+
                 '</button>';
+
+            var cadenaHTML2='<div class="contenedorBanderas">'   +
+                '<button type="button" id="bandera1" class="btn btn-default banderaverde">'+
+                '<span class="glyphicon glyphicon-flag"></span>'+
+                '</button>'+
+                '<button type="button" id="bandera2" class="btn btn-default banderaazul">'+
+                '<span class="glyphicon glyphicon-flag"></span>'+
+                '</button>'+
+                '</div>'+
+                '<div id="tabla" class="table-responsive">'+
+                '</div>';
             $('#filtro').html(cadenaHTML);
+            $('#contenedorTemporal').html(cadenaHTML2);
         }
 
 
@@ -936,6 +932,8 @@ function OpcionesGrafica(){
         grafica.options.scales.xAxes[0].ticks.min=minX;
         grafica.valuesBox={xmin:minX, xmax:maxX};
     }
+
+
     this.insertarPuntero= function(ejeX, flag){
 
         var color;
