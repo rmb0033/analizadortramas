@@ -7,25 +7,18 @@ function BusquedaDatos(grafica){
     var diccionarioDatos;
     var busquedas=[];
     var indice=0;
+    var punto=-1;
+    var nuevaconsulta=false;
+    var insertadoBusqueda=false;
 
 
     $('#busqueda').click(function() {
         if($(this).hasClass('active')){
-            codigo = $('#texto').val();
-            var gramatica=new IntervalosGramatica(grafica, codigo);
-            intervalos=gramatica.getIntervalos();
-
-            if(intervalos.length==0){
-                alert("Query has not been resolved: data not found");
-            }
-            else{
-                diccionarioDatos=grafica.getDiccionario();
-
-                busquedaDatosDiccionario();
-
-                if(busquedas.length>0){
-                    grafica.insertarPuntero(busquedas[indice],"f3");
-                }
+            realizarBusqueda();
+            if(busquedas.length>0){
+                grafica.insertarPuntero(busquedas[indice],"f3");
+                punto=busquedas[indice];
+                buscarZoom();
             }
         }
         else{
@@ -34,22 +27,130 @@ function BusquedaDatos(grafica){
         }
 
     });
+
+    function realizarBusqueda(){
+        codigo = $('#texto').val();
+        var gramatica=new IntervalosGramatica(grafica, codigo);
+        intervalos=gramatica.getIntervalos();
+
+        if(intervalos.length==0){
+            alert("Query has not been resolved: data not found");
+        }
+        else{
+            diccionarioDatos=grafica.getDiccionario();
+
+            busquedaDatosDiccionario();
+
+        }
+    }
+
+
+    function buscarZoom(){
+        var min=[];
+        var max=[];
+        for(var x in grafica.getGraficaMaestra().config.data.datasets){
+            var minimo=0;
+            for(var dato in grafica.getGraficaMaestra().config.data.datasets[x].data){
+                // console.log(grafica.getGraficaMaestra().config.data.datasets[x].data);
+                // console.log();
+                var punto=grafica.getGraficaMaestra().config.data.datasets[x].data[dato]["x"];
+                if(busquedas[indice]<punto){
+                    if(minimo!=0){
+                        min.push(minimo);
+                    }
+                    max.push(punto);
+                    break;
+                }else if(busquedas[indice]>punto){
+                    minimo= punto;
+                }
+            }
+        }
+        if(max.length>0 && min.length>0){
+
+            var izq = Math.min.apply(null, min);
+            var der = Math.max.apply(null, max);
+            if(izq!=null && der!=null){
+                grafica.getGraficaMaestra().valuesBox.xmax = der;
+                grafica.getGraficaMaestra().options.annotation.annotations[0].xMax = der;
+                grafica.getGraficaMaestra().valuesBox.xmin = izq;
+                grafica.getGraficaMaestra().options.annotation.annotations[0].xMin = izq;
+
+                grafica.actualizarGraficas();
+            }
+        }
+    }
     //ultimo punto consulta
-    function calcularUPC(){
+    function calcularUPCizq(){
         //Para ello recorrer punteros donde name="f3"
+        realizarBusqueda();
+        var nuevopunto=-1;
+        for(var x in busquedas){
+            if(busquedas[x]>=punto){
+                break;
+            }
+            else{
+                nuevopunto=x;
+
+            }
+        }
+        if(nuevopunto>=0){
+            indice=nuevopunto;
+            grafica.insertarPuntero(busquedas[indice],"f3");
+            buscarZoom();
+            punto=busquedas[indice];
+        }
 
     }
 
-    $("#busquedaizq").click(function () {
-        if(indice>0 && busquedas.length>0){
-            indice--;
-            grafica.insertarPuntero(busquedas[indice],"f3");
+
+
+    function calcularUPCder(){
+        //Para ello recorrer punteros donde name="f3"
+        realizarBusqueda();
+        for(var x in busquedas){
+            if(busquedas[x]>punto){
+                indice=x;
+                grafica.insertarPuntero(busquedas[indice],"f3");
+                buscarZoom();
+                punto=busquedas[indice];
+                break;
+            }
         }
+
+
+    }
+
+    $('#texto').on('input',function(e){
+        nuevaconsulta=true;
+        console.log("cambiado");
     });
+
+    $("#busquedaizq").click(function () {
+        if(nuevaconsulta) {
+            calcularUPCizq();
+            nuevaconsulta = false;
+        }else{
+            if(indice>0 && busquedas.length>0){
+                indice--;
+                grafica.insertarPuntero(busquedas[indice],"f3");
+                punto=busquedas[indice];
+                buscarZoom();
+
+            }
+        }
+
+        });
     $("#busquedader").click(function () {
-        if(indice<busquedas.length-1 && busquedas.length>0){
-            indice++;
-            grafica.insertarPuntero(busquedas[indice],"f3");
+        if(nuevaconsulta){
+            calcularUPCder();
+            nuevaconsulta=false;
+        }else{
+            if(indice<busquedas.length-1 && busquedas.length>0){
+                indice++;
+                grafica.insertarPuntero(busquedas[indice],"f3");
+                punto=busquedas[indice];
+                buscarZoom();
+            }
         }
     });
 
@@ -69,6 +170,7 @@ function BusquedaDatos(grafica){
 
 
     function busquedaDatosDiccionario() {
+        insertadoBusqueda=false;
         var graficaContenido=grafica.getGrafica();
         for (var vargrafica in graficaContenido.config.data.datasets) {
             var nombre = graficaContenido.config.data.datasets[vargrafica]["label"];
@@ -96,7 +198,13 @@ function BusquedaDatos(grafica){
                             break;
                         }
                         else if (estaEnElIntervalo(clave, intervalos[indiceIntervalo])) {
-                            busquedas.push(datos[clave][0]);
+                            if(!insertadoBusqueda){
+                                insertadoBusqueda=true;
+                                busquedas=[];
+                            }
+                                busquedas.push(datos[clave][0]);
+
+
                         }
 
                     }

@@ -259,7 +259,6 @@ function aplicarListenersBotones(ventanaGrafica){
     $("#cambvelocidad").click(function(){
 
         var valor=$("#cambvelocidad").text();;
-        console.log(valor);
         switch(valor){
             case "1x":
                 $("#cambvelocidad").text("1/4x");

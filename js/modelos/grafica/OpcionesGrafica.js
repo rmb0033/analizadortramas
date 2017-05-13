@@ -310,7 +310,7 @@ function OpcionesGrafica(){
                     else if ($("#bandera2").hasClass('active')) {
                         dibujarPuntero(e, "f2");
                     }else{
-
+                        console.log(graficaMaestra);
 
                     }
                 }
