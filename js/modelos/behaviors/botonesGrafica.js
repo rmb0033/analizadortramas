@@ -258,7 +258,7 @@ function aplicarListenersBotones(ventanaGrafica){
     });
     $("#cambvelocidad").click(function(){
 
-        var valor=$("#cambvelocidad").text();;
+        var valor=$("#cambvelocidad").text();
         switch(valor){
             case "1x":
                 $("#cambvelocidad").text("1/4x");
@@ -287,11 +287,6 @@ function aplicarListenersBotones(ventanaGrafica){
 
         }
     });
-
-
-
-
-
 
 
 

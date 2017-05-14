@@ -12,7 +12,6 @@ function iniciarModal(fileLoader) {
     $("#elegir-archivo").change(function() {
         var file = $("#elegir-archivo").prop('files')[0];
         if (file) {
-            console.log("Cambio detectado");
             fileLoader.getCargadorXML().cargarConfiguracionJS(file);
             $("#elegir-archivo-aceptar").prop("disabled", false);
         }
@@ -70,7 +69,7 @@ function modalBienvenida() {
                 fileLoader.actualizarBiblioteca();
                 cBoxVariables(fileLoader.getBiblioteca());
                 cBoxFicheros(fileLoader);
-
+                aplicarListenerMenu(fileLoader);
                 aplicarListerVariables(fileLoader);
                 $(".cargadorDatos").hide();
                 iniciarModal(fileLoader);
@@ -140,10 +139,8 @@ function cargarDirectorioFicheros(){
         }
         // console.log(ficheroFiltrado);
     };
+    //mensaje bloqueante
     oReq.open("get", "listar-ficheros.php", false);
-    //                               ^ Don't block the rest of the execution.
-    //                                 Don't wait until the request finishes to
-    //                                 continue.
     oReq.send();
     return ficheroFiltrado;
 }
@@ -161,5 +158,28 @@ function actualizarDatapicker(ficheros) {
  */
 function cargarFicheros() {
     return $("#ventana-ficheros-bienvenida").val();
+
+}
+function aplicarListenerMenu(fileLoader){
+    var contenedorVariable=[];
+    var contenedorGrafica=[];
+
+    $("#opc-variable").click(function(){
+        var nuevasOpciones= new InterfazVariable(fileLoader,contenedorGrafica, contenedorVariable);
+        contenedorVariable=nuevasOpciones.getContenedorVariables();
+        $("#modalOpciones").modal();
+    });
+
+    $("#opc-grafico").click(function(){
+        $("#modalOpciones").modal();
+    });
+
+    $("#exportar").click(function(){
+        $("#modalOpciones").modal();
+    });
+
+    $("#opc-gr").click(function(){
+        $("#modalOpciones").modal();
+    });
 
 }

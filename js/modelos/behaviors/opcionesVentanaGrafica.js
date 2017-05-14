@@ -2,7 +2,6 @@
 function cBoxVariables(biblioteca) {
 
     var variables = biblioteca.getClaves();
-    var grupoCheckboxV="";
     for (var nombreVariable in variables) {
         $('#ventana-variables').append('<option id="'+ variables[nombreVariable]+'"val="'+ variables[nombreVariable]+'" >' + variables[nombreVariable] + '</option>');
     }
@@ -23,6 +22,8 @@ function cBoxFicheros(fileLoader) {
 
 
 //TODO Hacer singleton fileLoader, eliminar codigo repetido cargando las variables y ficheros -> convirtiendo a clase (var global)
+//Esto tiene que cambiar
+
 
 function aplicarListerVariables(fileLoader) {
     $("#ventana-variables").change(function() {
@@ -47,16 +48,16 @@ function aplicarListerVariables(fileLoader) {
 
 
 }
-
-function cargarVariablesOpciones(fileLoader) {
+//Esto será mucho más complejo
+function cargarVariablesOpciones() {
     return $("#ventana-variables").val();
 }
 
-function cargarFicherosOpciones(fileLoader) {
+function cargarFicherosOpciones() {
     return $("#ventana-ficheros").val();
 
 }
-
+//Función principal
 function cargarOpciones(fileLoader) {
     //TODO hacer clase parametros grafica y otra con checkboxes
     var variables = cargarVariablesOpciones(fileLoader);
@@ -108,9 +109,14 @@ function obtenerDatosGraficaTemporal(opciones,variblesCargadasBiblioteca ) {
 
     //Recorremos las variables seleccionadas por la interfaz
     for (var indexVariable in opcionesVariables){
+        console.log(indexVariable);
+        console.log(opcionesVariables);
         var opcionesVariable= new OpcionesVariable();
         var solucionVariable=[];
-        // var index=0; //Nos interesa el orden en el que los añadimos
+        // var index=0;
+        // aqui se deberia hacer toda la precarga de opciones de variable
+        // opcionesVariables[indexVariable] nombre de la variable REAL.
+
         var valoresVar =variblesCargadasBiblioteca[opcionesVariables[indexVariable]].getValores();
         //Obtenemos de la biblioteca las variables que vamos a graficar.
         for(var indexValor in valoresVar){
@@ -156,6 +162,8 @@ function obtenerDatosGraficaXY(fileLoader,opciones ){
     //tenemos que ordenar las 2 colecciones con las que queremos trabajar
     for (var indexVariable in opcionesVariables){
         var solucionVariable={};
+        console.log(indexVariable);
+        console.log(opcionesVariables);
         var valoresVar =variablesBiblioteca[opcionesVariables[indexVariable]].getValores();
         for(var indexValor in valoresVar){
             //Comprobamos que la variable que está almacenada en la biblioteca, se encuentra en el fichero seleccionado

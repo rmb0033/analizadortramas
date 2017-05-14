@@ -75,11 +75,25 @@
 
 
                     <div class="navbar-form navbar-right">
-
-
+                        <button type="button" id="opc-gr" class="btn btn-default">
+                            <span class="glyphicon glyphicon-fire"> Fast graph</span>
+                        </button>
+                        <button type="button" id="opc-variable" class="btn btn-default">
+                            <span class="glyphicon glyphicon-wrench"> Variable settings</span>
+                        </button>
+                        <button type="button" id="opc-grafico" class="btn btn-default">
+                            <span class="glyphicon glyphicon-wrench"> Chart settings</span>
+                        </button>
+                        <button type="button" id="exportar" class="btn btn-default">
+                            <span class="glyphicon glyphicon-export"> Export</span>
+                        </button>
                         <button type="button" id="boton-configuracion" class="btn btn-primary" data-toggle="modal" data-target="#myModal">XML configuration</button>
 
                     </div>
+
+
+
+
                     <div class="navbar-form navbar-right">
                         <span style="color:#f9fbff">CHART STYLE :</span>
                         <select id="selector-graficas" class="selectpicker">
@@ -100,10 +114,7 @@
                     <div class="navbar-form navbar-right" id="contenedorVariablesRapida">
                         <span style="color:#f9fbff">VARIABLES :</span>
                         <select id="ventana-variables" class="selectpicker ventana-variables" multiple>
-                            <!--<option>Data0001</option>-->
-                            <!--<option>temperatura</option>-->
                         </select>
-                        <!--<div class="ventana-variables"></div>-->
                     </div>
                 </div>
             </div>
@@ -115,6 +126,23 @@
         </div>
 <!--TODO borrar-->
 
+        <div id="modalOpciones" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <div id="modalcabecera"></div>
+                    </div>
+                    <div id="modalcuerpo">
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Exit</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
 
 
         <!-- Modal -->
@@ -202,11 +230,18 @@
 <script src="js/modelos/cargadorFicheros/CargadorTramas.js"></script>
 <script src="js/modelos/cargadorFicheros/CargadorXML.js"></script>
 
+
+
+
 <script src="js/modelos/cargadorFicheros/CargadorFicheros.js"></script>
 <script src="js/modelos/behaviors/modal.js"></script>
 <script src="js/modelos/behaviors/opcionesVentanaGrafica.js"></script>
 <script src="js/modelos/behaviors/botonesGrafica.js"></script>
 <script src="js/modelos/behaviors/botonesFiltraje.js"></script>
+
+
+<script src="js/modelos/interfaz/interfazGR.js"></script>
+<script src="js/modelos/interfaz/InterfazVariable.js"></script>
 
 
 <script src="js/modelos/grafica/OpcionesVariable.js"></script>
