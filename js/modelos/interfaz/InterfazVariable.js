@@ -5,18 +5,14 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
     var variables = fileloader.getBiblioteca().getClaves();
     var contenedorVariables=contenedorVar;
 
-    this.getContenedorVariables=function(){
-        return contenedorVariables;
-    };
-
-    //TODO
-    // if(tipoGrafica=="X Y"){
-    //  insertarHTMLXY();
-    // }else{
-    //     insertarHTMLTemporal();
-    // }
-    // insertarHTMLTemporal();
-    insertarHTMLXY();
+    for(var x in contenedorGrafica){
+        if((contenedorGrafica[x]["tipoGrafica"])=="Temporal Chart"){
+            insertarHTMLTemporal();
+        }
+        else if((contenedorGrafica[x]["tipoGrafica"])=="X Y Chart"){
+            insertarHTMLXY();
+        }
+    }
 
     function insertarHTMLTemporal(){
 
@@ -24,6 +20,7 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
 
         $("#modalcabecera").html('');
         $("#modalcuerpo").html('');
+        $("#botondeguardar").html('');
         $("#modalcabecera").html('<h4 class="modal-title">Variable Settings</h4>');
         $("#modalcuerpo").html('<div id="contenedorModal" class=container><div>');
 
@@ -147,12 +144,12 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
                         contenedorVariables[x]["grosorpunto"]=$('#selector-grosorpunto').val();
                         contenedorVariables[x]["cronograma"]=$('#selector-cronograma').val();
                         if($("#textodesp").val().length>0){
-                            contenedorVariables[x]["desplazamiento"]=$("#textodesp").val();
+                            contenedorVariables[x]["desplazamiento"]=getNumero($("#textodesp").val());
                         }else{
                             contenedorVariables[x]["desplazamiento"]=0;
                         }
                         if($("#textoesc").val().length>0){
-                            contenedorVariables[x]["escalado"]=$("#textoesc").val();
+                            contenedorVariables[x]["escalado"]=getNumero($("#textoesc").val());
                         }else{
                             contenedorVariables[x]["escalado"]=1;
                         }
@@ -200,7 +197,6 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         $("#modalcuerpo").html('<div id="contenedorModal" class=container><div>');
 
         $("#contenedorModal").html(
-            '<div class="container" id="guardarCon" ></div>'+
             '<div id="variablesFileloader1"></div>'+
             '<div id="variablesFileloader2"></div>'+
             '<div class="container" id="color"></div>'+
@@ -218,8 +214,8 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
             '<select id="variablesFileloaderL2" class="selectpicker ventana-variables">'+
             '</select></div>');
 
-        $("#guardarCon").html('<button type="button" id="guardar" class="btn btn-default">'+
-            '<span class="glyphicon glyphicon-floppy-disk"> Save</span>'+
+        $("#botondeguardar").html('<button type="button" id="guardar" class="btn btn-success">' +
+            '<span class="glyphicon glyphicon-floppy-disk"> Save</span>' +
             '</button>');
 
 
@@ -267,19 +263,21 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
 
         $('#guardar').click(function(){
             if($('#campotextovar').val().length>0){
+                contenedorVariables.shift();
                 var nuevaVar={};
                 nuevaVar["nombre"]=$("#campotextovar").val();
-                nuevaVar["variableX"]=$('#variablesFileloaderL').val();
-                nuevaVar["variableY"]=$('#variablesFileloaderL').val();
+                nuevaVar["variableX"]=$('#variablesFileloaderL1').val();
+                nuevaVar["variableY"]=$('#variablesFileloaderL2').val();
                 nuevaVar["color"]=$('#selector-color').val();
                 nuevaVar["grosorlinea"]=$('#selector-grosorlinea').val();
                 nuevaVar["grosorpunto"]=$('#selector-grosorpunto').val();
                 contenedorVariables.push(nuevaVar);
+                alert("Saved data");
+
             }
         });
         if(contenedorVariables.length>0){
             for(var x in contenedorVariables){
-
                 $("#campotextovar").val(contenedorVariables[x]["nombre"]);
                 $('#variablesFileloaderL1').val(contenedorVariables[x]["variableX"]);
                 $('#variablesFileloaderL2').val(contenedorVariables[x]["variableY"]);
@@ -305,8 +303,8 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
 
     function activarGuardar(){
         if($("#campotextovar").val().length>0 && variableNueva($("#campotextovar").val())
-            && ($("#textodesp").val().length==0 || getComparador($("#textodesp").val())!=null)
-            && ($("#textoesc").val().length==0 || getComparador($("#textoesc").val())!=null)){
+            && ($("#textodesp").val().length==0 || getNumero($("#textodesp").val())!=null)
+            && ($("#textoesc").val().length==0 || getNumero($("#textoesc").val())!=null)){
             return true;
         }else{
             return false;
@@ -355,7 +353,7 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         }
     }
 
-    function getComparador(cadena){
+    function getNumero(cadena){
         var cadenaTexto=cadena;
         var numero=[];
         var encontrado=false;
@@ -370,6 +368,9 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
                     negativo=true;
                 }
                 contador++;
+                if(contador>cadenaTexto.length){
+                    return null;
+                }
             }
         }
         while(esNumero(cadenaTexto[contador])){

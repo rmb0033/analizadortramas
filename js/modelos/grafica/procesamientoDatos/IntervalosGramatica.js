@@ -190,6 +190,9 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                     negativo=true;
                 }
                 contador++;
+                if(contador>cadenaTexto.length){
+                    return null;
+                }
             }
         }
         while(esNumero(code[contador])){

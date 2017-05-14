@@ -132,7 +132,7 @@ function OpcionesGrafica(){
     };
     //TODO cambiar el nombre
     this.setTipoGrafica=function(tipoGrafica){
-        tipografica="temporal";
+        tipografica="Temporal Chart";
         if(tipoGrafica=="tiempo"){
             config["options"]["scales"]["xAxes"]=[{
                 type: "time",
@@ -599,7 +599,7 @@ function OpcionesGrafica(){
 
 
 
-        if(tipografica=="temporal"){
+        if(tipografica=="Temporal Chart"){
             var cadenaHTML='<input id="texto" type="text" class="form-control" placeholder="Insert a query">'+
                 '<button type="button" id="filtrado" class="btn btn-default">'+
                 '<span class="glyphicon glyphicon-filter"></span>'+
@@ -654,7 +654,7 @@ function OpcionesGrafica(){
     };
 
     this.pintarGraficaMaestra= function(){
-        if(tipografica=="temporal"){
+        if(tipografica=="Temporal Chart"){
             getGraficaMaestra();
             graficaMaestra = new Chart(document.getElementById("canvasMaestro").getContext("2d"), configMaestro);
         }else{
@@ -778,7 +778,7 @@ function OpcionesGrafica(){
         graficaMaestra.update();
         var min = graficaMaestra.valuesBox.xmin;
         var max = graficaMaestra.valuesBox.xmax;
-        if(tipografica=="temporal"){
+        if(tipografica=="Temporal Chart"){
             grafica.config.data.datasets = conectorDiccionario(max, min, 700);
         }
         else{

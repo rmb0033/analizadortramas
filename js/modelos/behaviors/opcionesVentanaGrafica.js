@@ -88,6 +88,9 @@ function cargarOpciones(fileLoader) {
 
 }
 
+
+
+
 //TODO quitar esta funcion
 function obtenerDatosFecha(fileLoader, opciones) {
 

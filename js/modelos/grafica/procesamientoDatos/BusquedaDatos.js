@@ -122,7 +122,6 @@ function BusquedaDatos(grafica){
 
     $('#texto').on('input',function(e){
         nuevaconsulta=true;
-        console.log("cambiado");
     });
 
     $("#busquedaizq").click(function () {

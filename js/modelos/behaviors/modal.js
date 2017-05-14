@@ -73,7 +73,6 @@ function modalBienvenida() {
                 aplicarListerVariables(fileLoader);
                 $(".cargadorDatos").hide();
                 iniciarModal(fileLoader);
-                // iniciarModal(fileLoader);
 
 
             });
@@ -86,7 +85,6 @@ function modalBienvenida() {
 
     });
     $( "#boton-configuracion" ).click(function() {
-        // console.log("Funciona");
         $(".spinner").show();
     });
 
@@ -165,12 +163,18 @@ function aplicarListenerMenu(fileLoader){
     var contenedorGrafica=[];
 
     $("#opc-variable").click(function(){
-        var nuevasOpciones= new InterfazVariable(fileLoader,contenedorGrafica, contenedorVariable);
-        contenedorVariable=nuevasOpciones.getContenedorVariables();
+        if(contenedorGrafica.length>0){
+            var nuevasOpciones= new InterfazVariable(fileLoader,contenedorGrafica, contenedorVariable);
+        }else{
+            alert("You must set the chart settings first.");
+            var nuevasOpciones= new InterfazGrafica(fileLoader,contenedorGrafica,contenedorVariable);
+            $("#modalOpciones").modal();
+        }
         $("#modalOpciones").modal();
     });
 
     $("#opc-grafico").click(function(){
+        var nuevasOpciones= new InterfazGrafica(fileLoader,contenedorGrafica,contenedorVariable);
         $("#modalOpciones").modal();
     });
 
@@ -180,6 +184,10 @@ function aplicarListenerMenu(fileLoader){
 
     $("#opc-gr").click(function(){
         $("#modalOpciones").modal();
+    });
+
+    $('#modalOpciones').on('hidden.bs.modal', function () {
+        console.log(contenedorGrafica,contenedorVariable);
     });
 
 }
