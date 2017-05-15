@@ -28,7 +28,6 @@ function iniciarModal(fileLoader) {
             var cadenaHTMLVar = '<span style="color:#f9fbff">VARIABLES :</span>';
             cadenaHTMLVar += '<select id="ventana-variables" class="selectpicker ventana-variables" multiple>';
             $("#contenedorVariablesRapida").html(cadenaHTMLVar);
-            cBoxVariables(fileLoader.getBiblioteca());
             $(".cargadorDatos").hide();
         });
     });
@@ -67,10 +66,7 @@ function modalBienvenida() {
             peticionesAjax.push(fileLoader.getCargadorXML().cargarConfiguracionDefecto("config_prueba.xml"));
             $.when.apply(this, peticionesAjax).done(function() {
                 fileLoader.actualizarBiblioteca();
-                cBoxVariables(fileLoader.getBiblioteca());
-                cBoxFicheros(fileLoader);
                 aplicarListenerMenu(fileLoader);
-                aplicarListerVariables(fileLoader);
                 $(".cargadorDatos").hide();
                 iniciarModal(fileLoader);
 
@@ -161,6 +157,7 @@ function cargarFicheros() {
 function aplicarListenerMenu(fileLoader){
     var contenedorVariable=[];
     var contenedorGrafica=[];
+    var opcionesCargadas;
 
     $("#opc-variable").click(function(){
         if(contenedorGrafica.length>0){
@@ -187,7 +184,9 @@ function aplicarListenerMenu(fileLoader){
     });
 
     $('#modalOpciones').on('hidden.bs.modal', function () {
-        console.log(contenedorGrafica,contenedorVariable);
+        if(contenedorGrafica.length>0 && contenedorVariable.length>0){
+            opcionesCargadas= new CargarOpciones(fileLoader, contenedorGrafica,contenedorVariable );
+        }
     });
 
 }

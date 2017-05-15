@@ -25,7 +25,7 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         $("#modalcuerpo").html('<div id="contenedorModal" class=container><div>');
 
         $("#contenedorModal").html('<div id="contenedorVariables" > </div>'+
-            '<div id="variablesFileloader"></div>'+
+            '<div class="container" id="variablesFileloader"></div>'+
             '<div class="container" id="color"></div>'+
             '<div class="container" id="grosorlinea"></div>'+
             '<div class="container" id="grosorpunto"></div>'+
@@ -35,10 +35,10 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
             '<div class="container"><input id="textoesc" type="text" class="col-xs-5" placeholder="Scale"></div>');
 
 
-        $("#variablesFileloader").html('<div class="navbar-form navbar-right">'+
+        $("#variablesFileloader").html(
             '<span>Variable </span>'+
             '<select id="variablesFileloaderL" class="selectpicker ventana-variables">'+
-            '</select></div>');
+            '</select>');
 
         $("#color").html('<span>Color </span><select id="selector-color" class="selectpicker">'+
             '<option>Random</option>'+
@@ -75,8 +75,7 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
 
 
 
-        $("#contenedorVariables").html('<div class="navbar-form navbar-right">'+
-            '<select id="variablesLeidas" class="selectpicker ventana-variables" single>'+
+        $("#contenedorVariables").html('<select id="variablesLeidas" class="selectpicker ventana-variables" single>'+
             '</select>'+
             '<button type="button" id="nuevavar" class="btn btn-default">'+
             '<span class="glyphicon glyphicon-file"> New</span>'+
@@ -86,7 +85,7 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
             '</button>'+
             '<button type="button" id="borrar" class="btn btn-default">'+
             '<span class="glyphicon glyphicon-trash"> Delete</span>'+
-            '</button></div>');
+            '</button>');
 
         //Rellenamos los selectpicker dinámicos
         for (var nombreVariable in variables) {
@@ -196,22 +195,22 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         $("#modalcuerpo").html('<div id="contenedorModal" class=container><div>');
 
         $("#contenedorModal").html(
-            '<div id="variablesFileloader1"></div>'+
-            '<div id="variablesFileloader2"></div>'+
+            '<div class="container" id="variablesFileloader1"></div>'+
+            '<div class="container" id="variablesFileloader2"></div>'+
             '<div class="container" id="color"></div>'+
             '<div class="container" id="grosorlinea"></div>'+
             '<div class="container" id="grosorpunto"></div>'+
             '<div class="container"><input id="campotextovar" type="text" class="col-xs-5" placeholder="Insert a new name"></div>');
 
 
-        $("#variablesFileloader1").html('<div class="navbar-form navbar-right">'+
+        $("#variablesFileloader1").html(
             '<span>Variable Axis X </span>'+
             '<select id="variablesFileloaderL1" class="selectpicker ventana-variables">'+
-            '</select></div>');
-        $("#variablesFileloader2").html('<div class="navbar-form navbar-right">'+
+            '</select>');
+        $("#variablesFileloader2").html(
             '<span>Variable Axis Y </span>'+
             '<select id="variablesFileloaderL2" class="selectpicker ventana-variables">'+
-            '</select></div>');
+            '</select>');
 
         $("#botondeguardar").html('<button type="button" id="guardar" class="btn btn-success">' +
             '<span class="glyphicon glyphicon-floppy-disk"> Save</span>' +

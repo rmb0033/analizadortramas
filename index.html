@@ -74,48 +74,30 @@
                 <div id="navbar" class="collapse navbar-collapse">
 
 
-                    <div class="navbar-form navbar-right">
+                    <ul class="navbar-form navbar-left">
                         <button type="button" id="opc-gr" class="btn btn-default">
-                            <span class="glyphicon glyphicon-fire"> Fast graph</span>
+                            <span class="glyphicon glyphicon-fire"> Fast.graph</span>
                         </button>
                         <button type="button" id="opc-variable" class="btn btn-default">
-                            <span class="glyphicon glyphicon-wrench"> Variable settings</span>
+                            <span class="glyphicon glyphicon-wrench"> Variable.settings</span>
                         </button>
                         <button type="button" id="opc-grafico" class="btn btn-default">
-                            <span class="glyphicon glyphicon-wrench"> Chart settings</span>
+                            <span class="glyphicon glyphicon-wrench"> Chart.settings</span>
                         </button>
+                    </ul>
+                    <ul class="navbar-form navbar-right">
                         <button type="button" id="exportar" class="btn btn-default">
                             <span class="glyphicon glyphicon-export"> Export</span>
                         </button>
+
+                        <button type="button" id="importar" class="btn btn-default">
+                            <span class="glyphicon glyphicon-import"> Import</span>
+                        </button>
+
                         <button type="button" id="boton-configuracion" class="btn btn-primary" data-toggle="modal" data-target="#myModal">XML configuration</button>
 
-                    </div>
+                    </ul>
 
-
-
-
-                    <div class="navbar-form navbar-right">
-                        <span style="color:#f9fbff">CHART STYLE :</span>
-                        <select id="selector-graficas" class="selectpicker">
-                            <option>Temporal Chart</option>
-                            <option>X Y chart</option>
-                        </select>
-                    </div>
-
-
-                    <div class="navbar-form navbar-right">
-                        <span style="color:#f9fbff">FILES :</span>
-                        <select id="ventana-ficheros" class="selectpicker ventana-ficheros" multiple>
-                            <!--<option>Data0001</option>-->
-                            <!--<option>Data0002</option>-->
-                        </select>
-                    </div>
-
-                    <div class="navbar-form navbar-right" id="contenedorVariablesRapida">
-                        <span style="color:#f9fbff">VARIABLES :</span>
-                        <select id="ventana-variables" class="selectpicker ventana-variables" multiple>
-                        </select>
-                    </div>
                 </div>
             </div>
         </nav>
@@ -134,7 +116,7 @@
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
                         <div id="modalcabecera"></div>
                     </div>
-                    <div id="modalcuerpo">
+                    <div class="container" id="modalcuerpo">
                     </div>
                     <div class="modal-footer">
                         <span id="botondeguardar"></span>

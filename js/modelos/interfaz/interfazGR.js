@@ -17,7 +17,7 @@ function InterfazGrafica(fileLoader, contenedor, contenedorVariables) {
         $("#modalcuerpo").html('<div id="contenedorModal" class=container><div>');
 
         $("#contenedorModal").html(
-            '<div id="archivosFileloader"></div>' +
+            '<div class="container" id="archivosFileloader"></div>' +
             '<div class="container" id="tipoGrafica"></div>' +
             '<div class="container" id="modoCuerda"></div>' +
             '<div class="container" id="autoescala"></div>'+
@@ -25,10 +25,10 @@ function InterfazGrafica(fileLoader, contenedor, contenedorVariables) {
             '<div class="container"><input id="ymax" type="text" class="col-xs-5" placeholder="Axis Y (MIN)"></div>');
 
 
-        $("#archivosFileloader").html('<div class="navbar-form navbar-right" >' +
+        $("#archivosFileloader").html(
             '<span>Files </span>' +
             '<select id="archivos" class="selectpicker ventana-archivos" multiple>' +
-            '</select></div>');
+            '</select>');
 
         $("#botondeguardar").html('<button type="button" id="guardar" class="btn btn-success">' +
             '<span class="glyphicon glyphicon-floppy-disk"> Save</span>' +

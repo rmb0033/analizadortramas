@@ -132,9 +132,9 @@ function OpcionesGrafica(){
 
     };
     //TODO cambiar el nombre
-    this.setTipoGrafica=function(tipoGrafica){
-        tipografica="Temporal Chart";
-        if(tipoGrafica=="Temporal Chart"){
+    this.setTipoGrafica=function(tipo){
+        tipografica=tipo;
+        if(tipografica=="Temporal Chart"){
             config["options"]["scales"]["xAxes"]=[{
                 type: "time",
                 display: true,
@@ -342,27 +342,23 @@ function OpcionesGrafica(){
 
     this.setMaxEjeX= function(dato){
         if(dato!=''){
-            console.log(dato);
             grafica.options.scales.xAxes[0].ticks["max"]=dato;
         }
     };
 
     this.setMinEjeX=function(dato){
         if(dato!=''){
-            console.log(dato);
             grafica.options.scales.xAxes[0].ticks["min"]=dato;
         }
     };
     this.setMaxEjeY= function(dato){
         if(dato!=''){
-            console.log(dato);
             grafica.options.scales.yAxes[0].ticks["max"]=dato;
         }
     };
 
     this.setMinEjeY=function(dato){
         if(dato!=''){
-            console.log(dato);
             grafica.options.scales.yAxes[0].ticks["min"]=dato;
         }
     };
@@ -606,7 +602,6 @@ function OpcionesGrafica(){
 
     this.pintarGrafica = function (){
         if(grafica!=null){
-            console.log("Recreando grafica");
             grafica.destroy();
         }
         $(".grafica").html("");
@@ -707,7 +702,6 @@ function OpcionesGrafica(){
         // grafica.options.scales["y-axis-1"]["ticks"]["max"]=grafica.scales["y-axis-1"]["max"];
         if(!ejesautomaticos){
             if(tipografica=="Temporal Chart"){
-                console.log(grafica.scales["y-axis-1"]["max"], grafica.scales["y-axis-1"]["min"]);
                 self.setMaxEjeY(grafica.scales["y-axis-1"]["max"]);
                 self.setMinEjeY(grafica.scales["y-axis-1"]["min"]);
             }else{

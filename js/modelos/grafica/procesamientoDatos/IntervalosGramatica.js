@@ -190,7 +190,7 @@ function IntervalosGramatica(ventanaGrafica,codigo){
                     negativo=true;
                 }
                 contador++;
-                if(contador>cadenaTexto.length){
+                if(contador>code.length){
                     return null;
                 }
             }
