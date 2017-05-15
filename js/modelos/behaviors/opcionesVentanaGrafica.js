@@ -14,15 +14,12 @@ function CargarOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
 
 
     function obtenerDatosGraficaTemporal(fileLoader,opcionesGrafica, opcionesVariables) {
-        console.log("temporal");
         var variblesCargadasBiblioteca = fileLoader.getBiblioteca().getVariables();
         var opcionGrafica= new OpcionesGrafica();
         var opcionesFichero = opcionesGrafica[0]["archivos"];
 
         //Recorremos las variables seleccionadas por la interfaz
         for (var indexVariable in opcionesVariables){
-            console.log(indexVariable);
-            console.log(opcionesVariables);
             var opcionesVariable= new OpcionesVariable();
             //TODO es un  hash no un array, arreglar en la clase de gráfica
             var solucionVariable=[];
@@ -75,7 +72,6 @@ function CargarOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
 
     function obtenerDatosGraficaXY(fileLoader,opcionesGrafica, contenedorVariables ){
 
-        console.log("XYYYYYYYYYYYYY");
 
         var variablesBiblioteca = fileLoader.getBiblioteca().getVariables();
         var opcionGrafica= new OpcionesGrafica();

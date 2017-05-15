@@ -51,6 +51,11 @@
     color: #0a8013;
     box-shadow: none;
 }
+.controjo {
+    border-color: #ff0000;
+    color: #ff0000;
+    box-shadow: none
+}
 
 .filtraje{
 

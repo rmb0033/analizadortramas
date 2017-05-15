@@ -158,6 +158,7 @@ function aplicarListenerMenu(fileLoader){
     var contenedorVariable=[];
     var contenedorGrafica=[];
     var opcionesCargadas;
+    var nuevasOpciones;
 
     $("#opc-variable").click(function(){
         if(contenedorGrafica.length>0){
@@ -180,6 +181,7 @@ function aplicarListenerMenu(fileLoader){
     });
 
     $("#opc-gr").click(function(){
+        var nuevasOpciones= new GraficadoRapido(fileLoader,contenedorGrafica, contenedorVariable);
         $("#modalOpciones").modal();
     });
 

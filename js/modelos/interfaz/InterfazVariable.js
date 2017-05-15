@@ -23,6 +23,7 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         $("#botondeguardar").html('');
         $("#modalcabecera").html('<h4 class="modal-title">Variable Settings</h4>');
         $("#modalcuerpo").html('<div id="contenedorModal" class=container><div>');
+        $("#botondeguardar").html('');
 
         $("#contenedorModal").html('<div id="contenedorVariables" > </div>'+
             '<div class="container" id="variablesFileloader"></div>'+
@@ -134,7 +135,8 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         $("#modificar").click(function(){
             for(var x in contenedorVariables){
                 if(contenedorVariables[x]["nombre"]==$('#variablesLeidas').val()){
-                    if(activarGuardar()){
+
+                    if(activarModificar(x)){
                         contenedorVariables[x]["nombre"]=$("#campotextovar").val();
                         contenedorVariables[x]["variable"]=$('#variablesFileloaderL').val();
                         contenedorVariables[x]["color"]=$('#selector-color').val();
@@ -307,6 +309,24 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
             return false;
         }
     }
+    function activarModificar(x){
+        if($("#campotextovar").val().length>0 && variableMod($("#campotextovar").val(),x)
+            && ($("#textodesp").val().length==0 || getNumero($("#textodesp").val())!=null)
+            && ($("#textoesc").val().length==0 || getNumero($("#textoesc").val())!=null)){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    function variableMod(cadena, index){
+        for(var x in variables){
+            if(variables[x]["Nombre"]==cadena && index!=x){
+                return false;
+            }
+        }
+        return true;
+    }
+
 
     function variableNueva(cadena){
         for(var x in variables){

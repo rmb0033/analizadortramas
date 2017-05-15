@@ -171,10 +171,14 @@ function OpcionesGrafica(){
         //clonamos el objeto
         var solucion = JSON.parse(JSON.stringify(datosFiltrados));
         var puntosTotales=0;
+        var numeroVariables=0;
         for(var variable in datosFiltrados) {
             //Datos no tiene atributo lenght
+            numeroVariables+=1;
             puntosTotales+=Object.keys(datosFiltrados[variable]["diccionario"]).length;
         }
+        //TODO buscar solucion mejor, comprobar si datosfiltrados tiene lenght
+        var numeroPuntosTrabajo=numeroPuntos/numeroVariables;
 
         for(var variable in datosFiltrados){
 
@@ -190,7 +194,7 @@ function OpcionesGrafica(){
 
             // console.log(keys);
             var solucionOrdenada=[];
-            var numeroDiezMado=parseInt((puntosTotales/numeroPuntos)/datosFiltrados.length);
+            var numeroDiezMado=parseInt((puntosTotales/numeroPuntosTrabajo)/datosFiltrados.length);
             if(numeroDiezMado==0){
                 numeroDiezMado=1;
             }
@@ -225,8 +229,8 @@ function OpcionesGrafica(){
                 }
 
 
-                var numeroDiezMado=parseInt(((mayor-menor)/numeroPuntos)/datosFiltrados.length);
-                if(!parseInt(((mayor-menor)/numeroPuntos)%datosFiltrados.length))
+                var numeroDiezMado=parseInt(((mayor-menor)/numeroPuntosTrabajo)/datosFiltrados.length);
+                if(!parseInt(((mayor-menor)/numeroPuntosTrabajo)%datosFiltrados.length))
                     numeroDiezMado++;
 
                 if(numeroDiezMado==0){
@@ -661,16 +665,16 @@ function OpcionesGrafica(){
                 '<span class="glyphicon glyphicon-trash"></span>'+
                 '</button>'+
 
-                '<button type="button" id="busqueda" class="btn btn-default">'+
+                '<button type="button" id="busqueda" class="btn btn-default controjo">'+
                 '<span class="glyphicon glyphicon-search"></span>'+
                 '</button>'+
 
 
-                '<button type="button" id="busquedaizq" class="btn btn-default">'+
+                '<button type="button" id="busquedaizq" class="btn btn-default controjo">'+
                 '<span class="glyphicon glyphicon-chevron-left"></span>'+
                 '</button>'+
 
-                '<button type="button" id="busquedader" class="btn btn-default">'+
+                '<button type="button" id="busquedader" class="btn btn-default controjo">'+
                 '<span class="glyphicon glyphicon-chevron-right"></span>'+
                 '</button>'+
                 '<button type="button" id="igualarb1" class="btn btn-default banderaverde">'+
