@@ -44,7 +44,7 @@ function InterfazGrafica(fileLoader, contenedor, contenedorVariables) {
             '<option>Distended line</option>' +
             '</select>');
 
-        $("#autoescala").html(' <span>Auto-scale Values </span><select id="autoesc" class="selectpicker">' +
+        $("#autoescala").html(' <span>Auto-axes adjustment</span><select id="autoesc" class="selectpicker">' +
             '<option>True</option>' +
             '<option>False</option>' +
             '</select>');
@@ -66,7 +66,7 @@ function InterfazGrafica(fileLoader, contenedor, contenedorVariables) {
                 nuevaVar["archivos"]=$('#archivos').val();
                 nuevaVar["tipoGrafica"]=$('#tipografico').val();
                 nuevaVar["tipoCuerda"]=$('#tipolinea').val();
-                nuevaVar["autoescala"]=$('#autoesc').val();
+                nuevaVar["autoajuste"]=$('#autoesc').val();
                 nuevaVar["ymin"]=$('#ymin').val();
                 nuevaVar["ymax"]=$('#ymax').val();
                 contenedorFicheros.shift();
@@ -101,7 +101,7 @@ function InterfazGrafica(fileLoader, contenedor, contenedorVariables) {
                 $('#archivos').val(contenedorFicheros[x]["archivos"]);
                 $('#tipografico').val(contenedorFicheros[x]["tipoGrafica"]);
                 $('#tipolinea').val(contenedorFicheros[x]["tipoCuerda"]);
-                $('#autoesc').val(contenedorFicheros[x]["autoescala"]);
+                $('#autoesc').val(contenedorFicheros[x]["autoajuste"]);
                 $('#ymin').val(contenedorFicheros[x]["ymin"]);
                 $('#ymax').val(contenedorFicheros[x]["ymax"]);
                 $('#archivos').selectpicker('refresh');

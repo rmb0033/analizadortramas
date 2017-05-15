@@ -47,7 +47,6 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
             '<option>Blue</option>'+
             '<option>Orange</option>'+
             '<option>Pink</option>'+
-            '<option>Brown</option>'+
             '<option>Purple</option>'+
             '<option>Brown</option>'+
             '<option>Yellow</option>'+
@@ -228,7 +227,6 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
             '<option>Pink</option>'+
             '<option>Brown</option>'+
             '<option>Purple</option>'+
-            '<option>Brown</option>'+
             '<option>Yellow</option>'+
             '</select>');
         $("#grosorlinea").html(' <span>Line Size </span><select id="selector-grosorlinea" class="selectpicker">'+

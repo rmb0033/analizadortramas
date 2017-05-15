@@ -88,9 +88,6 @@ function cargarOpciones(fileLoader) {
 
 }
 
-
-
-
 //TODO quitar esta funcion
 function obtenerDatosFecha(fileLoader, opciones) {
 
@@ -108,7 +105,6 @@ function obtenerDatosGraficaTemporal(opciones,variblesCargadasBiblioteca ) {
     var opcionGrafica= new OpcionesGrafica();
     var opcionesVariables = opciones["variables"];
     var opcionesFichero = opciones["ficheros"];
-    var limitePuntos=opciones["maximoPuntos"];
 
     //Recorremos las variables seleccionadas por la interfaz
     for (var indexVariable in opcionesVariables){
@@ -141,13 +137,19 @@ function obtenerDatosGraficaTemporal(opciones,variblesCargadasBiblioteca ) {
 
         opcionesVariable.setNombreVariable(opcionesVariables[indexVariable]);
         opcionesVariable.setDatos(solucionVariable);
+        opcionesVariable.setColor("Blue");
+        opcionesVariable.setDimensionPunto("large");
+        opcionesVariable.setGrosorLinea("large");
+        opcionesVariable.tipoCronograma("False");
+
         opcionGrafica.addOpcionVariable(opcionesVariable.getOpciones());
 
     }
     //TODO cambiar estructura de llamadas, opcionGrafica deberia llamarse Grafica.
     //Cuando la creemos deberiamos pasarle
     opcionGrafica.getOpciones();
-    opcionGrafica.setTipoGrafica("tiempo");
+    opcionGrafica.setTipoGrafica("Temporal Chart");
+    opcionGrafica.setTipodeCuerda("Line");
     opcionGrafica.pintarGrafica();
     opcionGrafica.pintarGraficaMaestra();
 
@@ -280,6 +282,7 @@ function obtenerDatosGraficaXY(fileLoader,opciones ){
     var opcionesVariable= new OpcionesVariable();
     opcionesVariable.setNombreVariable("X Y");
     opcionesVariable.setDatos(tablaXY);
+    opcionesVariable.setColor("Red");
     opcionGrafica.addOpcionVariable(opcionesVariable.getOpciones());
     opcionGrafica.getOpciones();
     opcionGrafica.pintarGrafica();

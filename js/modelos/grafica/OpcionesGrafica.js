@@ -20,6 +20,7 @@ function OpcionesGrafica(){
     var filtro;
     var busqueda;
     var tipografica="xy";
+    var ejesautomaticos=true;
 
     this.getTipoGrafica=function(){
         return tipografica;
@@ -122,10 +123,10 @@ function OpcionesGrafica(){
         diccionarioDatos=self.getDiccionario();
     };
     this.setTipodeCuerda= function(tipoCuerda){
-        if(tipoCuerda=="Cuerda"){
+        if(tipoCuerda=="Distended line"){
             config["options"]["elements"]["line"]["tension"]=0.4;
         }
-        else if(tipoCuerda=="Recta"){
+        else if(tipoCuerda=="Line"){
             config["options"]["elements"]["line"]["tension"]=0.0001;
         }
 
@@ -133,7 +134,7 @@ function OpcionesGrafica(){
     //TODO cambiar el nombre
     this.setTipoGrafica=function(tipoGrafica){
         tipografica="Temporal Chart";
-        if(tipoGrafica=="tiempo"){
+        if(tipoGrafica=="Temporal Chart"){
             config["options"]["scales"]["xAxes"]=[{
                 type: "time",
                 display: true,
@@ -163,6 +164,8 @@ function OpcionesGrafica(){
     this.setLeyendaEjeY= function(leyendaEjex){
 
     };
+
+
 
     function conectorDiccionario(max, min, numeroPuntos){
         //clonamos el objeto
@@ -285,9 +288,9 @@ function OpcionesGrafica(){
                     }
                 },
 
-
                 scales: {
                     xAxes: [{
+                        ticks:{},
                         display: true,
                         scaleLabel:{
                             display: false
@@ -295,6 +298,7 @@ function OpcionesGrafica(){
 
                     }] ,
                     yAxes: [{
+                        ticks:{},
                         display: true,
                         scaleLabel: {
                             display: true,
@@ -310,13 +314,66 @@ function OpcionesGrafica(){
                     else if ($("#bandera2").hasClass('active')) {
                         dibujarPuntero(e, "f2");
                     }else{
-                        console.log(graficaMaestra);
+                        console.log(grafica);
 
                     }
                 }
             },
 
         };
+
+    };
+
+    this.setMaxEjeYconf= function(dato){
+        if(dato!=''){
+            var ticks={};
+            ticks["max"]=dato;
+            config.options.scales.yAxes[0].ticks=ticks;
+        }
+    };
+
+    this.setMinEjeYconf=function(dato){
+        if(dato!=''){
+            var ticks={};
+            ticks["min"]=dato;
+            config.options.scales.yAxes[0].ticks=ticks;
+        }
+    };
+
+    this.setMaxEjeX= function(dato){
+        if(dato!=''){
+            console.log(dato);
+            grafica.options.scales.xAxes[0].ticks["max"]=dato;
+        }
+    };
+
+    this.setMinEjeX=function(dato){
+        if(dato!=''){
+            console.log(dato);
+            grafica.options.scales.xAxes[0].ticks["min"]=dato;
+        }
+    };
+    this.setMaxEjeY= function(dato){
+        if(dato!=''){
+            console.log(dato);
+            grafica.options.scales.yAxes[0].ticks["max"]=dato;
+        }
+    };
+
+    this.setMinEjeY=function(dato){
+        if(dato!=''){
+            console.log(dato);
+            grafica.options.scales.yAxes[0].ticks["min"]=dato;
+        }
+    };
+
+    this.setAuto=function(dato){
+        if(dato=="True"){
+            ejesautomaticos=true;
+        }else{
+            ejesautomaticos=false;
+        }
+
     };
 
 
@@ -644,6 +701,23 @@ function OpcionesGrafica(){
 
 
         grafica = new Chart(document.getElementById("canvasGrafica").getContext("2d"), config);
+
+
+        grafica.update();
+        // grafica.options.scales["y-axis-1"]["ticks"]["max"]=grafica.scales["y-axis-1"]["max"];
+        if(!ejesautomaticos){
+            if(tipografica=="Temporal Chart"){
+                console.log(grafica.scales["y-axis-1"]["max"], grafica.scales["y-axis-1"]["min"]);
+                self.setMaxEjeY(grafica.scales["y-axis-1"]["max"]);
+                self.setMinEjeY(grafica.scales["y-axis-1"]["min"]);
+            }else{
+                self.setMaxEjeY(grafica.scales["y-axis-1"]["max"]);
+                self.setMinEjeY(grafica.scales["y-axis-1"]["min"]);
+                self.setMinEjeX(grafica.scales["x-axis-1"]["min"]);
+                self.setMaxEjeX(grafica.scales["x-axis-1"]["max"]);
+            }
+            grafica.update();
+        }
         // console.log(window.myLine);
         // console.log(config);
         var puntosGraficados=0;
@@ -654,6 +728,7 @@ function OpcionesGrafica(){
     };
 
     this.pintarGraficaMaestra= function(){
+        //TODO si miramos código solo cambia cuando se obtiene datos, simplificar este if
         if(tipografica=="Temporal Chart"){
             getGraficaMaestra();
             graficaMaestra = new Chart(document.getElementById("canvasMaestro").getContext("2d"), configMaestro);
@@ -670,7 +745,6 @@ function OpcionesGrafica(){
         console.log("Puntos graficados Maestra: "+puntosGraficados);
         inicializarCaja(graficaMaestra);
         graficaMaestra.update();
-        //TODO mirar que tipo de grafica es
         aplicarListenersBotones(this);
         BotonesFiltraje();
         inicializarFiltraje();
