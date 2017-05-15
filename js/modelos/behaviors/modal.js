@@ -177,18 +177,38 @@ function aplicarListenerMenu(fileLoader){
     });
 
     $("#exportar").click(function(){
+        var contenidoExportacion=[];
+        if(contenedorVariable.length>0 && contenedorGrafica.length>0){
+            contenidoExportacion.push(contenedorVariable);
+            contenidoExportacion.push(contenedorGrafica);
+            $("#modalOpciones").modal();
+
+            var nuevasOpciones= new Exportar();
+
+            var json=JSON.stringify(contenidoExportacion);
+            var data = "text/json;charset=utf-8," + encodeURIComponent(json);
+            $('<a href="data:' + data +
+                '" download="data.json"><h1> Download json file</h1></a>').appendTo('#Descargar');
+        }
+        else{
+            alert("You must save your chart settings and variable settings first.")
+        }
+    });
+    $("#importar").click(function(){
+        var nuevasOpciones= new Importar(fileLoader, contenedorGrafica, contenedorVariable);
         $("#modalOpciones").modal();
     });
-
     $("#opc-gr").click(function(){
         var nuevasOpciones= new GraficadoRapido(fileLoader,contenedorGrafica, contenedorVariable);
         $("#modalOpciones").modal();
     });
 
     $('#modalOpciones').on('hidden.bs.modal', function () {
+
         if(contenedorGrafica.length>0 && contenedorVariable.length>0){
             opcionesCargadas= new CargarOpciones(fileLoader, contenedorGrafica,contenedorVariable );
         }
+
     });
 
 }

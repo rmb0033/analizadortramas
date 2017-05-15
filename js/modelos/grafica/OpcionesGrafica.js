@@ -144,9 +144,11 @@ function OpcionesGrafica(){
                     tooltipFormat: 'MM/DD/YYYY HH:mm:ss:SSS'
                 },
                 ticks: {
-                    autoSkip: true,
                     minTicksLimit:1,
-                    maxTicksLimit: 8
+                    maxTicksLimit: 6,
+                    autoSkip: true,
+                    maxRotation: 0,
+                    minRotation: 0
 
                 },
                 //hasta aqui
@@ -317,9 +319,6 @@ function OpcionesGrafica(){
                     }
                     else if ($("#bandera2").hasClass('active')) {
                         dibujarPuntero(e, "f2");
-                    }else{
-                        console.log(grafica);
-
                     }
                 }
             },

@@ -10,7 +10,7 @@ function InterfazGrafica(fileLoader, contenedor, contenedorVariables) {
     function inyectarHTMLGrafica() {
 
         //Codigo HTML
-        $("#modalcabecera").html('<h4 class="modal-title">Chart Settings</h4>');
+        $("#modalcabecera").html('<h4 class="modal-title">Fast Graph</h4>');
         $("#modalcuerpo").html('<div id="contenedorModal" class=container><div>');
 
         $("#contenedorModal").html(
