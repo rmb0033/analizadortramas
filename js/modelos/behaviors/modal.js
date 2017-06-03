@@ -4,7 +4,6 @@
 /**
  * Comportamientos de modal
  */
-// $(function() {
 //TODO declarar statics
 function iniciarModal(fileLoader) {
 
@@ -29,6 +28,7 @@ function iniciarModal(fileLoader) {
             cadenaHTMLVar += '<select id="ventana-variables" class="selectpicker ventana-variables" multiple>';
             $("#contenedorVariablesRapida").html(cadenaHTMLVar);
             $(".cargadorDatos").hide();
+
         });
     });
 
@@ -69,8 +69,6 @@ function modalBienvenida() {
                 aplicarListenerMenu(fileLoader);
                 $(".cargadorDatos").hide();
                 iniciarModal(fileLoader);
-
-
             });
         }
         else{
@@ -88,20 +86,7 @@ function modalBienvenida() {
 }
 
 
-/**
 
- * Herramienta testing. * Funcion que no es mia.
- * @param milliseconds
- */
-function dormir(milliseconds) {
-    var start = new Date().getTime();
-    while(true){
-        if ((new Date().getTime() - start) > milliseconds){
-            console.log(start, new Date().getTime());
-            break;
-        }
-    }
-}
 function cargarDirectorioFicheros(){
     var ficheroFiltrado=[];
     //TODO trata de errores (si no encuentra nada en el directorio)
@@ -158,7 +143,9 @@ function aplicarListenerMenu(fileLoader){
     var contenedorVariable=[];
     var contenedorGrafica=[];
     var opcionesCargadas;
-    var nuevasOpciones;
+    //Carga por defecto al iniciar la aplicación
+    GraficadoRapido(fileLoader,contenedorGrafica, contenedorVariable);
+    $("#modalOpciones").modal();
 
     $("#opc-variable").click(function(){
         if(contenedorGrafica.length>0){

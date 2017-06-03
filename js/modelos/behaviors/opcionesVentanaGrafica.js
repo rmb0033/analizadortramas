@@ -25,7 +25,8 @@ function CargarOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
             var solucionVariable=[];
             // aqui se deberia hacer toda la precarga de opciones de variable
             // opcionesVariables[indexVariable]["variable"] nombre de la variable REAL.
-
+            var umbral=opcionesVariables[indexVariable]["desplazamiento"];
+            var escala=opcionesVariables[indexVariable]["escalado"];
             var valoresVar =variblesCargadasBiblioteca[opcionesVariables[indexVariable]["variable"]].getValores();
             //Obtenemos de la biblioteca las variables que vamos a graficar.
             for(var indexValor in valoresVar){
@@ -37,7 +38,7 @@ function CargarOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
                     //que estamos usando como entrada del diccionario se convierte a un string y queremos que sea
                     //un objeto de tipo Date.UTC
                     solVal[0]=valoresVar[indexValor].getFechams();
-                    solVal[1]=valoresVar[indexValor].getValor();
+                    solVal[1]=valoresVar[indexValor].getValor()*escala + umbral;
 
                     solucionVariable[valoresVar[indexValor].getFechams()]=solVal;
 

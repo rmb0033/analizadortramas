@@ -7,7 +7,7 @@ function GraficadoRapido(fileLoader, contenedorFich, contenedorVar) {
     var ficheros = fileLoader.getCargadorTramas().getNombreFicheros();
     var variables = fileLoader.getBiblioteca().getClaves();
 
-    $("#modalcabecera").html('<h4 class="modal-title">Chart Settings</h4>');
+    $("#modalcabecera").html('<h4 class="modal-title">Fast Graph</h4>');
     $("#modalcuerpo").html('<div id="contenedorModal" class=container><div>');
     $("#contenedorModal").html('<div class="container" id="tipoGrafica"></div>' +
             '<div class="container" id="graficadoRapido"></div>');

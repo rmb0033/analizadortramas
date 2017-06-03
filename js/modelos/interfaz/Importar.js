@@ -9,7 +9,7 @@ function Importar(fileLoader, contenedorGraf, contenedorVar){
     var contenedorFicheros=contenedorGraf;
 
 
-    $("#modalcabecera").html('<h4 class="modal-title">Import</h4>');
+    $("#modalcabecera").html('<h4 class="modal-title">Import JSON</h4>');
 
     $("#modalcuerpo").html('<div id="contenedorModal" class=container><div>');
 
