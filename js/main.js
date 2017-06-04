@@ -5,6 +5,6 @@
 
 $(function() {
     $(".cargadorDatos").hide();
-    modalBienvenida();
+    ModalGUI();
 
 });

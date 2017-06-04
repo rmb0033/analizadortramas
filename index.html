@@ -106,7 +106,7 @@
     <main>
         <div id="contenedorGrafica" class="canvas grafica" style="height: 450px;">
         </div>
-<!--TODO borrar-->
+        <!--TODO borrar-->
 
         <div id="modalOpciones" class="modal fade" role="dialog">
             <div class="modal-dialog">
@@ -160,20 +160,17 @@
                 <!-- Modal content-->
                 <div class="modal-content">
                     <div class="modal-header">
+                        <h1 class="modal-title">Data frame displayer</h1>
+                        <h5 class="modal-title">Universidad de Burgos. Rodrigo Martínez Bravo</h5>
+
                         <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Data frame displayer</h4>
                     </div>
                     <!--TODO añadir un selector ficheros-->
                     <div class="modal-body">
+                        <img src="escudoUBu.png" alt="ubu-icon" class="imagen-ubu" >
                         <p><h1>Select files:</h1></p>
-
-                        <img src="logobordesrojo.jpg" alt="asti-icon" style="width:304px;height:228px;">
-
                         <select id="ventana-ficheros-bienvenida" class="selectpicker ventana-ficheros" multiple>
-
                         </select>
-
-
                     </div>
 
 
@@ -217,8 +214,8 @@
 
 
 <script src="js/modelos/cargadorFicheros/CargadorFicheros.js"></script>
-<script src="js/modelos/behaviors/modal.js"></script>
-<script src="js/modelos/behaviors/opcionesVentanaGrafica.js"></script>
+<script src="js/modelos/behaviors/ModalGUI.js"></script>
+<script src="js/modelos/behaviors/CargadorOpciones.js"></script>
 <script src="js/modelos/behaviors/botonesGrafica.js"></script>
 <script src="js/modelos/behaviors/botonesFiltraje.js"></script>
 

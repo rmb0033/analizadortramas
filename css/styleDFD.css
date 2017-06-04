@@ -20,7 +20,10 @@
     font-size: 20px;
     font-weight: 600;
 }
+.imagen-ubu{
+    width:10em;height:17em;
 
+}
 /*VENTANA-HEADER*/
 .ventana-header {
     margin-bottom: 20px;

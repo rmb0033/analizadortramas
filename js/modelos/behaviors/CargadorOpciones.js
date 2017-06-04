@@ -1,7 +1,7 @@
 
 //Función principal
 //TODO cambiar nombre fichero
-function CargarOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
+function CargadorOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
 
     var tipoGrafica=opcionesGrafica[0]["tipoGrafica"];
 
