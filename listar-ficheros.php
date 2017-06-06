@@ -1,11 +1,8 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: alumno
- * Date: 15/03/17
- * Time: 21:07
+ * Función que mapea el directorio .Datalogger y Datalogger Repos
+ * Rodrigo Martinez Bravo
  */
-//TODO Hay que modular esta clase
 $rutaDirectorio="./Datalogger";
 $index=0;
 $rutaFicheros = array();
