@@ -1,24 +1,31 @@
 /**
- * Created by alumno on 19/02/17.
+ * Created by Rodrigo Martinez
  */
+
+
 /**
- *
+ * Clase en la que se construye el archivo Configuración a través de un xml
  * @param xml
  * @constructor
  */
-//todo falla con comentarios dentro de la trama
 function Configuracion(xml) {
     var configuracionXML = obtenerConfdesdeXML(xml);// diccionario de TramaXML <TramaXML.id, TramaXML>
 
 
+
+
+    /**
+     * Función que devuelve el objeto configuracion
+     * @returns {{}}
+     */
     this.getConfiguracionXML = function(){
         return configuracionXML;
-    }
+    };
 
 
 
     /**
-     *
+     * Función que calcula la configuración desde el xml
      * @param xml
      * @returns {{}}
      */
@@ -36,7 +43,7 @@ function Configuracion(xml) {
     };
 
     /**
-     *
+     * Función que calcula las variables de cada trama
      * @param tramasXML
      * @returns {{}}
      */
@@ -62,7 +69,7 @@ function Configuracion(xml) {
 
 
     /**
-     *
+     * Función que calcula los atributos de cada variable
      * @param raizAtributos
      * @returns {{}}
      */

@@ -1,5 +1,13 @@
 /**
- * Created by alumno on 13/05/17.
+ * Created by Rodrigo Martinez
+ */
+
+/**
+ * Clase en la que se define la interfaz de cada variable
+ * @param fileloader
+ * @param contenedorGrafica
+ * @param contenedorVar
+ * @constructor
  */
 function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
     var variables = fileloader.getBiblioteca().getClaves();
@@ -13,7 +21,9 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
             insertarHTMLXY();
         }
     }
-
+    /**
+     * Función donde se crea la interfaz para una gráfica temporal
+     */
     function insertarHTMLTemporal(){
 
         //Codigo HTML
@@ -189,7 +199,10 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         });
     } //Fin interfaz opciones graficas temporal
 
-
+    /**
+     * Función donde se crea la interfaz para una gráfica X,Y
+     *
+     */
     function insertarHTMLXY(){
         $("#modalcabecera").html('');
         $("#modalcuerpo").html('');
@@ -299,7 +312,10 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
 
 
     //Herramientas
-
+    /**
+     * Utilizamos esta función para saber si se puede guardar o no guardar dicha vista
+     * @returns {boolean}
+     */
     function activarGuardar(){
         if($("#campotextovar").val().length>0 && variableNueva($("#campotextovar").val())
             && ($("#textodesp").val().length==0 || getNumero($("#textodesp").val())!=null)
@@ -309,6 +325,12 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
             return false;
         }
     }
+
+    /**
+     * Utilizamos esta función para saber si se puede modificar o no guardar dicha vista
+     * @param x
+     * @returns {boolean}
+     */
     function activarModificar(x){
         if($("#campotextovar").val().length>0 && variableMod($("#campotextovar").val(),x)
             && ($("#textodesp").val().length==0 || getNumero($("#textodesp").val())!=null)
@@ -318,6 +340,14 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
             return false;
         }
     }
+
+
+    /**
+     * Utilizamos esta función para comprobar si existe esa variable
+     * @param cadena
+     * @param index
+     * @returns {boolean}
+     */
     function variableMod(cadena, index){
         for(var x in variables){
             if(variables[x]["Nombre"]==cadena && index!=x){
@@ -327,7 +357,11 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         return true;
     }
 
-
+    /**
+     * Comprobamos que no exista otro tag con esa variable
+     * @param cadena
+     * @returns {boolean}
+     */
     function variableNueva(cadena){
         for(var x in variables){
             if(variables[x]["Nombre"]==cadena){
@@ -337,6 +371,9 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         return true;
     }
 
+    /**
+     * Función con la que actualizamos la interfaz
+     */
     function actualizarVarInterfaz(){
 
         $("#variablesLeidas").html('');
@@ -349,6 +386,9 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         $('#variablesLeidas').selectpicker('refresh');
     }
 
+    /**
+     * Función con la que actualizamos los datos de la interfaz
+     */
     function actualizarDatosInterfazTemporal(){
         for(var x in contenedorVariables){
             if(contenedorVariables[x]["nombre"]==$('#variablesLeidas').val()){
@@ -370,6 +410,11 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         }
     }
 
+    /**
+     * Función con la que sabemos si el string que nos pasan es un número
+     * @param cadena
+     * @returns {*}
+     */
     function getNumero(cadena){
         var cadenaTexto=cadena;
         var numero=[];
@@ -404,6 +449,11 @@ function InterfazVariable(fileloader, contenedorGrafica, contenedorVar){
         }
     }
 
+    /**
+     * Complemento de la función para saber si es un número
+     * @param caracter
+     * @returns {boolean}
+     */
     function esNumero(caracter){
         if(caracter>="0" && caracter<="9"){
             return true;

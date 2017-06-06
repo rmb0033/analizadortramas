@@ -1,4 +1,13 @@
-
+/**
+ * Created by Rodrigo Martinez
+ */
+/**
+ * Clase en la que se define la interfaz gráfica de la gráfica junto a su funcionamiento
+ * @param fileLoader
+ * @param contenedor
+ * @param contenedorVariables
+ * @constructor
+ */
 function InterfazGrafica(fileLoader, contenedor, contenedorVariables) {
 
     var contenedorFicheros=contenedor;
@@ -6,7 +15,9 @@ function InterfazGrafica(fileLoader, contenedor, contenedorVariables) {
 
     inyectarHTMLGrafica();
 
-
+    /**
+     * Función en la que se calcula la interfaz gráfica de las vistas de la gráfica
+     */
     function inyectarHTMLGrafica() {
 
         //Codigo HTML
@@ -116,6 +127,11 @@ function InterfazGrafica(fileLoader, contenedor, contenedorVariables) {
 
 
     }
+    /**
+     * Función con la que sabemos si el string que nos pasan es un número
+     * @param cadena
+     * @returns {*}
+     */
     function getNumero(cadena){
         var cadenaTexto=cadena;
         var numero=[];

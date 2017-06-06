@@ -1,5 +1,10 @@
 /**
- * Created by alumno on 15/05/17.
+ * Created by Rodrigo Martinez
+ */
+
+/**
+ * Clase en la que se define la interfaz gráfica de exportar
+ * @constructor
  */
 function Exportar(){
     // $("#contenedorModal").html('<div id="Descargar"></div>');

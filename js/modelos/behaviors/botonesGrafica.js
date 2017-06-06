@@ -1,48 +1,66 @@
 /**
- * Created by alumno on 11/04/17.
+ * Created by Rodrigo Martinez
  */
-
-// <button type="button" id="limitederecho" class="btn btn-default">'+
-// '<span class="glyphicon glyphicon-indent-right"></span>'+
-// '</button>'+
-//
+/**
+ * Clase en la que se encuentran definidos los comportamientos de los botones de la gráfica temporal
+ * @param ventanaGrafica
+ */
 function aplicarListenersBotones(ventanaGrafica){
-    var grafica= ventanaGrafica.getGrafica();
+    //constructor
     var graficaMaestra= ventanaGrafica.getGraficaMaestra();
     var datosOrdenados= obtenerTodosDatosEjex(graficaMaestra);
     var velocidadReproduccion=400; //ms que tarda en moverse
+    desactivarFuncionesMovimiento();
 
 
+    /**
+     * Funcion por la que se desactivan los botones de movimiento
+     */
     function desactivarFuncionesReproduccion(){
         $("#play").prop("disabled", true);
         $("#pause").prop("disabled", true);
         $("#pasoanterior").prop("disabled", true);
         $("#pasosiguiente").prop("disabled", true);
         $("#stop").prop("disabled", true);
-        // $("#incvelocidad").prop("disabled", true);
-        // $("#decvelocidad").prop("disabled", true);
 
     }
+
+
+    /**
+     * Funcion por la que se activan las funciones de reproducción
+     */
     function activarFuncionesReproduccion(){
         $("#play").prop("disabled", false);
         $("#pause").prop("disabled", false);
         $("#pasoanterior").prop("disabled", false);
         $("#pasosiguiente").prop("disabled", false);
         $("#stop").prop("disabled", false);
-        // $("#incvelocidad").prop("disabled", false);
-        // $("#decvelocidad").prop("disabled", false);
     }
+
+
+    /**
+     * Función en la cual desactivados los botones de movimiento
+     */
     function desactivarFuncionesMovimiento(){
         $("#moverizquierda").prop("disabled", true);
         $("#moverderecha").prop("disabled", true);
 
     }
+
+
+    /**
+     * Función que activamos las funciones de movimiento
+     */
     function activarFuncionesMovimiento(){
         $("#moverizquierda").prop("disabled", false);
         $("#moverderecha").prop("disabled", false);
 
     }
-    desactivarFuncionesMovimiento();
+
+
+    /**
+     * Función que corresponde al funcionamiento del botón de limite izquierdo
+     */
     $("#limiteizquierdo").click(function(){
         if($(this).hasClass('active')){
             $(this).removeClass('active');
@@ -58,6 +76,10 @@ function aplicarListenersBotones(ventanaGrafica){
         }
     });
 
+
+    /**
+     * Función que corresponde al funcionamiento del botón de limite derecho
+     */
     $("#limitederecho").click(function(){
         if($(this).hasClass('active')){
             $(this).removeClass('active');
@@ -73,6 +95,12 @@ function aplicarListenersBotones(ventanaGrafica){
         }
     });
 
+
+    /**
+     * Función por la cual obtenemos todos los datos del eje x
+     * @param grafica
+     * @returns {Array.<*>}
+     */
     function obtenerTodosDatosEjex(grafica){
         var datos=[];
         for (var x in grafica.data.datasets){
@@ -84,9 +112,9 @@ function aplicarListenersBotones(ventanaGrafica){
     }
 
 
-
-
-
+    /**
+     * Función correspondiente al botón de movimiento hacia la izquierda
+     */
     $("#moverizquierda").click(function(){
         // graficaMaestra
         for(var x=datosOrdenados.length-1;x>=0; x--) {
@@ -105,6 +133,11 @@ function aplicarListenersBotones(ventanaGrafica){
             }
         }
     });
+
+
+    /**
+     * Función correspondiente al botón de movimiento hacia la derecha
+     */
     $("#moverderecha").click(function(){
         for(var x=0;x<datosOrdenados.length; x++) {
             if($("#limiteizquierdo").hasClass('active')) {
@@ -122,6 +155,12 @@ function aplicarListenersBotones(ventanaGrafica){
             }
         }
     });
+
+
+    /**
+     * Función que llamada para reproducir la gráfica
+     * @returns {boolean}
+     */
     function reproducir() {
         var datoxmin=null;
         var datoxmax=null;
@@ -145,6 +184,12 @@ function aplicarListenersBotones(ventanaGrafica){
             return false;
         }
     }
+
+
+    /**
+     * Función que retrocede (contrario que reproducir)
+     * @returns {boolean}
+     */
     function retroceder(){
         var datoxmin=null;
         var datoxmax=null;
@@ -170,7 +215,12 @@ function aplicarListenersBotones(ventanaGrafica){
     }
 
 
-//TODO mirar si hace falta valuesBox
+    /**
+     * Función por la cual cambiamos el valor minimo del cuadro de zoom de la ventana temporal
+     * @param dato
+     * @param datoMax
+     * @returns {boolean}
+     */
     function cambiarxMin(dato,datoMax){
         if(dato<graficaMaestra.valuesBox.xmax || datoMax>graficaMaestra.valuesBox.xmin){
             graficaMaestra.valuesBox.xmin = dato;
@@ -182,20 +232,28 @@ function aplicarListenersBotones(ventanaGrafica){
         }
 
     }
+
+
+    /**
+     * Función por la cual cambiamos el valor maximo del cuadro de zoom de la ventana temporal
+     * @param dato
+     * @returns {boolean}
+     */
     function cambiarxMax(dato){
         if(dato>graficaMaestra.valuesBox.xmin) {
             graficaMaestra.valuesBox.xmax = dato;
             graficaMaestra.options.annotation.annotations[0].xMax = dato;
             ventanaGrafica.actualizarGraficas();
             return true;
-
         }
         else{
             return false;
         }
     }
 
-
+    /**
+     * Función que asigna un comportamiento al botón de play
+     */
     $("#play").click(function() {
         if (!$(this).hasClass('active')) {
             $(this).addClass('active');
@@ -209,8 +267,9 @@ function aplicarListenersBotones(ventanaGrafica){
 
         }});
 
-
-    //Función por la cual no bloquea la interfaz gráfica.
+    /**
+     * Función donde se realiza la animación de reproducción
+     */
     function animacionReproduccion() {
         window.setTimeout(function() {
             //condición salida proceso segundo plano
@@ -227,8 +286,11 @@ function aplicarListenersBotones(ventanaGrafica){
             }
         }, velocidadReproduccion);
     }
-    //Aqui.
 
+
+    /**
+     * Función que se asigna un comportamiento al botón de pause
+     */
     $("#pause").click(function() {
         if ($(this).hasClass('active')) {
             $(this).removeClass('active');
@@ -239,13 +301,26 @@ function aplicarListenersBotones(ventanaGrafica){
     });
 
 
+    /**
+     * Función que se asigna un comportamiento al botón de paso siguiente
+     */
     $("#pasosiguiente").click(function(){
         reproducir();
     });
 
+
+
+    /**
+     * Función que se asigna un comportamiento al botón de paso anterior
+     */
     $("#pasoanterior").click(function(){
-       retroceder();
+        retroceder();
     });
+
+
+    /**
+     * Función que define el comportamiento del botón stop
+     */
     $("#stop").click(function(){
         var minimo=ventanaGrafica.obtenerValoresEjeX(graficaMaestra)["min"];
         var maximo=ventanaGrafica.obtenerValoresEjeX(graficaMaestra)["max"];
@@ -256,6 +331,12 @@ function aplicarListenersBotones(ventanaGrafica){
         ventanaGrafica.actualizarGraficas();
 
     });
+
+
+
+    /**
+     * Función que define el comportamiento del botón cambio de velocidad
+     */
     $("#cambvelocidad").click(function(){
 
         var valor=$("#cambvelocidad").text();

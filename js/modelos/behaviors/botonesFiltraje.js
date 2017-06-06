@@ -1,10 +1,19 @@
 /**
- * Created by alumno on 9/05/17.
+ * Created by Rodrigo Martinez
+ */
+
+/**
+ * Clase en la que se encuentran definidos los comportamientos de los botones de los filtros.
+ * @constructor
  */
 function BotonesFiltraje(){
-
+    //contructor
     desactivarFuncionesBusqueda();
     desactivarFuncionesFiltro();
+
+    /**
+     * Funcion que desactiva los botones de las funciones de busqueda
+     */
     function desactivarFuncionesBusqueda(){
         $("#busquedaizq").prop("disabled", true);
         $("#busquedader").prop("disabled", true);
@@ -12,23 +21,35 @@ function BotonesFiltraje(){
         $("#igualarb2").prop("disabled", true);
     }
 
-
+    /**
+     * Funcion que activa los botones de busqueda
+     */
     function activarFuncionesBusqueda(){
         $("#busquedaizq").prop("disabled", false);
         $("#busquedader").prop("disabled", false);
         $("#igualarb1").prop("disabled", false);
         $("#igualarb2").prop("disabled", false);
     }
+
+    /**
+     * Funcion que desactiva el botón de filtro
+     */
     function desactivarFuncionesFiltro(){
         $("#borrarfiltro").prop("disabled", true);
     }
 
+
+    /**
+     * Funcion que activa el botón de filtro
+     */
     function activarFuncionesFiltro(){
         $("#borrarfiltro").prop("disabled", false);
 
-
     }
 
+    /**
+     * Función donde se define el comportamiento del botón búsqueda
+     */
     $("#busqueda").click(function(){
         if($(this).hasClass('active')){
 
@@ -46,7 +67,9 @@ function BotonesFiltraje(){
         }
     });
 
-
+    /**
+     * Función donde se define el funcionamiento del botón filtrado
+     */
     $("#filtrado").click(function(){
         if($(this).hasClass('active')){
             $(this).removeClass('active');
@@ -65,6 +88,9 @@ function BotonesFiltraje(){
 
 
 
+    /**
+     * Función donde se define el funcionamiento del cursor 1
+     */
     $("#bandera1").click(function(){
         if($(this).hasClass('active')){
             $(this).removeClass('active');
@@ -75,6 +101,12 @@ function BotonesFiltraje(){
         }
     });
 
+
+
+
+    /**
+     * Función donde se define el funcionamiento del cursor 2
+     */
     $("#bandera2").click(function(){
         if($(this).hasClass('active')){
             $(this).removeClass('active');
@@ -85,9 +117,6 @@ function BotonesFiltraje(){
             $("#bandera1").prop("disabled", true);
         }
     });
-
-
-
 
 
 }

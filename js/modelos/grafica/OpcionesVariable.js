@@ -1,8 +1,12 @@
 /**
- * Created by alumno on 2/04/17.
+ * Created by Rodrigo Martinez
+ */
+
+/**
+ * Clase en la que se encuentran definido las variables
+ * @constructor
  */
 function OpcionesVariable() {
-    // var color='#' + (Math.random().toString(16) + '0000000').slice(2, 8);
     var color;
     var opciones = {};
     opciones["label"] = "Temperatura";
@@ -15,10 +19,17 @@ function OpcionesVariable() {
     opciones["borderWidth"]= 1;
 
 
-
+    /**
+     * Función para guardar los datos
+     * @param datos
+     */
     this.setDatos = function(datos){
         opciones["diccionario"]=datos;
     };
+    /**
+     * FUnción para marcar el grosor de linea
+     * @param grosorLinea
+     */
     this.setGrosorLinea= function(grosorLinea){
         var grosor;
         switch(grosorLinea){
@@ -31,6 +42,10 @@ function OpcionesVariable() {
         }
         opciones["borderWidth"]= grosor;
     };
+    /**
+     * Función para marcar la dimensión del punto
+     * @param dimension
+     */
     this.setDimensionPunto= function(dimension){
         var grosor;
         switch(dimension){
@@ -43,7 +58,10 @@ function OpcionesVariable() {
         }
         opciones["pointRadius"] = grosor;
     };
-
+    /**
+     * Función para marcar los colores
+     * @param tipoColor
+     */
     this.setColor=function(tipoColor){
         switch (tipoColor){
             case "Random": color='#' + (Math.random().toString(16) + '0000000').slice(2, 8); break;
@@ -60,7 +78,10 @@ function OpcionesVariable() {
         opciones["backgroundColor"]=color;
     };
 
-
+    /**
+     * Función para decir que tipo de cronograma es
+     * @param booleano
+     */
     this.tipoCronograma= function(booleano){
         if(booleano=="True"){
             opciones["steppedLine"] =true;
@@ -68,17 +89,25 @@ function OpcionesVariable() {
             opciones["steppedLine"] =false;
         }
     };
+    /**
+     * Función para establecer el nombre de una variable
+     * @param nombreVariable
+     */
     this.setNombreVariable= function(nombreVariable){
         opciones["label"]=nombreVariable;
     };
-
+    /**
+     * Función para indicar que tipo de puntero se trata
+     * @param tipodePuntero
+     */
     this.setTipoPuntero = function(tipodePuntero){
         opciones["pointStyle"]=tipodePuntero;
     };
 
-
-
-
+    /**
+     * Función para obtener la variable junto a sus opciones
+     * @returns {{}}
+     */
     this.getOpciones = function() {
         return opciones;
     }

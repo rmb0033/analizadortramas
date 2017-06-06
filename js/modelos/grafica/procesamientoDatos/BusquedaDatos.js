@@ -1,5 +1,10 @@
 /**
- * Created by alumno on 8/05/17.
+ * Created by Rodrigo Martinez
+ */
+/**
+ * Clase en la que se encuentran definido la funcionalidad de busqueda de datos.
+ * @param grafica
+ * @constructor
  */
 function BusquedaDatos(grafica){
     var codigo;
@@ -11,7 +16,9 @@ function BusquedaDatos(grafica){
     var nuevaconsulta=false;
     var insertadoBusqueda=false;
 
-
+    /**
+     * Función que aplica funcionalidad al botón busqueda
+     */
     $('#busqueda').click(function() {
         if($(this).hasClass('active')){
             realizarBusqueda();
@@ -27,7 +34,9 @@ function BusquedaDatos(grafica){
         }
 
     });
-
+    /**
+     * Función que sirve para realizar la busqueda
+     */
     function realizarBusqueda(){
         codigo = $('#texto').val();
         var gramatica=new IntervalosGramatica(grafica, codigo);
@@ -44,7 +53,9 @@ function BusquedaDatos(grafica){
         }
     }
 
-
+    /**
+     * Función que te hace el zoom automático una vez encontrado el valor
+     */
     function buscarZoom(){
         var min=[];
         var max=[];
@@ -79,7 +90,11 @@ function BusquedaDatos(grafica){
             }
         }
     }
-    //ultimo punto consulta
+
+
+    /**
+     * Función que te añade el cursor hacia la izquierda
+     */
     function calcularUPCizq(){
         //Para ello recorrer punteros donde name="f3"
         realizarBusqueda();
@@ -103,7 +118,9 @@ function BusquedaDatos(grafica){
     }
 
 
-
+    /**
+     * Función que te añade el cursor hacia la derecha
+     */
     function calcularUPCder(){
         //Para ello recorrer punteros donde name="f3"
         realizarBusqueda();
@@ -116,14 +133,22 @@ function BusquedaDatos(grafica){
                 break;
             }
         }
-
-
     }
 
+
+    /**
+     * Función para detecta si se ha añadido una nueva consulta
+     */
     $('#texto').on('input',function(e){
         nuevaconsulta=true;
     });
 
+
+
+
+    /**
+     * Función para realizar una busqueda hacia la izquierda
+     */
     $("#busquedaizq").click(function () {
         if(nuevaconsulta) {
             calcularUPCizq();
@@ -138,7 +163,13 @@ function BusquedaDatos(grafica){
             }
         }
 
-        });
+    });
+
+
+
+    /**
+     * Función para realizar una búsqueda hacia la derecha
+     */
     $("#busquedader").click(function () {
         if(nuevaconsulta){
             calcularUPCder();
@@ -153,21 +184,29 @@ function BusquedaDatos(grafica){
         }
     });
 
+    /**
+     * Función para igualar la busqueda al cursor 1
+     */
+
     $("#igualarb1").click(function() {
         if(busquedas.length>0){
             grafica.obtenerTabla(busquedas[indice],"f1");
         }
     });
 
+
+
+    /**
+     * Función para igualar la búsqueda al cursor 2
+     */
     $("#igualarb2").click(function() {
         grafica.obtenerTabla(busquedas[indice],"f2");
     });
 
 
-
-
-
-
+    /**
+     * Función que busca la variable de la busqueda en el diccionario
+     */
     function busquedaDatosDiccionario() {
         insertadoBusqueda=false;
         var graficaContenido=grafica.getGrafica();
@@ -177,7 +216,10 @@ function BusquedaDatos(grafica){
         }
     }
 
-
+    /**
+     * Función que te crea los distintos puntos donde se cumple la búsqueda y lo almacena
+     * @param nombre
+     */
     function busquedaDatosDiccionarioVariable(nombre) {
         for (var x in diccionarioDatos) {
             var variable = diccionarioDatos[x];
@@ -201,7 +243,7 @@ function BusquedaDatos(grafica){
                                 insertadoBusqueda=true;
                                 busquedas=[];
                             }
-                                busquedas.push(datos[clave][0]);
+                            busquedas.push(datos[clave][0]);
 
 
                         }
@@ -216,8 +258,12 @@ function BusquedaDatos(grafica){
     }
 
 
-
-
+    /**
+     * Función que comprobamos si está en el intervalo
+     * @param dato
+     * @param intervalo
+     * @returns {boolean}
+     */
     function estaEnElIntervalo(dato,intervalo){
 
         if(dato<intervalo[0][1]){

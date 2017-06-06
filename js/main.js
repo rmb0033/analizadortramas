@@ -1,5 +1,6 @@
 /**
- * Created by alumno on 12/03/17.
+ * Created by Rodrigo Martinez
+ * Clase principal que lanza a las demás
  */
 
 

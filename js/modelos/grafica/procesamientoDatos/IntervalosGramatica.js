@@ -1,5 +1,12 @@
 /**
- * Created by alumno on 8/05/17.
+ * Created by Rodrigo Martinez
+ */
+
+/**
+ * Clase en la que se encuentran definido los intervalos de la gramática
+ * @param ventanaGrafica
+ * @param codigo
+ * @constructor
  */
 function IntervalosGramatica(ventanaGrafica,codigo){
     var intervalos=[];
@@ -10,23 +17,28 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     var sentencias=[];
     var separadores=[];
     var contador=0;
-    var simplificable=true;
     //Acción cuando se ejecuta
     calcularIntervalos();
-
+    /**
+     * Función para obtener los intervalos una vez ya calculados
+     * @returns {Array}
+     */
     this.getIntervalos = function(){
         return intervalos;
     };
-
+    /**
+     * Función principal donde calculamos los intervalos
+     */
     function calcularIntervalos(){
         getSentencias(code);
         intervalos=procesarCodigo();
 
     }
 
-
-
-
+    /**
+     * Función donde obtenemos las sentencias de una query
+     * @param code
+     */
     function getSentencias(code){
         while(contador<code.length){
             var token= getToken();
@@ -54,7 +66,10 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }
     }
 
-
+    /**
+     * Función en la que obtenemos el separador
+     * @returns {boolean}
+     */
     function obtenerSeparador(){
         var separador=[];
         var encontrado=false;
@@ -88,7 +103,11 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     }
 
 
-
+    /**
+     * Función que nos dice si es o no es una letra
+     * @param caracter
+     * @returns {boolean}
+     */
     function esLetra(caracter){
         if(caracter>="a" && caracter<="z"){
             return true;
@@ -99,8 +118,11 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     }
 
 
-
-
+    /**
+     * Función que utilizamos para saber si es un número
+     * @param caracter
+     * @returns {boolean}
+     */
     function esNumero(caracter){
         if(caracter>="0" && caracter<="9"){
             return true;
@@ -111,7 +133,11 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     }
 
 
-
+    /**
+     * Función que utilizamos para saber si es un operador
+     * @param caracter
+     * @returns {boolean}
+     */
     function esOperador(caracter){
         if(caracter==">" || caracter=="<" || caracter=="=" || caracter=="!"){
             return true;
@@ -121,7 +147,10 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         }
     }
 
-
+    /**
+     * Función que utilizamos para obtener el token que queremos comparar (variable)
+     * @returns {*}
+     */
     function getToken(){
         var token=[];
         var contenedorEspacios=[];
@@ -157,7 +186,10 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     }
 
 
-
+    /**
+     * Función para obtener el operador
+     * @returns {*}
+     */
     function getOperador(){
         var operador=[];
         while(esOperador(code[contador])){
@@ -177,6 +209,11 @@ function IntervalosGramatica(ventanaGrafica,codigo){
 
 
     }
+
+    /**
+     * Función para obtener el número que queremos comparar
+     * @returns {*}
+     */
     function getComparador(){
         var numero=[];
         var encontrado=false;
@@ -210,10 +247,11 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     }
 
 
-
-
+    /**
+     * Función en la que procesamos el código
+     * @returns {Array}
+     */
     function procesarCodigo(){
-        var intervalo=[];
         var solucion=[];
         if(validacionVariables() && sentencias.length-1==separadores.length && sentencias.length!=0){
 
@@ -233,7 +271,12 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     }
 
 
-
+    /**
+     * Función con la que sabemos si un dato está en ese intervalo
+     * @param dato
+     * @param intervalo
+     * @returns {boolean}
+     */
     function estaEnElIntervalo(dato,intervalo){
         if(dato<intervalo[0][1]){
             return false;
@@ -250,7 +293,12 @@ function IntervalosGramatica(ventanaGrafica,codigo){
         return false;
     }
 
-
+    /**
+     * FUnción en la que se aplica el conector AND de 2 sentencias
+     * @param solucion
+     * @param sentencia
+     * @returns {Array}
+     */
     function logicaAND(solucion, sentencia){
         var intervalo=[];
         var solucionIntervalos=[];
@@ -318,7 +366,12 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     }
 
 
-
+    /**
+     * Función en la que se aplica el conector OR de 2 sentencias
+     * @param solucion
+     * @param sentencia
+     * @returns {Array}
+     */
     function logicaOR(solucion, sentencia){
 
         var intervalo=[];
@@ -387,19 +440,11 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     }
 
 
-
-
-    function estaEnArray(valor, arrayContenido){
-        for(var x in arrayContenido){
-            if(arrayContenido[x]==valor){
-                return true;
-            }
-        }
-        return false;
-    }
-
-
-
+    /**
+     * FUnción para procesar la sentencia en particular
+     * @param sentencia
+     * @returns {Array}
+     */
     function procesarSentencia(sentencia){
         var intervalo=[];
         var solucionIntervalos=[];
@@ -462,7 +507,13 @@ function IntervalosGramatica(ventanaGrafica,codigo){
 
     }
 
-
+    /**
+     * FUnción que interpreta la lógica de la query a javascript
+     * @param valor1
+     * @param valor2
+     * @param comparador
+     * @returns {boolean}
+     */
     function evaluador(valor1, valor2, comparador){
         switch(comparador){
             case ">":
@@ -518,7 +569,10 @@ function IntervalosGramatica(ventanaGrafica,codigo){
     }
 
 
-
+    /**
+     * Función por la que sabremos si las variables son correctas
+     * @returns {boolean}
+     */
     function validacionVariables(){
         for(var x in sentencias){
             var encontrado=false;

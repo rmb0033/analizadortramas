@@ -1,5 +1,15 @@
 /**
- * Created by alumno on 15/05/17.
+ * Created by Rodrigo Martinez
+ */
+
+
+
+/**
+ * Clase en la que se define la interfaz gráfica de gráficado rápido junto a su funcionamiento
+ * @param fileLoader
+ * @param contenedorFich
+ * @param contenedorVar
+ * @constructor
  */
 function GraficadoRapido(fileLoader, contenedorFich, contenedorVar) {
     var contenedorVariables=contenedorVar;
@@ -41,9 +51,9 @@ function GraficadoRapido(fileLoader, contenedorFich, contenedorVar) {
     });
 
 
-
-
-
+    /**
+     * Función donde se calcula la interfaz gráfica del graficador rápido, si es una gráfica temporal
+     */
     function inyectarHTMLGRT() {
 
         //Codigo HTML
@@ -125,6 +135,11 @@ function GraficadoRapido(fileLoader, contenedorFich, contenedorVar) {
 
     }
 
+    /**
+     *
+     * Función donde se calcula la interfaz gráfica del graficador rápido, si es una gráfica XY
+     *
+     */
     function inyectarHTMLGRXY(){
         $("#graficadoRapido").html(
             '<div class="container" id="archivosFileloader"></div>' +

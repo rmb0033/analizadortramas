@@ -1,5 +1,14 @@
 /**
- * Created by alumno on 15/05/17.
+ * Created by Rodrigo Martinez
+ */
+
+
+/**
+ * Clase en la que se define la interfaz gráfica de importar junto a su funcionamiento
+ * @param fileLoader
+ * @param contenedorGraf
+ * @param contenedorVar
+ * @constructor
  */
 function Importar(fileLoader, contenedorGraf, contenedorVar){
     var archivo;
@@ -46,7 +55,9 @@ function Importar(fileLoader, contenedorGraf, contenedorVar){
             cargarJSON(file);
         }
     });
-
+    /**
+     * Función en la que importamos el JSON
+     */
     function importar(){
         if(comprobarVariables() && $('#archivos').val().length>0){
             while(contenedorVariables.length>0){
@@ -74,6 +85,10 @@ function Importar(fileLoader, contenedorGraf, contenedorVar){
         }
     }
 
+    /**
+     * Función en la que cargamos el JSON
+     * @param file
+     */
     function cargarJSON(file){
         fr = new FileReader();
         fr.readAsText(file);
@@ -86,6 +101,11 @@ function Importar(fileLoader, contenedorGraf, contenedorVar){
     function textoaJson() {
         archivo= JSON.parse(fr.result);
     }
+
+    /**
+     * Comprobamos si están las variables en el array
+     * @returns {boolean}
+     */
     function comprobarVariables(){
         for(var x in archivo[0]){
             if($.inArray(archivo[0][x]["variable"],variables)>-1) {
@@ -99,8 +119,5 @@ function Importar(fileLoader, contenedorGraf, contenedorVar){
         }
         return true;
     }
-/**
- * Convierte un objeto tipo texto a uno xml
- */
 
 }

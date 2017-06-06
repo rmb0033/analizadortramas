@@ -1,7 +1,10 @@
-//TODO todas las variables declararlas como static
+/**
+ * Created by Rodrigo Martinez
+ * Clase en la que que se define la biblioteca.
+ */
 
 /**
- *
+ * Clase en la que que se define la biblioteca.
  * @param configuracion
  * @param archivosTramas
  * @constructor
@@ -13,7 +16,7 @@ function Biblioteca (configuracion, archivosTramas) {
     //Necesario debido a un bug de las tramas por el cual, a veces el reloj del dataloger no funcionaba correctaente
     var fechaAnteriorTrama= null;
     /**
-     *
+     * Función que devuelve variables en forma de objeto (diccionario)
      */
     this.getVariables = function() {
         return variables;
@@ -21,7 +24,7 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     *
+     *Función que devuelve las variables en forma de lista
      * @returns {Array}
      */
     this.getClaves = function() {
@@ -32,7 +35,6 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     * O(n^5)
      * Funcion que recibe un diccionario con tramas, obtiene la trama correspondiente y manda procesarla
      * @param configuracion
      * @param archivosTramas
@@ -42,27 +44,20 @@ function Biblioteca (configuracion, archivosTramas) {
         var biblioteca = {};
         //TODO test tiempo
         // var start = new Date().getTime();
-        for (var key in archivosTramas) { //(O(n^5)) Recorre los archivos
+        for (var key in archivosTramas) { //Recorre los archivos
             var configuracionTramas=configuracion.getConfiguracionXML();
             // Creamos una variable donde almacenaremos la ultima trama, y comprobaremos la fecha y el valor
             // debido un bug de los datos
             fechaAnteriorTrama= null;
-            //TODO test tiempo
-            for (var numTrama in archivosTramas[key]) { //(O(n^4)) Recorre las lineas de trama
-                //     if(numTrama%50000==0){
-                //         var ahora = new Date().getTime() - start;
-                //         console.log(numTrama +" lineas procesadas en :"+ ahora +"ms");
-                //     }
-                // var progreso = (parseInt(numTrama)/archivosTramas[key].length)*100;
-                // console.log((parseInt(numTrama)/archivosTramas[key].length)*100 + " % completado del fichero "+ key);
+            for (var numTrama in archivosTramas[key]) { //Recorre las lineas de trama
                 var trama = archivosTramas[key][numTrama];
-                var nombreTrama = obtenerIDcontenedor(trama); //O(n) obtiene el id del contenedor
+                var nombreTrama = obtenerIDcontenedor(trama); //obtiene el id del contenedor
                 //si es asi tenemos que añadir la supuesta configuración de ese tipo aqui
-                if (nombreTrama in configuracionTramas) { //O(n) comprueba si el contenedor está especificado en el xml
+                if (nombreTrama in configuracionTramas) { //comprueba si el contenedor está especificado en el xml
                     var configuracionTrama = configuracionTramas[nombreTrama];
-                    //TODO tenemos que comprobar si la fecha es correcta, para ello a la funcion le pasaremos la fecha
+                    //tenemos que comprobar si la fecha es correcta, para ello a la funcion le pasaremos la fecha
                     //de la ultima trama
-                    biblioteca = procesamientoTramas(key, trama, configuracionTrama, biblioteca);// Tiempo de O(n^3)
+                    biblioteca = procesamientoTramas(key, trama, configuracionTrama, biblioteca);
                 }
 
             }
@@ -75,7 +70,7 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     *
+     * Función por la cual obtenemos el id del contenedor
      * @param trama
      * @returns {Array}
      */
@@ -101,7 +96,7 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     * Tiempo de O(n^3)
+     * Función por que procesamos las ramas y las añadimos a la biblioteca
      * @param key
      * @param trama
      * @param configuracionTrama
@@ -133,7 +128,7 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     * Tiempo de ejecucion O(n^2)
+     * Función por que obtenemos valor por cada trama
      * @param key
      * @param trama
      * @param cnfgVariable
@@ -143,9 +138,7 @@ function Biblioteca (configuracion, archivosTramas) {
         var fecha=sacarFecha(trama);
         if(fechaAnteriorTrama!= null){
             if(fechaAnteriorTrama>fecha){
-                // console.log("BUG Encontrado. Valor que deberia ser inferior:"+fechaAnteriorTrama+ "  valor analizado : "+fecha);
-                fecha= repararErrorFecha(fecha,fechaAnteriorTrama );
-                // console.log("Bug reparado" + fecha);
+                fecha= repararErrorFecha(fecha );
                 valor = new Valor(fecha, key, valorDato);
                 if(fecha==null){
                     return null;
@@ -160,7 +153,12 @@ function Biblioteca (configuracion, archivosTramas) {
     }
 
 
-    function repararErrorFecha(fecha,fechaAnteriorTrama){
+    /**
+     * Función donde que reparamos la fecha
+     * @param fecha
+     * @returns {*}
+     */
+    function repararErrorFecha(fecha){
         // 10:09:50:59:979244 > : 23:23:59:59:005158
         var digito1Segundos=10;
         var digito2Segundos=9;
@@ -179,7 +177,7 @@ function Biblioteca (configuracion, archivosTramas) {
                     break;
                 }
             }
-            else if(digito==digito2Segundos ||digito==digito2Minutos ){
+             if(digito==digito2Segundos ||digito==digito2Minutos ){
                 if(fecha[digito]=="5"){
                     fecha[digito]="0";
                 }
@@ -187,7 +185,8 @@ function Biblioteca (configuracion, archivosTramas) {
                     fecha[digito]=parseInt(fecha[digito]+1).toString();
                     break;
                 }
-            }else if(digito==digito2Hora){
+            }
+            if(digito==digito2Hora){
                 if(fecha[digito]=="2"){
                     //ignoramos el dato si justo cambia de día
                     return null;
@@ -234,8 +233,6 @@ function Biblioteca (configuracion, archivosTramas) {
             return fecha;
         }
         else{
-            //TODO mirar como se hacen tratamiento de errores en javascript
-            console.log("Error");
             return null;
         }
     }
@@ -246,7 +243,7 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     * O(n)
+     * Función que saca los valores de una trama
      * @param tram
      * @returns {*}
      */
@@ -267,8 +264,6 @@ function Biblioteca (configuracion, archivosTramas) {
         }
         datos=datos.join('');
         if(datos.length==16){
-            // console.log("Traduccion littleEndian")
-            // datos= littleEndian(datos);
             return datos;
         }
         else{
@@ -284,7 +279,7 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     *
+     * Función que obtenemos el binario de ascii
      * @param valorASCI
      * @returns {Array}
      */
@@ -312,9 +307,8 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
 
-    //TODO cambiar funcion (no hay booleanos, trabaja con bucles)
     /**
-     *
+     * Función donde calculamos el valor booleano de una función
      * @param dat
      * @param inicio
      * @param final
@@ -338,7 +332,7 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     *
+     * Función donde calculamos el valor con signo
      * @param valorASCI
      * @returns {Number}
      */
@@ -351,20 +345,16 @@ function Biblioteca (configuracion, archivosTramas) {
             for(var i in solucionBinario){
                 if(solucionBinario[i]=="1"){
                     sacarComplemento2.push("0");
-                    // solucionBinario[i]="0";
 
                 }
                 else{
                     sacarComplemento2.push("1");
-                    // solucionBinario[i]="1";
                 }
             }
             solucionBinario =sacarComplemento2.join('');
             solucion=-parseInt(solucionBinario,2) - 1;
         }
-        if(solucion>50000){
-            console.log("Signed ASCI ->:"+ valorASCI +" binario : "+ solucionBinario + " solucion :" + solucion);
-        }
+
         return solucion;
     }
 
@@ -374,7 +364,7 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     *
+     * Función que transforma de BigEndian a LittleEndian
      * @param inicio
      * @param final
      * @param dat
@@ -397,7 +387,7 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     *
+     *Función que calcula el valor unsigned
      * @param valorASCI
      * @returns {Number}
      */
@@ -410,7 +400,7 @@ function Biblioteca (configuracion, archivosTramas) {
 
 
     /**
-     *  Complejidad O(n)
+     *  Función que aplica una mascara de hexadecimal a binario.
      * @param dat
      * @param inicio
      * @param final
@@ -436,7 +426,6 @@ function Biblioteca (configuracion, archivosTramas) {
         else{
             var solucion=calcularValorBoolean(dat, inicio, final);
         }
-        // console.log("solucion valor :"+ solucion);
         return solucion;
 
     }

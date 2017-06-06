@@ -3,7 +3,7 @@
     position: fixed;
     height: 100%;
     width: 100%;
-    background-color: red;
+    background-color: whitesmoke;
 }
 
 .textoCargador {
@@ -13,8 +13,8 @@
     height: 340px;
     text-align: center;
     font-size: 30px;
-    font-color:white;
-    background-color: red;
+    font-color:red;
+    background-color: whitesmoke;
 }
 
 .cargador {
@@ -27,13 +27,13 @@
     height: 340px;
     text-align: center;
     font-size: 100px;
-    background-color: red;
+    background-color: whitesmoke;
 
 
 }
 
 .cargador > div {
-    background-color: white;
+    background-color: red;
     height: 80%;
     width: 10%;
     display: inline-block;

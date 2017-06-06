@@ -1,29 +1,39 @@
 /**
- * Created by alumno on 12/03/17.
+ * Created by Rodrigo Martinez
  */
+
+
 /**
- * Lanzamiento del modal y de toda la interfaz gráfica
+ * Clase principal donde se  encuentra el lanzamiento de la interfaz gráfica con los modales y donde invocamos
+ * al cargador de ficheros
+ * @constructor
  */
-
-
 function ModalGUI() {
     var ficheros=cargarDirectorioFicheros();
     $("#modalBienvenida").modal();
+
     actualizarDatapicker(ficheros);
-    // //Activamos la carga de fichero.
+
+    /**
+     * Función para activar la carga del fichero
+     */
     $("#ventana-ficheros-bienvenida").change(function() {
         $("#continue-modal").prop("disabled", false);
     });
 
-    // //Comportamiento cuando el modal se oculta (Se clicka fuera o se da cancelar)
+    /**
+     * Función que define el comportamiento cuando el modal se oculta (Se clicka fuera o se da cancelar)
+     */
     $('#modalBienvenida').on('hidden.bs.modal', function () {
         $(".spinner").hide();
         $(".cargadorDatos").show();
         ficheros= cargarFicheros();
         if(ficheros.length>0){
+
             var fileLoader = new CargadorFicheros(ficheros);
             var peticionesAjax = fileLoader.getCargadorTramas().getpeticionesAjax();
             peticionesAjax.push(fileLoader.getCargadorXML().cargarConfiguracionDefecto("config_prueba.xml"));
+            //Forzamos sincronismo
             $.when.apply(this, peticionesAjax).done(function() {
                 fileLoader.actualizarBiblioteca();
                 aplicarListenerMenu(fileLoader);
@@ -36,16 +46,28 @@ function ModalGUI() {
             $("#modalBienvenida").modal();
         }
 
-
     });
+
+
+
+
+    /**
+     * Función que se encuentra el comportamiento del botón de configuración
+     */
     $( "#boton-configuracion" ).click(function() {
         $(".spinner").show();
     });
 
 
+    /**
+     * Función que inicia el modal por el cual cargamos el XML
+     * @param fileLoader
+     */
     function iniciarModal(fileLoader) {
 
-        //Activamos la carga de fichero.
+        /**
+         * Función con la que activamos la carga del fichero
+         */
         $("#elegir-archivo").change(function() {
             var file = $("#elegir-archivo").prop('files')[0];
             if (file) {
@@ -54,7 +76,12 @@ function ModalGUI() {
             }
         });
 
-        //Comportamiento cuando clickamos en aceptar
+
+
+
+        /**
+         * Comportamiento cuando clickamos en aceptar
+         */
         $("#elegir-archivo-aceptar").click(function() {
             var operaciones=[];
             operaciones.push($("#myModal").modal('hide'));
@@ -71,7 +98,9 @@ function ModalGUI() {
         });
 
 
-        //Comportamiento cuando el modal se oculta (Se clicka fuera o se da cancelar)
+        /**
+         * Comportamiento cuando el modal se oculta (Se clicka fuera o se da cancelar)
+         */
         $('#myModal').on('hidden.bs.modal', function () {
             $(".spinner").hide();
         });
@@ -81,14 +110,14 @@ function ModalGUI() {
     }
 
 
-
+    /**
+     * Función que carga el directorio de ficheros
+     * @returns {Array}
+     */
     function cargarDirectorioFicheros(){
         var ficheroFiltrado=[];
-        //TODO trata de errores (si no encuentra nada en el directorio)
         var oReq = new XMLHttpRequest(); //New request object
         oReq.onload = function() {
-            //This is where you handle what to do with the response.
-            //The actual data is found on this.responseText
             var ficherosSinProcesar = this.responseText.toString();
             if(ficherosSinProcesar ==""){
                 alert("No correct files found into default directory");
@@ -118,8 +147,10 @@ function ModalGUI() {
     }
 
 
-
-
+    /**
+     * Función que sirve para actualizar el DataPicker.
+     * @param ficheros
+     */
     function actualizarDatapicker(ficheros) {
         for (var nombreFichero in ficheros) {
             // console.log(ficheros[nombreFichero]);
@@ -141,7 +172,11 @@ function ModalGUI() {
     }
 
 
-
+    /**
+     * Función por la cual aplicamos listener al menú superior que se encarga de manejar las vistas,
+     * asi como definir su comportamiento
+     * @param fileLoader
+     */
     function aplicarListenerMenu(fileLoader){
         var contenedorVariable=[];
         var contenedorGrafica=[];

@@ -1,7 +1,16 @@
+/**
+ * Created by Rodrigo Martinez
+ */
 
-//Función principal
-//TODO cambiar nombre fichero
+/**
+ * Clase en la que conecta los datos de la biblioteca y las vistas con la gráfica.
+ * @param fileLoader
+ * @param opcionesGrafica
+ * @param opcionesVariable
+ * @constructor
+ */
 function CargadorOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
+    //constructor
 
     var tipoGrafica=opcionesGrafica[0]["tipoGrafica"];
 
@@ -13,6 +22,13 @@ function CargadorOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
     }
 
 
+    /**
+     * Función que extrae los valores de la biblioteca, y añade la configuración de las vistas
+     * a la gráfica temporal
+     * @param fileLoader
+     * @param opcionesGrafica
+     * @param opcionesVariables
+     */
     function obtenerDatosGraficaTemporal(fileLoader,opcionesGrafica, opcionesVariables) {
         var variblesCargadasBiblioteca = fileLoader.getBiblioteca().getVariables();
         var opcionGrafica= new OpcionesGrafica();
@@ -21,7 +37,6 @@ function CargadorOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
         //Recorremos las variables seleccionadas por la interfaz
         for (var indexVariable in opcionesVariables){
             var opcionesVariable= new OpcionesVariable();
-            //TODO es un  hash no un array, arreglar en la clase de gráfica
             var solucionVariable=[];
             // aqui se deberia hacer toda la precarga de opciones de variable
             // opcionesVariables[indexVariable]["variable"] nombre de la variable REAL.
@@ -55,8 +70,7 @@ function CargadorOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
             opcionGrafica.addOpcionVariable(opcionesVariable.getOpciones());
 
         }
-        //TODO cambiar estructura de llamadas, opcionGrafica deberia llamarse Grafica.
-        //Cuando la creemos deberiamos pasarle
+
         opcionGrafica.getOpciones();
         opcionGrafica.setTipoGrafica(tipoGrafica);
         opcionGrafica.setTipodeCuerda(opcionesGrafica[0]["tipoCuerda"]);
@@ -71,6 +85,14 @@ function CargadorOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
 
     }
 
+
+    /**
+     * Función que extrae los valores de la biblioteca, y añade la configuración de las vistas
+     * a la gráfica X,Y
+     * @param fileLoader
+     * @param opcionesGrafica
+     * @param contenedorVariables
+     */
     function obtenerDatosGraficaXY(fileLoader,opcionesGrafica, contenedorVariables ){
 
 
@@ -213,10 +235,11 @@ function CargadorOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
         opcionGrafica.setAuto(opcionesGrafica[0]["autoajuste"]);
         opcionGrafica.pintarGrafica();
         opcionGrafica.pintarGraficaMaestra();
-
-
-
     }
+
+
+
+
 }
 
 

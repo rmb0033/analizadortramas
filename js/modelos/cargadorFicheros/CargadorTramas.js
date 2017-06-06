@@ -1,3 +1,8 @@
+/**
+ * Created by Rodrigo Martinez
+ * Clase en la que con peticiones ajax cargamos las tramas de forma sincrona
+ */
+
 
 function CargadorTramas(directorioFicheros){
     //constructor

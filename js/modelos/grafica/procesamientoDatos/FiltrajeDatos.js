@@ -1,5 +1,11 @@
 /**
- * Created by alumno on 8/05/17.
+ * Created by Rodrigo Martinez
+ */
+
+/**
+ * Clase en la que se encuentran definido las funcionalidad de filtraje
+ * @param grafica
+ * @constructor
  */
 function FiltrajeDatos(grafica){
     var codigo;
@@ -7,7 +13,9 @@ function FiltrajeDatos(grafica){
     var diccionarioDatos;
     var graficaContenido=grafica.getGrafica();
 
-
+    /**
+     * Función por la cual se añade funcionalidad al botón filtrado
+     */
     $('#filtrado').click(function() {
         if($(this).hasClass('active')){
             codigo = $('#texto').val();
@@ -31,11 +39,17 @@ function FiltrajeDatos(grafica){
 
     });
 
+
+    /**
+     * Función por la cual se añade funcionalidad al botón borrar filtro
+     */
     $('#borrarfiltro').click(function() {
         grafica.eliminarFiltro();
     });
 
-
+    /**
+     * Función por la que podemos filtrar los datos del diccionario
+     */
     function filtrarDatosDiccionario() {
         for (var vargrafica in graficaContenido.config.data.datasets) {
             var nombre = graficaContenido.config.data.datasets[vargrafica]["label"];
@@ -43,7 +57,10 @@ function FiltrajeDatos(grafica){
         }
     }
 
-
+    /**
+     * Función que pasada una variable (nombre) obtenemos los puntos que cumplen ese filtro
+     * @param nombre
+     */
     function filtrarDatosDiccionarioVariable(nombre) {
         for (var x in diccionarioDatos) {
                 var variable = diccionarioDatos[x];
@@ -76,7 +93,12 @@ function FiltrajeDatos(grafica){
     }
 
 
-
+    /**
+     * Función en la cual sabemos si ese dato está en ese intervalo
+     * @param dato
+     * @param intervalo
+     * @returns {boolean}
+     */
 
     function estaEnElIntervalo(dato,intervalo){
 
