@@ -53,8 +53,7 @@ function CargadorOpciones(fileLoader, opcionesGrafica, opcionesVariable) {
                     //que estamos usando como entrada del diccionario se convierte a un string y queremos que sea
                     //un objeto de tipo Date.UTC
                     solVal[0]=valoresVar[indexValor].getFechams();
-                    solVal[1]=valoresVar[indexValor].getValor()*escala + umbral;
-
+                    solVal[1]=valoresVar[indexValor].getValor()*parseInt(escala) + parseInt(umbral);
                     solucionVariable[valoresVar[indexValor].getFechams()]=solVal;
 
                 }
