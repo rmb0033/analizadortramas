@@ -3,6 +3,7 @@
  * Función que mapea el directorio .Datalogger y Datalogger Repos
  * Rodrigo Martinez Bravo
  */
+date_default_timezone_set('UTC');
 $rutaDirectorio="./Datalogger";
 $index=0;
 $rutaFicheros = array();
