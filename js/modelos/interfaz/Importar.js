@@ -66,7 +66,6 @@ function Importar(fileLoader, contenedorGraf, contenedorVar){
             while(contenedorFicheros.length>0){
                 contenedorFicheros.shift();
             }
-            //TODO nos pueden dar variables incorrectas
             for(var x in archivo[0]){
                 contenedorVariables.push(archivo[0][x]);
             }

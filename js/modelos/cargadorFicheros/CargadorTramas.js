@@ -45,9 +45,7 @@ function CargadorTramas(directorioFicheros){
         // if(directorioFicheros.length>0) {
         // console.log("Directorio");
         // console.log(directorioFicheros);
-        //TODO Directorio de ficheros puede ser filtrado aqui
         for (var fichero in directorioFicheros) {
-            //TODO aqui tendremos filtrado el directorio.
             // console.log(fichero, directorioFicheros[fichero]);
             var rutaFichero = directorioFicheros[fichero];
             //Funcionalidad añadida de carga de horas desde el servidor

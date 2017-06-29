@@ -42,7 +42,6 @@ function Biblioteca (configuracion, archivosTramas) {
      */
     function cargarBiblioteca(configuracion, archivosTramas) {
         var biblioteca = {};
-        //TODO test tiempo
         // var start = new Date().getTime();
         for (var key in archivosTramas) { //Recorre los archivos
             var configuracionTramas=configuracion.getConfiguracionXML();
@@ -75,7 +74,6 @@ function Biblioteca (configuracion, archivosTramas) {
      * @returns {Array}
      */
     function obtenerIDcontenedor(trama){
-        //TODO más elegante la solucion
         var contenedor = [];
         var sizeTrama = trama.length;
         for(var i=0;i<sizeTrama;i++){
@@ -414,7 +412,6 @@ function Biblioteca (configuracion, archivosTramas) {
             console.error("Máscara mal aplicada");
             return null
         }
-        //TODO encapsular en función
         if(tipo!="boolean"){
             var valorASCI=obtenerASCILittleEndian(inicio, final, dat); //O(N)
             var solucion = calcularValorUnSigned(valorASCI);
