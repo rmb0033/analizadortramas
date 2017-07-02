@@ -12,7 +12,7 @@ function CargadorTramas(directorioFicheros){
 
 
     /**
-     *
+     * Obtenemos las lineas del fichero
      * @returns {{}}
      */
     this.getTramas = function()
@@ -20,16 +20,24 @@ function CargadorTramas(directorioFicheros){
         return tramas;
     };
     /**
-     *
+     *Obtenemos el array de peticiones ajax
      * @returns {Array}
      */
     this.getpeticionesAjax = function() {
         return peticionesAjax;
     };
+    /**
+     * Obtenemos un array con los nombres de ficheros
+     * @returns {Array}
+     */
     this.getNombreFicheros= function(){
-        //TODO podemos hacer que muestre el nombre junto a una fecha
         return Object.keys(tramas);
     };
+    /**
+     * Petición que devuelve una respuesta ajax
+     * @param ficheros
+     * @returns {*}
+     */
     this.setDirectorioFicheros = function(ficheros){
         return $.ajax({
             success: function() {
@@ -42,13 +50,10 @@ function CargadorTramas(directorioFicheros){
      * @returns {Array}
      */
     function cargarTramas(peticionesAjax) {
-        // if(directorioFicheros.length>0) {
-        // console.log("Directorio");
-        // console.log(directorioFicheros);
         for (var fichero in directorioFicheros) {
-            // console.log(fichero, directorioFicheros[fichero]);
             var rutaFichero = directorioFicheros[fichero];
-            //Funcionalidad añadida de carga de horas desde el servidor
+            //Funcionalidad añadida de carga de horas desde el servidor para
+            //conocer aproximadamente la fecha
             var mapeadoDirectorio = rutaFichero.split(" || Date -> ");
             var directorio=mapeadoDirectorio[0];
             var key=mapeadoDirectorio[1];
