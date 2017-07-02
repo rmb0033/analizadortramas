@@ -3,7 +3,7 @@
 Trabajo de fin de grado de para la universidad de Burgos.
 Este trabajo cuenta con una licencia creative commons.
 
-#Resumen del proyecto
+# Resumen del proyecto
 
 
 El objetivo final de este trabajo es realizar una herramienta de graficado, que permita usarse en dispositivos linux con poca capacidad de procesamiento.  Esta herramienta ha sido diseñada concretamente para el funcionamiento en dispositivos que actúan como cajas negras en vehículos de guiado automático , aunque esta herramienta es portable a otras plataformas siempre que se dispongan los datos de la misma manera.
